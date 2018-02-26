@@ -17,11 +17,18 @@
     <div id="app">
 
         @include('navbar')
-        
 
-        <main class="py-4">
+        <div class="container" style="border:solid 1px red">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>test</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-4">
             @yield('content')
-        </main>
+        </div>
     </div>
 
     <!-- Scripts -->
