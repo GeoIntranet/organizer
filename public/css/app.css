@@ -13055,3 +13055,20 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.borderr {
+  border: solid 1px red;
+}
+
+.borderg {
+  border: solid 1px green;
+}
+
+.borderb {
+  border: solid 1px blue;
+}
+
+.container-wrapper {
+  padding: 0;
+  min-height: 82vh;
+}
+

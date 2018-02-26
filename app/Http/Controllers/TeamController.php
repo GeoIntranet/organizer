@@ -56,6 +56,10 @@ class TeamController extends Controller
 
     }
 
+    /**
+     * @param null $date
+     * @return mixed
+     */
     public function works($date=null)
     {
         $users =[48 => 'gv' , 51 => 'cc', 52 => 'flm' , 78 => 'jfl'];
@@ -74,8 +78,6 @@ class TeamController extends Controller
             ->get()
             ->groupBy('date_envoie')
         ;
-
-        var_dump($delaisItem->first());
 
         return view('team.work')
             ->with('week',$calendar)

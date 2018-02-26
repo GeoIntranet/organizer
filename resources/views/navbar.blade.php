@@ -54,27 +54,21 @@
                     <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                     <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                     @else
+
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-gear mr-2"> </i>Utilitaire
+
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-gear mr-2"> </i>{{ ucfirst( Auth::user()->prenom )}} <span class="caret"></span>
                             </a>
+
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#"><i class="fa fa-angle-right mr-3"> </i>xxx</a>
                                 <a class="dropdown-item" href="#"><i class="fa fa-angle-right mr-3"> </i>xxx</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i class="fa fa-angle-right mr-3"> </i>xxx</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ ucfirst( Auth::user()->USER_prenom )}} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    <i class="fa fa-power-off mr-2"> </i>Deconnexion
+                                    <i class="fa fa-power-off mr-2" style="color:indianred"> </i>Deconnexion
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

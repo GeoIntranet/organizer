@@ -67,7 +67,7 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-        'euro' => [
+        'eurocomputer' => [
             'driver' => 'mysql',
             'host' => env('DB_EURO', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),

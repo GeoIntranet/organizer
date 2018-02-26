@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <title>{{env('APP_NAME')}}</title>
 
         <!-- Fonts -->
@@ -79,15 +79,14 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    ORGANISER
+                    <i class="fa fa-paper-plane mr-3"></i>ORGANISER
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://laravel.com/docs">Intranet</a>
+                    <a href="https://laracasts.com">Extranet</a>
+                    <a href="https://laravel-news.com">Eurocomputer</a>
+                    <a href="https://github.com/laravel/laravel">Trello</a>
                 </div>
             </div>
         </div>
