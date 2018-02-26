@@ -48361,6 +48361,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
 //
 //
 //
@@ -48397,16 +48401,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             cal: [],
             selectedDateSession: moment(),
+            yearLeap: false,
             weeks: moment.weekdays(),
             weeksShort: moment.weekdaysShort()
         };
     },
     mounted: function mounted() {
+        var Sunday = [this.weeksShort.shift()];
+        this.weeksShort = this.weeksShort.concat(Sunday);
         this.makeCalendar();
     },
 
@@ -48428,14 +48437,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        isLEap: function isLEap() {
+            return this.selectedDateSession.format('Y') % 4 === 0 && this.selectedDateSession.format('Y') % 100 !== 0 || this.selectedDateSession.format('Y') % 400 === 0;
+        },
         makeCalendar: function makeCalendar() {
+            this.yearLeap = this.isLEap();
             this.cal = [];
 
-            var dateMutable = this.selectedDateSession;
+            // let dateMutable = this.selectedDateSession;
+            var dateMutable = '2020-01-01';
             var startWeek = moment(dateMutable).startOf('month').startOf('week').week();
             var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
             var endDayWeek = moment(dateMutable).endOf('month').endOf('week');
             var endWeek = endDayWeek.week();
+
+            console.log(endWeek);
 
             /*
               *  problematique de confition jamais remplie
@@ -48449,12 +48465,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 startDayWeek.subtract(1, 'days');
                 for (var test = 1; test <= diff; test++) {
                     if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
+
                     this.cal.push({
                         week: week,
                         date: Array(7).fill(0).map(function (n, i) {
                             return startDayWeek.add(1, 'day').format('YYYY-MM-DD');
                         })
                     });
+
                     w++;
                 };
             } else {
@@ -48555,9 +48573,13 @@ var render = function() {
           _c(
             "div",
             { staticClass: "row " },
-            _vm._l(_vm.weeksShort, function(jour) {
+            _vm._l(_vm.weeksShort, function(jour, index) {
               return _c("div", { staticClass: "col " }, [
-                _vm._v(_vm._s(_vm._f("formated")(jour)))
+                _vm._v(
+                  "\n                     " +
+                    _vm._s(_vm._f("formated")(jour)) +
+                    "\n                "
+                )
               ])
             })
           )

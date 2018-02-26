@@ -13,7 +13,9 @@
                 </div>
 
                 <div class="row " >
-                    <div class="col " v-for="jour in weeksShort">{{ jour | formated }}</div>
+                    <div class="col " v-for="(jour,index) in weeksShort ">
+                         {{ jour | formated }}
+                    </div>
                 </div>
 
             </div>
@@ -34,16 +36,21 @@
 </style>
 
 <script>
+    import {isLeapYear} from "moment";
+
     export default {
         data(){
             return{
                 cal : [],
                 selectedDateSession :moment(),
+                yearLeap: false,
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
             }
         },
         mounted() {
+            let Sunday = [this.weeksShort.shift()]
+            this.weeksShort = this.weeksShort.concat(Sunday);
             this.makeCalendar();
         },
         filters:{
@@ -65,21 +72,34 @@
         },
 
         methods: {
+            isLEap(){
+                return (
+                    (this.selectedDateSession.format('Y') % 4 === 0)
+                    &&
+                    (this.selectedDateSession.format('Y') % 100 !== 0)
+                    ||
+                    (this.selectedDateSession.format('Y') % 400 === 0)
+                );
+            },
             makeCalendar(){
+                this.yearLeap = this.isLEap();
                 this.cal=[];
 
-                let dateMutable = this.selectedDateSession;
+                // let dateMutable = this.selectedDateSession;
+                let dateMutable = '2020-01-01';
                 let startWeek = moment(dateMutable).startOf('month').startOf('week').week();
                 let startDayWeek = moment(dateMutable).startOf('month').startOf('week');
                 let endDayWeek = moment(dateMutable).endOf('month').endOf('week');
                 let endWeek = endDayWeek.week();
+
+                console.log(endWeek);
 
                 /*
                   *  problematique de confition jamais remplie
                   *  on ne rentre jamais dans la boucle car depart 52 fin 5 , condition 52 <= 5 jamais valider.
                  * */
                 let diff = startDayWeek.weeksInYear() - startWeek + endWeek + 1;
-                var w= startWeek ;
+                var w = startWeek ;
                 let lastWeekOnYear =  startWeek > endWeek ;
 
                 if(lastWeekOnYear)
@@ -88,10 +108,12 @@
                     for( var test = 1 ; test <= diff ; test++ )
                     {
                         if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
+
                         this.cal.push({
                             week:week,
                             date: Array(7) .fill(0) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
                         });
+
                         w++;
                     };
                 }
