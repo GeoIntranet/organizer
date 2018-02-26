@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <i class="fa fa-paper-plane mr-3"></i>ORGANISER
+                    <i class="fa fa-paper-plane mr-3"></i>ORGANIZER
                 </div>
 
                 <div class="links">

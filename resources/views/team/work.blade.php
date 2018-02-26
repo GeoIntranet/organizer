@@ -5,7 +5,6 @@
     <div class="container-fluid  ">
         <div class="row container-wrapper ">
             <div class="col-md-auto borderg">
-                <h1>CALENDER</h1>
                 <calendar></calendar>
             </div>
             <div class="col borderb">
@@ -21,12 +20,15 @@
                     @foreach($week->getWeek() as $index => $day)
                         <div class="col borderr">
                             @if(isset($delais[$day->format('Y-m-d')]))
-
                                 @php $delais_ = $delais[$day->format('Y-m-d')] ; @endphp
 
                                 @foreach($delais_ as $indexD => $work)
-                                    @php $bl = $work->id_cmd @endphp
-                                    {{$bl}}
+                                    <div class="row">
+                                        <div class="col">
+                                            @php $bl = $work->id_cmd @endphp
+                                            {{$bl}}
+                                        </div>
+                                    </div>
                                 @endforeach
                             @endif
                         </div>

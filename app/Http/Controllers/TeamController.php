@@ -85,7 +85,6 @@ class TeamController extends Controller
             ->with('users',$users)
             ;
 
-
     }
 
     public function dayAdd($bl)

@@ -1,10 +1,7 @@
 <template>
     <div>
-
-
-        <div class="row" style="font-size:0.8em">
+        <div class="row p-1" >
             <div class="col">
-
                 <div class="row" >
                     <div class="col-md-6 p-1  ">
                         <b>{{ selectedDateSession | dateCalendar}}</b>
@@ -30,6 +27,12 @@
 
 </template>
 
+<style>
+    .size--date{
+        font-size: 0.7em;
+    }
+</style>
+
 <script>
     export default {
         data(){
@@ -48,7 +51,10 @@
                 return data.toUpperCase().replace('.','').substr(0,1);
             },
             dateCalendar(data){
-                return data.format('DD MMMM YYYY');
+                let date = data.format('MMMM YYYY');
+
+                return date.substring(0,1).toUpperCase() +
+                    date.substring(1,date.length)
             },
             dayCalendar(data){
                 return data.format('DD MMMM YYYY');
