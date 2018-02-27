@@ -49203,6 +49203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             weeks: moment.weekdays(),
             weeksShort: moment.weekdaysShort(),
             weeksDay: [],
+            work: [],
             cal: []
         };
     },
@@ -49210,6 +49211,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.weeksShort.shift();
         this.weeksShort.pop();
         this.cal = this.getDayOfWeek();
+        this.getWorksWeek();
     },
 
     filters: {
@@ -49234,6 +49236,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        getWorksWeek: function getWorksWeek() {
+            var _this = this;
+
+            axios.get('/team/get/work/9').then(function (response) {
+                _this.work = response.data;
+            });
+        },
         getDayOfWeek: function getDayOfWeek() {
 
             var start = this.selectedDateSession.startOf('week');

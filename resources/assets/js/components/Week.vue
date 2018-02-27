@@ -30,6 +30,7 @@
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
                 weeksDay : [],
+                work : [],
                 cal : [] ,
             }
         },
@@ -37,6 +38,7 @@
             this.weeksShort.shift();
             this.weeksShort.pop();
             this.cal = this.getDayOfWeek();
+            this.getWorksWeek();
 
         },
         filters:{
@@ -62,6 +64,13 @@
             }
         },
         methods: {
+            getWorksWeek(){
+                axios.get('/team/get/work/9').then(
+                    response => {
+                      this.work =  response.data;
+                    }
+                );
+            },
             getDayOfWeek(){
 
                 let start = this.selectedDateSession.startOf('week');
