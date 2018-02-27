@@ -4,13 +4,13 @@
 
     <div class="container-fluid  ">
         <div class="row container-wrapper ">
-            <div class="col-md-auto borderg">
+            <div class="col-md-auto hidden-lg-up">
                 <calendar></calendar>
             </div>
-            <div class="col borderb">
+            <div class="col ">
                 <div class="row">
                     @foreach($week->getWeek() as $index => $day)
-                        <div class="col borderr">
+                        <div class="col ">
                             {{substr($week->days[$day->dayOfWeek],0,3)}}.
                             <h1>{{$day->format('d')}}</h1>
                         </div>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="row">
                     @foreach($week->getWeek() as $index => $day)
-                        <div class="col borderr">
+                        <div class="col ">
                             @if(isset($delais[$day->format('Y-m-d')]))
                                 @php $delais_ = $delais[$day->format('Y-m-d')] ; @endphp
 

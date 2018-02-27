@@ -27650,7 +27650,7 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(132);
-module.exports = __webpack_require__(167);
+module.exports = __webpack_require__(172);
 
 
 /***/ }),
@@ -48311,13 +48311,13 @@ if (false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(178)
+  __webpack_require__(165)
 }
 var normalizeComponent = __webpack_require__(130)
 /* script */
-var __vue_script__ = __webpack_require__(165)
+var __vue_script__ = __webpack_require__(170)
 /* template */
-var __vue_template__ = __webpack_require__(166)
+var __vue_template__ = __webpack_require__(171)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48357,270 +48357,46 @@ module.exports = Component.exports
 
 /***/ }),
 /* 165 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            cal: [],
-            selectedDateSession: moment(),
-            yearLeap: false,
-            weeks: moment.weekdays(),
-            weeksShort: moment.weekdaysShort()
-        };
-    },
-    mounted: function mounted() {
-        var Sunday = [this.weeksShort.shift()];
-        this.weeksShort = this.weeksShort.concat(Sunday);
-        this.makeCalendar();
-    },
-
-    filters: {
-        formated: function formated(data) {
-            return data.toUpperCase().replace('.', '').substr(0, 1);
-        },
-        dateCalendar: function dateCalendar(data) {
-            var date = data.format('MMMM YYYY');
-
-            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
-        },
-        dayCalendar: function dayCalendar(data) {
-            return data.format('DD MMMM YYYY');
-        },
-        substrDay: function substrDay(data) {
-            return data.substr(-2);
-        }
-    },
-
-    methods: {
-        isLEap: function isLEap() {
-            return this.selectedDateSession.format('Y') % 4 === 0 && this.selectedDateSession.format('Y') % 100 !== 0 || this.selectedDateSession.format('Y') % 400 === 0;
-        },
-        makeCalendar: function makeCalendar() {
-            this.yearLeap = this.isLEap();
-            this.cal = [];
-
-            // let dateMutable = this.selectedDateSession;
-            var dateMutable = '2020-01-01';
-            var startWeek = moment(dateMutable).startOf('month').startOf('week').week();
-            var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
-            var endDayWeek = moment(dateMutable).endOf('month').endOf('week');
-            var endWeek = endDayWeek.week();
-
-            console.log(endWeek);
-
-            /*
-              *  problematique de confition jamais remplie
-              *  on ne rentre jamais dans la boucle car depart 52 fin 5 , condition 52 <= 5 jamais valider.
-             * */
-            var diff = startDayWeek.weeksInYear() - startWeek + endWeek + 1;
-            var w = startWeek;
-            var lastWeekOnYear = startWeek > endWeek;
-
-            if (lastWeekOnYear) {
-                startDayWeek.subtract(1, 'days');
-                for (var test = 1; test <= diff; test++) {
-                    if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
-
-                    this.cal.push({
-                        week: week,
-                        date: Array(7).fill(0).map(function (n, i) {
-                            return startDayWeek.add(1, 'day').format('YYYY-MM-DD');
-                        })
-                    });
-
-                    w++;
-                };
-            } else {
-                /*
-                 * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                 * */
-                for (var week = startWeek; week <= endWeek; week++) {
-                    if (week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
-                    this.cal.push({
-                        week: week,
-                        date: Array(7).fill(0).map(function (n, i) {
-                            return moment().year(startDayWeek.year()).week(week).startOf('week').clone().add(n + i, 'day').format('YYYY-MM-DD');
-                        })
-                    });
-                }
-            }
-        },
-        subYear: function subYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.getMovement();
-            this.makeCalendar();
-        },
-        addYear: function addYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        subMonth: function subMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        addMonth: function addMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        reset: function reset() {
-            this.selectedDateSession = moment();
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        }
-    }
-});
+// load the styles
+var content = __webpack_require__(166);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(168)("90f003b6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("div", { staticClass: "row p-1" }, [
-        _c("div", { staticClass: "col" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6 p-1  " }, [
-              _c("b", [
-                _vm._v(_vm._s(_vm._f("dateCalendar")(_vm.selectedDateSession)))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-6 text-right " }, [
-              _c(
-                "a",
-                {
-                  attrs: { href: "" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.subMonth($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-left mr-2 b" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  attrs: { href: "" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.addMonth($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-right b ml-2" })]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "row " },
-            _vm._l(_vm.weeksShort, function(jour, index) {
-              return _c("div", { staticClass: "col " }, [
-                _vm._v(
-                  "\n                     " +
-                    _vm._s(_vm._f("formated")(jour)) +
-                    "\n                "
-                )
-              ])
-            })
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _vm._l(_vm.cal, function(week) {
-        return _c(
-          "div",
-          { staticClass: "row" },
-          _vm._l(week.date, function(date) {
-            return _c("div", { staticClass: "col size--date" }, [
-              _vm._v(" " + _vm._s(_vm._f("substrDay")(date)) + " ")
-            ])
-          })
-        )
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-40b95a96", module.exports)
-  }
-}
+exports = module.exports = __webpack_require__(167)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.size--date{\n    font-size: 0.7em;\n}\n", ""]);
+
+// exports
+
 
 /***/ }),
 /* 167 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 168 */,
-/* 169 */,
-/* 170 */
 /***/ (function(module, exports) {
 
 /*
@@ -48702,54 +48478,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(179);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(180)("90f003b6", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(170)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.size--date{\n    font-size: 0.7em;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 180 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -48768,7 +48497,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(181)
+var listToStyles = __webpack_require__(169)
 
 /*
 type StyleObject = {
@@ -48977,7 +48706,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 181 */
+/* 169 */
 /***/ (function(module, exports) {
 
 /**
@@ -49008,6 +48737,338 @@ module.exports = function listToStyles (parentId, list) {
   return styles
 }
 
+
+/***/ }),
+/* 170 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            cal: [],
+            selectedDateSession: moment(),
+            today: moment(),
+            yearLeap: false,
+            weeks: moment.weekdays(),
+            weeksShort: moment.weekdaysShort()
+        };
+    },
+    mounted: function mounted() {
+        var Sunday = [this.weeksShort.shift()];
+
+        this.weeksShort = this.weeksShort.concat(Sunday);
+
+        this.yearLeap = this.isLEap();
+
+        this.makeCalendar();
+    },
+
+    filters: {
+        formated: function formated(data) {
+            return data.toUpperCase().replace('.', '').substr(0, 1);
+        },
+        dateCalendar: function dateCalendar(data) {
+            var date = data.format('MMMM YYYY');
+
+            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
+        },
+        dayCalendar: function dayCalendar(data) {
+            return data.format('DD MMMM YYYY');
+        },
+        substrDay: function substrDay(data) {
+            return data.substr(-2);
+        }
+    },
+    methods: {
+        isLEap: function isLEap() {
+            var date_y = this.selectedDateSession.format('Y');
+            return date_y % 4 === 0 && date_y % 100 !== 0 || date_y % 400 === 0;
+        },
+        makeCalendar: function makeCalendar() {
+            this.cal = [];
+
+            var dateMutable = this.selectedDateSession;
+
+            var startWeek = moment(dateMutable).startOf('month').startOf('week').week();
+            var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
+            var endDayWeek = moment(dateMutable).endOf('month').endOf('week');
+            var endWeek = endDayWeek.week();
+
+            /*
+              *  problematique de confition jamais remplie
+              *  on ne rentre jamais dans la boucle car depart 52 fin 5 , condition 52 <= 5 jamais valider.
+             * */
+            var diff = startDayWeek.weeksInYear() - startWeek + endWeek + 1;
+            var w = startWeek;
+            var lastWeekOnYear = startWeek > endWeek;
+
+            console.log(this.yearLeap);
+
+            // test années bisextile ( jour décallé )
+            if (this.yearLeap) {
+                if (lastWeekOnYear) {
+                    startDayWeek.subtract(1, 'days');
+                    for (var test = 1; test <= diff; test++) {
+                        if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
+
+                        this.cal.push({
+                            week: week,
+                            date: Array(7).fill(-1).map(function (n, i) {
+                                return startDayWeek.add(1, 'day').format('YYYY-MM-DD');
+                            })
+                        });
+
+                        w++;
+                    };
+                } else {
+                    /*
+                     * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                     * */
+                    for (var week = startWeek; week <= endWeek; week++) {
+                        if (week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
+                        this.cal.push({
+                            week: week,
+                            date: Array(7).fill(-1).map(function (n, i) {
+                                return moment().year(startDayWeek.year()).week(week).startOf('week').clone().add(n + i, 'day').format('YYYY-MM-DD');
+                            })
+                        });
+                    }
+                }
+            } else {
+                if (lastWeekOnYear) {
+                    startDayWeek.subtract(1, 'days');
+                    for (var test = 1; test <= diff; test++) {
+                        if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
+
+                        this.cal.push({
+                            week: week,
+                            date: Array(7).fill(0).map(function (n, i) {
+                                return startDayWeek.add(1, 'day').format('YYYY-MM-DD');
+                            })
+                        });
+
+                        w++;
+                    };
+                } else {
+                    /*
+                     * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                     * */
+                    for (var week = startWeek; week <= endWeek; week++) {
+                        if (week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
+                        this.cal.push({
+                            week: week,
+                            date: Array(7).fill(0).map(function (n, i) {
+                                return moment().year(startDayWeek.year()).week(week).startOf('week').clone().add(n + i, 'day').format('YYYY-MM-DD');
+                            })
+                        });
+                    }
+                }
+            }
+        },
+        subYear: function subYear() {
+            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'years');
+            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.getMovement();
+            this.makeCalendar();
+        },
+        addYear: function addYear() {
+            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'years');
+            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.makeCalendar();
+        },
+        subMonth: function subMonth() {
+            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
+            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.makeCalendar();
+        },
+        addMonth: function addMonth() {
+            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
+            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.makeCalendar();
+        },
+        reset: function reset() {
+            this.selectedDateSession = moment();
+            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.makeCalendar();
+        }
+    }
+});
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "row p-1" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-6 p-1  " }, [
+              _c("b", [
+                _vm._v(_vm._s(_vm._f("dateCalendar")(_vm.selectedDateSession)))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6 text-right " }, [
+              _c(
+                "a",
+                {
+                  attrs: { href: "" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.subMonth($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-left mr-2 b" })]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  attrs: { href: "" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.addMonth($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-right b ml-2" })]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "row " },
+            _vm._l(_vm.weeksShort, function(jour, index) {
+              return _c("div", { staticClass: "col " }, [
+                _vm._v(
+                  "\n                     " +
+                    _vm._s(_vm._f("formated")(jour)) +
+                    "\n                "
+                )
+              ])
+            })
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.cal, function(week) {
+        return _c(
+          "div",
+          { staticClass: "row" },
+          _vm._l(week.date, function(date) {
+            return _c("div", { staticClass: "col size--date" }, [
+              date === _vm.today.format("Y-MM-DD")
+                ? _c("div", [
+                    _c(
+                      "span",
+                      { staticStyle: { "background-color": "indianred" } },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm._f("substrDay")(date)) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _c("div", [
+                    _c("span", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm._f("substrDay")(date)) +
+                          "\n                "
+                      )
+                    ])
+                  ])
+            ])
+          })
+        )
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-40b95a96", module.exports)
+  }
+}
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

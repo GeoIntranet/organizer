@@ -22,7 +22,19 @@
         </div>
 
         <div class="row" v-for="week in cal">
-            <div class="col size--date" v-for="date in week.date"> {{date | substrDay }} </div>
+            <div class="col size--date" v-for="date in week.date">
+                <div v-if="date === today.format('Y-MM-DD')">
+                    <span style="background-color: indianred;">
+                        {{date | substrDay }}
+                    </span>
+                </div>
+                <div v-else>
+                     <span>
+                        {{date | substrDay }}
+                    </span>
+                </div>
+
+            </div>
         </div>
 
     </div>
@@ -43,6 +55,7 @@
             return{
                 cal : [],
                 selectedDateSession :moment(),
+                today :moment(),
                 yearLeap: false,
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
@@ -50,7 +63,11 @@
         },
         mounted() {
             let Sunday = [this.weeksShort.shift()]
+
             this.weeksShort = this.weeksShort.concat(Sunday);
+
+            this.yearLeap = this.isLEap();
+
             this.makeCalendar();
         },
         filters:{
@@ -70,29 +87,20 @@
                 return data.substr(-2);
             }
         },
-
         methods: {
             isLEap(){
-                return (
-                    (this.selectedDateSession.format('Y') % 4 === 0)
-                    &&
-                    (this.selectedDateSession.format('Y') % 100 !== 0)
-                    ||
-                    (this.selectedDateSession.format('Y') % 400 === 0)
-                );
+               let date_y = this.selectedDateSession.format('Y');
+                return ((date_y % 4 === 0) && (date_y % 100 !== 0)) || (date_y % 400 === 0);
             },
             makeCalendar(){
-                this.yearLeap = this.isLEap();
                 this.cal=[];
 
-                // let dateMutable = this.selectedDateSession;
-                let dateMutable = '2020-01-01';
+                let dateMutable = this.selectedDateSession;
+
                 let startWeek = moment(dateMutable).startOf('month').startOf('week').week();
                 let startDayWeek = moment(dateMutable).startOf('month').startOf('week');
                 let endDayWeek = moment(dateMutable).endOf('month').endOf('week');
                 let endWeek = endDayWeek.week();
-
-                console.log(endWeek);
 
                 /*
                   *  problematique de confition jamais remplie
@@ -102,39 +110,81 @@
                 var w = startWeek ;
                 let lastWeekOnYear =  startWeek > endWeek ;
 
-                if(lastWeekOnYear)
-                {
-                    startDayWeek.subtract(1,'days');
-                    for( var test = 1 ; test <= diff ; test++ )
+                console.log(this.yearLeap);
+
+                // test années bisextile ( jour décallé )
+                if(this.yearLeap){
+                    if(lastWeekOnYear)
                     {
-                        if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
+                        startDayWeek.subtract(1,'days');
+                        for( var test = 1 ; test <= diff ; test++ )
+                        {
+                            if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
 
-                        this.cal.push({
-                            week:week,
-                            date: Array(7) .fill(0) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
-                        });
+                            this.cal.push({
+                                week:week,
+                                date: Array(7) .fill(-1) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
+                            });
 
-                        w++;
-                    };
+                            w++;
+                        };
+                    }
+                    else{
+                        /*
+                         * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                         * */
+                        for( var week = startWeek; week <= endWeek  ; week++ ) {
+                            if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
+                            this.cal.push({
+                                week:week,
+                                date:
+                                    Array(7) .fill(-1)
+                                        .map(
+                                            (n, i) =>
+                                                moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
+                                                    .add(n + i, 'day')
+                                                    .format('YYYY-MM-DD')
+                                            ,
+                                        )
+                            })
+                        }
+                    }
                 }
                 else{
-                    /*
-                     * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                     * */
-                    for( var week = startWeek; week <= endWeek  ; week++ ) {
-                        if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
-                        this.cal.push({
-                            week:week,
-                            date:
-                                Array(7) .fill(0)
-                                    .map(
-                                        (n, i) =>
-                                            moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
-                                                .add(n + i, 'day')
-                                                .format('YYYY-MM-DD')
-                                        ,
-                                    )
-                        })
+                    if(lastWeekOnYear)
+                    {
+                        startDayWeek.subtract(1,'days');
+                        for( var test = 1 ; test <= diff ; test++ )
+                        {
+                            if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
+
+                            this.cal.push({
+                                week:week,
+                                date: Array(7) .fill(0) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
+                            });
+
+                            w++;
+                        };
+                    }
+                    else{
+                        /*
+                         * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                         * */
+                        for( var week = startWeek; week <= endWeek  ; week++ ) {
+                            if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
+                            this.cal.push({
+                                week:week,
+                                date:
+                                    Array(7) .fill(0)
+                                        .map(
+                                            (n, i) =>
+                                                moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
+                                                    .add(n + i, 'day')
+                                                    .format('YYYY-MM-DD')
+                                            ,
+                                        )
+                            })
+                        }
                     }
                 }
             },
