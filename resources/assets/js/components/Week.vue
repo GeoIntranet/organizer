@@ -73,13 +73,13 @@
                     if( i > 0 ){
                         calendar[i] = {
                             'dn' : this.weeksShort[i],
-                            'dnu' : start.add(1,'day').format('Y-MM-D')
+                            'dnu' : start.add(1,'day').format('Y-MM-DD')
                         };
                     }
                     else{
                         calendar[i] = {
                             'dn' : this.weeksShort[i],
-                            'dnu' : start.format('Y-MM-D')
+                            'dnu' : start.format('Y-MM-DD')
                         };
                     }
 

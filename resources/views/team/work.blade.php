@@ -15,14 +15,6 @@
                 <div class="row">
                     @foreach($week->getWeek() as $index => $day)
                         <div class="col border">
-                            {{substr($week->days[$day->dayOfWeek],0,3)}}.
-                            <h1>{{$day->format('d')}}</h1>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="row">
-                    @foreach($week->getWeek() as $index => $day)
-                        <div class="col border">
                             @if(isset($delais[$day->format('Y-m-d')]))
                                 @php $delais_ = $delais[$day->format('Y-m-d')] ; @endphp
 
