@@ -1,0 +1,32 @@
+
+.calendar-wrapper{
+  padding: 20px 21px 20px 21px;
+}
+.size--date-number{
+  padding: 10px 4px 10px 4px;
+  font-size: 11px;
+  //border:solid 1px red;
+  &:hover{
+    span{
+      cursor: pointer;
+      background-color: lightgray;
+      transition: background-color 0.5s;
+      border-radius: 12px;
+    }
+  }
+
+  span{
+    padding: 7px;
+  }
+
+}
+
+.size--date-day{
+
+  font-weight: bold;
+  font-size: 11px;
+  padding: 26px 4px 10px 4px;
+
+
+
+}

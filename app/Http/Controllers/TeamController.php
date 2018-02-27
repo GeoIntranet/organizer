@@ -56,6 +56,11 @@ class TeamController extends Controller
 
     }
 
+    public function searchWork($semaine)
+    {
+        return  Delais::where('semaine_envoie',$semaine)->get();
+    }
+
     /**
      * @param null $date
      * @return mixed

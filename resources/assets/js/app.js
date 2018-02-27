@@ -30,6 +30,7 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/ExampleComponent.vue'));
 Vue.component('calendar', require('./components/Calendar.vue'));
+Vue.component('week', require('./components/Week.vue'));
 
 
 window.Event = new Vue();

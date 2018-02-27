@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 // TEAM WORKS ---------------------------------------------------------------------------------------------------------------------------
 Route::get('/team', ['as'=>'team','uses' => 'TeamController@index']);
+Route::get('/team/get/work/{semaine}', ['as'=>'searchwork','uses' => 'TeamController@searchWork']);
 Route::get('/team/works/{date}', ['as'=>'works','uses' => 'TeamController@works']);
 Route::get('/team/works', ['as'=>'works','uses' => 'TeamController@works']);
 Route::get('/team/{bl}/add', ['as'=>'works','uses' => 'TeamController@dayAdd']);

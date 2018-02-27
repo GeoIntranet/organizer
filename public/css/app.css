@@ -13072,3 +13072,30 @@ a.text-dark:focus {
   min-height: 82vh;
 }
 
+.calendar-wrapper {
+  padding: 20px 21px 20px 21px;
+}
+
+.size--date-number {
+  padding: 10px 4px 10px 4px;
+  font-size: 11px;
+}
+
+.size--date-number:hover span {
+  cursor: pointer;
+  background-color: lightgray;
+  -webkit-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+  border-radius: 12px;
+}
+
+.size--date-number span {
+  padding: 7px;
+}
+
+.size--date-day {
+  font-weight: bold;
+  font-size: 11px;
+  padding: 26px 4px 10px 4px;
+}
+

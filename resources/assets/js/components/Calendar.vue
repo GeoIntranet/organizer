@@ -1,40 +1,41 @@
 <template>
-    <div>
-        <div class="row p-1" >
-            <div class="col">
-                <div class="row" >
-                    <div class="col-md-6 p-1  ">
-                        <b>{{ selectedDateSession | dateCalendar}}</b>
-                    </div>
-                    <div class="col-md-6 text-right ">
-                        <a href="" @click.prevent="subMonth"> <i class="fa fa-angle-left mr-2 b"> </i> </a>
-                        <a href="" @click.prevent="addMonth"> <i class="fa fa-angle-right b ml-2"> </i> </a>
-                    </div>
-                </div>
+    <div class="row calendar-wrapper">
+        <div class="col">
 
-                <div class="row " >
-                    <div class="col " v-for="(jour,index) in weeksShort ">
-                         {{ jour | formated }}
-                    </div>
-                </div>
+            <div class="row " >
+                <div class="col ">
+                    <div class="row" >
+                        <div class="col-m-auto ">
+                            <b>{{ selectedDateSession | dateCalendar}}</b>
+                        </div>
 
+                        <div class="col text-right">
+                            <a href="" @click.prevent="subMonth"> <i class="fa fa-angle-left  mr-1 b"> </i> </a>
+                            <a href="" @click.prevent="addMonth"> <i class="fa fa-angle-right b ml-1"> </i> </a>
+                        </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col  text-center size--date-day" v-for="(jour,index) in weeksShort ">
+                            {{ jour | formated }}
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
 
-        <div class="row" v-for="week in cal">
-            <div class="col size--date" v-for="date in week.date">
-                <div v-if="date === today.format('Y-MM-DD')">
-                    <span style="background-color: indianred;">
-                        {{date | substrDay }}
-                    </span>
-                </div>
-                <div v-else>
-                     <span>
-                        {{date | substrDay }}
-                    </span>
-                </div>
+            <div class="row " v-for="week in cal">
+                <div class="col size--date-number " v-for="date in week.date">
+                        <span v-if="date === today.format('Y-MM-DD')" class="rounded-circle" style="background-color: indianred;">
+                            {{date | substrDay }}
+                        </span>
 
+                        <span v-else class="rounded-circle">
+                            {{date | substrDay }}
+                        </span>
+                </div>
             </div>
+
         </div>
 
     </div>
@@ -42,9 +43,7 @@
 </template>
 
 <style>
-    .size--date{
-        font-size: 0.7em;
-    }
+
 </style>
 
 <script>
