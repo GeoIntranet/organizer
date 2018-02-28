@@ -7,6 +7,25 @@
                 <h1>{{date.dnu.substr(-2)}}</h1>
             </div>
         </div>
+
+        <div class="row" >
+            <div class="col border" v-for="content in work">
+
+                <div class="row p-1 border" v-if="content !== 0 " v-for="cmd in content">
+                    <div class="col ">
+                        <div class="row">
+                            <div class="col text-left"><i class="fa fa-angle-left"> </i></div>
+                            <div class="col-md-auto"> {{cmd.id_cmd}}</div>
+                            <div class="col text_right"><i class="fa fa-angle-right"> </i></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row" v-if="content === 0 ">
+                    <div class="col">Empty</div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </template>

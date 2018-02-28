@@ -56,9 +56,31 @@ class TeamController extends Controller
 
     }
 
+    /**
+     * @param $semaine
+     * @return mixed
+     */
     public function searchWork($semaine)
     {
-        return  Delais::where('semaine_envoie',$semaine)->get();
+        $semaine = 9 ;
+        $date = Carbon::now();
+        $date->setISODate($date->copy()->format('Y'),$semaine);
+        $start =  $date->startOfWeek();
+        $week = [];
+        $dt = new carbon($start);
+
+        for( $i=0 ; $i <5 ; $i++ ){
+            $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
+        }
+
+        $delais = Delais::where('semaine_envoie',$semaine)->get()->groupBy('date_envoie');
+
+        $data = [];
+        foreach ($week as $index => $day) {
+            $data[$index] = isset($delais[$day->format('Y-m-d')]) ? $delais[$day->format('Y-m-d')] : 0 ;
+        }
+
+        return $data;
     }
 
     /**
@@ -67,27 +89,27 @@ class TeamController extends Controller
      */
     public function works($date=null)
     {
-        $users =[48 => 'gv' , 51 => 'cc', 52 => 'flm' , 78 => 'jfl'];
-        $calendar = new WeekGestion();
-
-        if($date <> null) $calendar->setStarterDate($date);
-
-        $calendar = $calendar->generateWeek();
-
-        $week = $calendar->getWeek();
-
-        $delaisItem = New Delais();
-
-        $delaisItem = $delaisItem
-            ->whereBetween('date_envoie',[$calendar->firstDay(),$calendar->lastDay()])
-            ->get()
-            ->groupBy('date_envoie')
-        ;
+        //$users =[48 => 'gv' , 51 => 'cc', 52 => 'flm' , 78 => 'jfl'];
+        //$calendar = new WeekGestion();
+        //
+        //if($date <> null) $calendar->setStarterDate($date);
+        //
+        //$calendar = $calendar->generateWeek();
+        //
+        //$week = $calendar->getWeek();
+        //
+        //$delaisItem = New Delais();
+        //
+        //$delaisItem = $delaisItem
+        //    ->whereBetween('date_envoie',[$calendar->firstDay(),$calendar->lastDay()])
+        //    ->get()
+        //    ->groupBy('date_envoie')
+        //;
 
         return view('team.work')
-            ->with('week',$calendar)
-            ->with('delais',$delaisItem)
-            ->with('users',$users)
+            //->with('week',$calendar)
+            //->with('delais',$delaisItem)
+            //->with('users',$users)
             ;
 
     }

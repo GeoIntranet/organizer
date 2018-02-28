@@ -39,7 +39,14 @@ window.Event = new Vue();
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
+import Vue from 'vue'
+import { Vue2Dragula } from 'vue2-dragula'
 
+Vue.use(Vue2Dragula, {
+    logging: {
+        service: false // to only log methods in service (DragulaService)
+    }
+});
 const app = new Vue({
     el: '#app',
 });

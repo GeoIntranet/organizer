@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "moment": "^2.20.1",
-    "tether": "^1.4.3"
+    "tether": "^1.4.3",
+    "vue2-dragula": "^2.5.4"
   }
 }
