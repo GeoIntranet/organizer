@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 131);
+/******/ 	return __webpack_require__(__webpack_require__.s = 133);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(135)("./" + name);
+            __webpack_require__(137)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4603,7 +4603,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(134)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(136)(module)))
 
 /***/ }),
 /* 1 */
@@ -4612,8 +4612,8 @@ return hooks;
 "use strict";
 
 
-var bind = __webpack_require__(124);
-var isBuffer = __webpack_require__(139);
+var bind = __webpack_require__(127);
+var isBuffer = __webpack_require__(141);
 
 /*global toString:true*/
 
@@ -4919,6 +4919,115 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 var g;
 
 // This works in non-strict mode
@@ -4943,14 +5052,14 @@ module.exports = g;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(141);
+var normalizeHeaderName = __webpack_require__(143);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -4966,10 +5075,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(126);
+    adapter = __webpack_require__(129);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(126);
+    adapter = __webpack_require__(129);
   }
   return adapter;
 }
@@ -5044,10 +5153,320 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(125)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(128)))
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(169)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15418,7 +15837,7 @@ return jQuery;
 
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15497,7 +15916,7 @@ return af;
 
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15645,7 +16064,7 @@ return ar;
 
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15710,7 +16129,7 @@ return arDz;
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15775,7 +16194,7 @@ return arKw;
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15907,7 +16326,7 @@ return arLy;
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15973,7 +16392,7 @@ return arMa;
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16084,7 +16503,7 @@ return arSa;
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16149,7 +16568,7 @@ return arTn;
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16260,7 +16679,7 @@ return az;
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16400,7 +16819,7 @@ return be;
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16496,7 +16915,7 @@ return bg;
 
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16561,7 +16980,7 @@ return bm;
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16686,7 +17105,7 @@ return bn;
 
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16811,7 +17230,7 @@ return bo;
 
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16925,7 +17344,7 @@ return br;
 
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17083,7 +17502,7 @@ return bs;
 
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17177,7 +17596,7 @@ return ca;
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17362,7 +17781,7 @@ return cs;
 
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17431,7 +17850,7 @@ return cv;
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17518,7 +17937,7 @@ return cy;
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17584,7 +18003,7 @@ return da;
 
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17668,7 +18087,7 @@ return de;
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17753,7 +18172,7 @@ return deAt;
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17837,7 +18256,7 @@ return deCh;
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17943,7 +18362,7 @@ return dv;
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18049,7 +18468,7 @@ return el;
 
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18122,7 +18541,7 @@ return enAu;
 
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18191,7 +18610,7 @@ return enCa;
 
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18264,7 +18683,7 @@ return enGb;
 
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18337,7 +18756,7 @@ return enIe;
 
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18410,7 +18829,7 @@ return enNz;
 
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18489,7 +18908,7 @@ return eo;
 
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18587,7 +19006,7 @@ return es;
 
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18684,7 +19103,7 @@ return esDo;
 
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18773,7 +19192,7 @@ return esUs;
 
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18860,7 +19279,7 @@ return et;
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18932,7 +19351,7 @@ return eu;
 
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19045,7 +19464,7 @@ return fa;
 
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19160,7 +19579,7 @@ return fi;
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19226,7 +19645,7 @@ return fo;
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19315,7 +19734,7 @@ return fr;
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19395,7 +19814,7 @@ return frCa;
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19479,7 +19898,7 @@ return frCh;
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19560,7 +19979,7 @@ return fy;
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19642,7 +20061,7 @@ return gd;
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19725,7 +20144,7 @@ return gl;
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19854,7 +20273,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19984,7 +20403,7 @@ return gu;
 
 
 /***/ }),
-/* 53 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20089,7 +20508,7 @@ return he;
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20219,7 +20638,7 @@ return hi;
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20379,7 +20798,7 @@ return hr;
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20495,7 +20914,7 @@ return hu;
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20596,7 +21015,7 @@ return hyAm;
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20685,7 +21104,7 @@ return id;
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20823,7 +21242,7 @@ return is;
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20899,7 +21318,7 @@ return it;
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20985,7 +21404,7 @@ return ja;
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21074,7 +21493,7 @@ return jv;
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21169,7 +21588,7 @@ return ka;
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21262,7 +21681,7 @@ return kk;
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21326,7 +21745,7 @@ return km;
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21458,7 +21877,7 @@ return kn;
 
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21546,7 +21965,7 @@ return ko;
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21640,7 +22059,7 @@ return ky;
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21783,7 +22202,7 @@ return lb;
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21859,7 +22278,7 @@ return lo;
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21983,7 +22402,7 @@ return lt;
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22087,7 +22506,7 @@ return lv;
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22205,7 +22624,7 @@ return me;
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22275,7 +22694,7 @@ return mi;
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22371,7 +22790,7 @@ return mk;
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22458,7 +22877,7 @@ return ml;
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22625,7 +23044,7 @@ return mr;
 
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22713,7 +23132,7 @@ return ms;
 
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22802,7 +23221,7 @@ return msMy;
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22868,7 +23287,7 @@ return mt;
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22970,7 +23389,7 @@ return my;
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23039,7 +23458,7 @@ return nb;
 
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23168,7 +23587,7 @@ return ne;
 
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23262,7 +23681,7 @@ return nl;
 
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23356,7 +23775,7 @@ return nlBe;
 
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23422,7 +23841,7 @@ return nn;
 
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23552,7 +23971,7 @@ return paIn;
 
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23684,7 +24103,7 @@ return pl;
 
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23755,7 +24174,7 @@ return pt;
 
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23822,7 +24241,7 @@ return ptBr;
 
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23904,7 +24323,7 @@ return ro;
 
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24094,7 +24513,7 @@ return ru;
 
 
 /***/ }),
-/* 93 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24198,7 +24617,7 @@ return sd;
 
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24265,7 +24684,7 @@ return se;
 
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24342,7 +24761,7 @@ return si;
 
 
 /***/ }),
-/* 96 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24505,7 +24924,7 @@ return sk;
 
 
 /***/ }),
-/* 97 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24684,7 +25103,7 @@ return sl;
 
 
 /***/ }),
-/* 98 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24760,7 +25179,7 @@ return sq;
 
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24877,7 +25296,7 @@ return sr;
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24994,7 +25413,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 101 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25089,7 +25508,7 @@ return ss;
 
 
 /***/ }),
-/* 102 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25164,7 +25583,7 @@ return sv;
 
 
 /***/ }),
-/* 103 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25229,7 +25648,7 @@ return sw;
 
 
 /***/ }),
-/* 104 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25365,7 +25784,7 @@ return ta;
 
 
 /***/ }),
-/* 105 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25460,7 +25879,7 @@ return te;
 
 
 /***/ }),
-/* 106 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25534,7 +25953,7 @@ return tet;
 
 
 /***/ }),
-/* 107 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25607,7 +26026,7 @@ return th;
 
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25675,7 +26094,7 @@ return tlPh;
 
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25803,7 +26222,7 @@ return tlh;
 
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25899,7 +26318,7 @@ return tr;
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25997,7 +26416,7 @@ return tzl;
 
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26061,7 +26480,7 @@ return tzm;
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26125,7 +26544,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26283,7 +26702,7 @@ return uk;
 
 
 /***/ }),
-/* 115 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26388,7 +26807,7 @@ return ur;
 
 
 /***/ }),
-/* 116 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26452,7 +26871,7 @@ return uz;
 
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26516,7 +26935,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26601,7 +27020,7 @@ return vi;
 
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26675,7 +27094,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26741,7 +27160,7 @@ return yo;
 
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26858,7 +27277,7 @@ return zhCn;
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26969,7 +27388,7 @@ return zhHk;
 
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27079,7 +27498,7 @@ return zhTw;
 
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27097,7 +27516,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 125 */
+/* 128 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -27287,19 +27706,19 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 126 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var settle = __webpack_require__(142);
-var buildURL = __webpack_require__(144);
-var parseHeaders = __webpack_require__(145);
-var isURLSameOrigin = __webpack_require__(146);
-var createError = __webpack_require__(127);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(147);
+var settle = __webpack_require__(144);
+var buildURL = __webpack_require__(146);
+var parseHeaders = __webpack_require__(147);
+var isURLSameOrigin = __webpack_require__(148);
+var createError = __webpack_require__(130);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(149);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -27396,7 +27815,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(148);
+      var cookies = __webpack_require__(150);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -27474,13 +27893,13 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 127 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(143);
+var enhanceError = __webpack_require__(145);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -27499,7 +27918,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 128 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27511,7 +27930,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27537,152 +27956,37 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 130 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(132);
-module.exports = __webpack_require__(167);
+__webpack_require__(134);
+module.exports = __webpack_require__(187);
 
 
 /***/ }),
-/* 132 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_dragula__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_dragula___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue2_dragula__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-window.$ = window.jQuery = __webpack_require__(4);
-window.Tether = __webpack_require__(133);
+window.$ = window.jQuery = __webpack_require__(7);
+window.Tether = __webpack_require__(135);
 
 window.moment = __webpack_require__(0);
-__webpack_require__(136);
+__webpack_require__(138);
 
-window.axios = __webpack_require__(137);
+window.axios = __webpack_require__(139);
 
-__webpack_require__(156);
+__webpack_require__(158);
 
 window.Laravel = {
     csrfToken: $('meta[name=csrf-token]').attr("content")
 };
 
-window.Vue = __webpack_require__(158);
+window.Vue = __webpack_require__(160);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27690,31 +27994,24 @@ window.Vue = __webpack_require__(158);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example', __webpack_require__(161));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('calendar', __webpack_require__(164));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('week', __webpack_require__(182));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('hello', __webpack_require__(188));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('drag', __webpack_require__(193));
+Vue.component('example', __webpack_require__(163));
+Vue.component('calendar', __webpack_require__(166));
+Vue.component('week', __webpack_require__(172));
+Vue.component('work', __webpack_require__(197));
+Vue.component('navbar', __webpack_require__(184));
 
-window.Event = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+window.Event = new Vue();
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue2_dragula__["Vue2Dragula"], {
-    logging: {
-        service: false // to only log methods in service (DragulaService)
-    }
-});
-var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+var app = new Vue({
     el: '#app'
 });
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4.3 */
@@ -29537,7 +29834,7 @@ return Tether;
 
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -29565,248 +29862,248 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 5,
-	"./af.js": 5,
-	"./ar": 6,
-	"./ar-dz": 7,
-	"./ar-dz.js": 7,
-	"./ar-kw": 8,
-	"./ar-kw.js": 8,
-	"./ar-ly": 9,
-	"./ar-ly.js": 9,
-	"./ar-ma": 10,
-	"./ar-ma.js": 10,
-	"./ar-sa": 11,
-	"./ar-sa.js": 11,
-	"./ar-tn": 12,
-	"./ar-tn.js": 12,
-	"./ar.js": 6,
-	"./az": 13,
-	"./az.js": 13,
-	"./be": 14,
-	"./be.js": 14,
-	"./bg": 15,
-	"./bg.js": 15,
-	"./bm": 16,
-	"./bm.js": 16,
-	"./bn": 17,
-	"./bn.js": 17,
-	"./bo": 18,
-	"./bo.js": 18,
-	"./br": 19,
-	"./br.js": 19,
-	"./bs": 20,
-	"./bs.js": 20,
-	"./ca": 21,
-	"./ca.js": 21,
-	"./cs": 22,
-	"./cs.js": 22,
-	"./cv": 23,
-	"./cv.js": 23,
-	"./cy": 24,
-	"./cy.js": 24,
-	"./da": 25,
-	"./da.js": 25,
-	"./de": 26,
-	"./de-at": 27,
-	"./de-at.js": 27,
-	"./de-ch": 28,
-	"./de-ch.js": 28,
-	"./de.js": 26,
-	"./dv": 29,
-	"./dv.js": 29,
-	"./el": 30,
-	"./el.js": 30,
-	"./en-au": 31,
-	"./en-au.js": 31,
-	"./en-ca": 32,
-	"./en-ca.js": 32,
-	"./en-gb": 33,
-	"./en-gb.js": 33,
-	"./en-ie": 34,
-	"./en-ie.js": 34,
-	"./en-nz": 35,
-	"./en-nz.js": 35,
-	"./eo": 36,
-	"./eo.js": 36,
-	"./es": 37,
-	"./es-do": 38,
-	"./es-do.js": 38,
-	"./es-us": 39,
-	"./es-us.js": 39,
-	"./es.js": 37,
-	"./et": 40,
-	"./et.js": 40,
-	"./eu": 41,
-	"./eu.js": 41,
-	"./fa": 42,
-	"./fa.js": 42,
-	"./fi": 43,
-	"./fi.js": 43,
-	"./fo": 44,
-	"./fo.js": 44,
-	"./fr": 45,
-	"./fr-ca": 46,
-	"./fr-ca.js": 46,
-	"./fr-ch": 47,
-	"./fr-ch.js": 47,
-	"./fr.js": 45,
-	"./fy": 48,
-	"./fy.js": 48,
-	"./gd": 49,
-	"./gd.js": 49,
-	"./gl": 50,
-	"./gl.js": 50,
-	"./gom-latn": 51,
-	"./gom-latn.js": 51,
-	"./gu": 52,
-	"./gu.js": 52,
-	"./he": 53,
-	"./he.js": 53,
-	"./hi": 54,
-	"./hi.js": 54,
-	"./hr": 55,
-	"./hr.js": 55,
-	"./hu": 56,
-	"./hu.js": 56,
-	"./hy-am": 57,
-	"./hy-am.js": 57,
-	"./id": 58,
-	"./id.js": 58,
-	"./is": 59,
-	"./is.js": 59,
-	"./it": 60,
-	"./it.js": 60,
-	"./ja": 61,
-	"./ja.js": 61,
-	"./jv": 62,
-	"./jv.js": 62,
-	"./ka": 63,
-	"./ka.js": 63,
-	"./kk": 64,
-	"./kk.js": 64,
-	"./km": 65,
-	"./km.js": 65,
-	"./kn": 66,
-	"./kn.js": 66,
-	"./ko": 67,
-	"./ko.js": 67,
-	"./ky": 68,
-	"./ky.js": 68,
-	"./lb": 69,
-	"./lb.js": 69,
-	"./lo": 70,
-	"./lo.js": 70,
-	"./lt": 71,
-	"./lt.js": 71,
-	"./lv": 72,
-	"./lv.js": 72,
-	"./me": 73,
-	"./me.js": 73,
-	"./mi": 74,
-	"./mi.js": 74,
-	"./mk": 75,
-	"./mk.js": 75,
-	"./ml": 76,
-	"./ml.js": 76,
-	"./mr": 77,
-	"./mr.js": 77,
-	"./ms": 78,
-	"./ms-my": 79,
-	"./ms-my.js": 79,
-	"./ms.js": 78,
-	"./mt": 80,
-	"./mt.js": 80,
-	"./my": 81,
-	"./my.js": 81,
-	"./nb": 82,
-	"./nb.js": 82,
-	"./ne": 83,
-	"./ne.js": 83,
-	"./nl": 84,
-	"./nl-be": 85,
-	"./nl-be.js": 85,
-	"./nl.js": 84,
-	"./nn": 86,
-	"./nn.js": 86,
-	"./pa-in": 87,
-	"./pa-in.js": 87,
-	"./pl": 88,
-	"./pl.js": 88,
-	"./pt": 89,
-	"./pt-br": 90,
-	"./pt-br.js": 90,
-	"./pt.js": 89,
-	"./ro": 91,
-	"./ro.js": 91,
-	"./ru": 92,
-	"./ru.js": 92,
-	"./sd": 93,
-	"./sd.js": 93,
-	"./se": 94,
-	"./se.js": 94,
-	"./si": 95,
-	"./si.js": 95,
-	"./sk": 96,
-	"./sk.js": 96,
-	"./sl": 97,
-	"./sl.js": 97,
-	"./sq": 98,
-	"./sq.js": 98,
-	"./sr": 99,
-	"./sr-cyrl": 100,
-	"./sr-cyrl.js": 100,
-	"./sr.js": 99,
-	"./ss": 101,
-	"./ss.js": 101,
-	"./sv": 102,
-	"./sv.js": 102,
-	"./sw": 103,
-	"./sw.js": 103,
-	"./ta": 104,
-	"./ta.js": 104,
-	"./te": 105,
-	"./te.js": 105,
-	"./tet": 106,
-	"./tet.js": 106,
-	"./th": 107,
-	"./th.js": 107,
-	"./tl-ph": 108,
-	"./tl-ph.js": 108,
-	"./tlh": 109,
-	"./tlh.js": 109,
-	"./tr": 110,
-	"./tr.js": 110,
-	"./tzl": 111,
-	"./tzl.js": 111,
-	"./tzm": 112,
-	"./tzm-latn": 113,
-	"./tzm-latn.js": 113,
-	"./tzm.js": 112,
-	"./uk": 114,
-	"./uk.js": 114,
-	"./ur": 115,
-	"./ur.js": 115,
-	"./uz": 116,
-	"./uz-latn": 117,
-	"./uz-latn.js": 117,
-	"./uz.js": 116,
-	"./vi": 118,
-	"./vi.js": 118,
-	"./x-pseudo": 119,
-	"./x-pseudo.js": 119,
-	"./yo": 120,
-	"./yo.js": 120,
-	"./zh-cn": 121,
-	"./zh-cn.js": 121,
-	"./zh-hk": 122,
-	"./zh-hk.js": 122,
-	"./zh-tw": 123,
-	"./zh-tw.js": 123
+	"./af": 8,
+	"./af.js": 8,
+	"./ar": 9,
+	"./ar-dz": 10,
+	"./ar-dz.js": 10,
+	"./ar-kw": 11,
+	"./ar-kw.js": 11,
+	"./ar-ly": 12,
+	"./ar-ly.js": 12,
+	"./ar-ma": 13,
+	"./ar-ma.js": 13,
+	"./ar-sa": 14,
+	"./ar-sa.js": 14,
+	"./ar-tn": 15,
+	"./ar-tn.js": 15,
+	"./ar.js": 9,
+	"./az": 16,
+	"./az.js": 16,
+	"./be": 17,
+	"./be.js": 17,
+	"./bg": 18,
+	"./bg.js": 18,
+	"./bm": 19,
+	"./bm.js": 19,
+	"./bn": 20,
+	"./bn.js": 20,
+	"./bo": 21,
+	"./bo.js": 21,
+	"./br": 22,
+	"./br.js": 22,
+	"./bs": 23,
+	"./bs.js": 23,
+	"./ca": 24,
+	"./ca.js": 24,
+	"./cs": 25,
+	"./cs.js": 25,
+	"./cv": 26,
+	"./cv.js": 26,
+	"./cy": 27,
+	"./cy.js": 27,
+	"./da": 28,
+	"./da.js": 28,
+	"./de": 29,
+	"./de-at": 30,
+	"./de-at.js": 30,
+	"./de-ch": 31,
+	"./de-ch.js": 31,
+	"./de.js": 29,
+	"./dv": 32,
+	"./dv.js": 32,
+	"./el": 33,
+	"./el.js": 33,
+	"./en-au": 34,
+	"./en-au.js": 34,
+	"./en-ca": 35,
+	"./en-ca.js": 35,
+	"./en-gb": 36,
+	"./en-gb.js": 36,
+	"./en-ie": 37,
+	"./en-ie.js": 37,
+	"./en-nz": 38,
+	"./en-nz.js": 38,
+	"./eo": 39,
+	"./eo.js": 39,
+	"./es": 40,
+	"./es-do": 41,
+	"./es-do.js": 41,
+	"./es-us": 42,
+	"./es-us.js": 42,
+	"./es.js": 40,
+	"./et": 43,
+	"./et.js": 43,
+	"./eu": 44,
+	"./eu.js": 44,
+	"./fa": 45,
+	"./fa.js": 45,
+	"./fi": 46,
+	"./fi.js": 46,
+	"./fo": 47,
+	"./fo.js": 47,
+	"./fr": 48,
+	"./fr-ca": 49,
+	"./fr-ca.js": 49,
+	"./fr-ch": 50,
+	"./fr-ch.js": 50,
+	"./fr.js": 48,
+	"./fy": 51,
+	"./fy.js": 51,
+	"./gd": 52,
+	"./gd.js": 52,
+	"./gl": 53,
+	"./gl.js": 53,
+	"./gom-latn": 54,
+	"./gom-latn.js": 54,
+	"./gu": 55,
+	"./gu.js": 55,
+	"./he": 56,
+	"./he.js": 56,
+	"./hi": 57,
+	"./hi.js": 57,
+	"./hr": 58,
+	"./hr.js": 58,
+	"./hu": 59,
+	"./hu.js": 59,
+	"./hy-am": 60,
+	"./hy-am.js": 60,
+	"./id": 61,
+	"./id.js": 61,
+	"./is": 62,
+	"./is.js": 62,
+	"./it": 63,
+	"./it.js": 63,
+	"./ja": 64,
+	"./ja.js": 64,
+	"./jv": 65,
+	"./jv.js": 65,
+	"./ka": 66,
+	"./ka.js": 66,
+	"./kk": 67,
+	"./kk.js": 67,
+	"./km": 68,
+	"./km.js": 68,
+	"./kn": 69,
+	"./kn.js": 69,
+	"./ko": 70,
+	"./ko.js": 70,
+	"./ky": 71,
+	"./ky.js": 71,
+	"./lb": 72,
+	"./lb.js": 72,
+	"./lo": 73,
+	"./lo.js": 73,
+	"./lt": 74,
+	"./lt.js": 74,
+	"./lv": 75,
+	"./lv.js": 75,
+	"./me": 76,
+	"./me.js": 76,
+	"./mi": 77,
+	"./mi.js": 77,
+	"./mk": 78,
+	"./mk.js": 78,
+	"./ml": 79,
+	"./ml.js": 79,
+	"./mr": 80,
+	"./mr.js": 80,
+	"./ms": 81,
+	"./ms-my": 82,
+	"./ms-my.js": 82,
+	"./ms.js": 81,
+	"./mt": 83,
+	"./mt.js": 83,
+	"./my": 84,
+	"./my.js": 84,
+	"./nb": 85,
+	"./nb.js": 85,
+	"./ne": 86,
+	"./ne.js": 86,
+	"./nl": 87,
+	"./nl-be": 88,
+	"./nl-be.js": 88,
+	"./nl.js": 87,
+	"./nn": 89,
+	"./nn.js": 89,
+	"./pa-in": 90,
+	"./pa-in.js": 90,
+	"./pl": 91,
+	"./pl.js": 91,
+	"./pt": 92,
+	"./pt-br": 93,
+	"./pt-br.js": 93,
+	"./pt.js": 92,
+	"./ro": 94,
+	"./ro.js": 94,
+	"./ru": 95,
+	"./ru.js": 95,
+	"./sd": 96,
+	"./sd.js": 96,
+	"./se": 97,
+	"./se.js": 97,
+	"./si": 98,
+	"./si.js": 98,
+	"./sk": 99,
+	"./sk.js": 99,
+	"./sl": 100,
+	"./sl.js": 100,
+	"./sq": 101,
+	"./sq.js": 101,
+	"./sr": 102,
+	"./sr-cyrl": 103,
+	"./sr-cyrl.js": 103,
+	"./sr.js": 102,
+	"./ss": 104,
+	"./ss.js": 104,
+	"./sv": 105,
+	"./sv.js": 105,
+	"./sw": 106,
+	"./sw.js": 106,
+	"./ta": 107,
+	"./ta.js": 107,
+	"./te": 108,
+	"./te.js": 108,
+	"./tet": 109,
+	"./tet.js": 109,
+	"./th": 110,
+	"./th.js": 110,
+	"./tl-ph": 111,
+	"./tl-ph.js": 111,
+	"./tlh": 112,
+	"./tlh.js": 112,
+	"./tr": 113,
+	"./tr.js": 113,
+	"./tzl": 114,
+	"./tzl.js": 114,
+	"./tzm": 115,
+	"./tzm-latn": 116,
+	"./tzm-latn.js": 116,
+	"./tzm.js": 115,
+	"./uk": 117,
+	"./uk.js": 117,
+	"./ur": 118,
+	"./ur.js": 118,
+	"./uz": 119,
+	"./uz-latn": 120,
+	"./uz-latn.js": 120,
+	"./uz.js": 119,
+	"./vi": 121,
+	"./vi.js": 121,
+	"./x-pseudo": 122,
+	"./x-pseudo.js": 122,
+	"./yo": 123,
+	"./yo.js": 123,
+	"./zh-cn": 124,
+	"./zh-cn.js": 124,
+	"./zh-hk": 125,
+	"./zh-hk.js": 125,
+	"./zh-tw": 126,
+	"./zh-tw.js": 126
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -29822,10 +30119,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 135;
+webpackContext.id = 137;
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports) {
 
 moment.locale('fr', {
@@ -29890,22 +30187,22 @@ moment.locale('fr', {
 });
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(138);
+module.exports = __webpack_require__(140);
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(124);
-var Axios = __webpack_require__(140);
-var defaults = __webpack_require__(3);
+var bind = __webpack_require__(127);
+var Axios = __webpack_require__(142);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -29938,15 +30235,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(129);
-axios.CancelToken = __webpack_require__(154);
-axios.isCancel = __webpack_require__(128);
+axios.Cancel = __webpack_require__(132);
+axios.CancelToken = __webpack_require__(156);
+axios.isCancel = __webpack_require__(131);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(155);
+axios.spread = __webpack_require__(157);
 
 module.exports = axios;
 
@@ -29955,7 +30252,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports) {
 
 /*!
@@ -29982,16 +30279,16 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var utils = __webpack_require__(1);
-var InterceptorManager = __webpack_require__(149);
-var dispatchRequest = __webpack_require__(150);
+var InterceptorManager = __webpack_require__(151);
+var dispatchRequest = __webpack_require__(152);
 
 /**
  * Create a new instance of Axios
@@ -30068,7 +30365,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30087,13 +30384,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(127);
+var createError = __webpack_require__(130);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -30120,7 +30417,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30148,7 +30445,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30221,7 +30518,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30281,7 +30578,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30356,7 +30653,7 @@ module.exports = (
 
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30399,7 +30696,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30459,7 +30756,7 @@ module.exports = (
 
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30518,18 +30815,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var transformData = __webpack_require__(151);
-var isCancel = __webpack_require__(128);
-var defaults = __webpack_require__(3);
-var isAbsoluteURL = __webpack_require__(152);
-var combineURLs = __webpack_require__(153);
+var transformData = __webpack_require__(153);
+var isCancel = __webpack_require__(131);
+var defaults = __webpack_require__(4);
+var isAbsoluteURL = __webpack_require__(154);
+var combineURLs = __webpack_require__(155);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -30611,7 +30908,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30638,7 +30935,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30659,7 +30956,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30680,13 +30977,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(129);
+var Cancel = __webpack_require__(132);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -30744,7 +31041,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30778,7 +31075,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -30787,7 +31084,7 @@ module.exports = function spread(callback) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-	 true ? factory(exports, __webpack_require__(4), __webpack_require__(157)) :
+	 true ? factory(exports, __webpack_require__(7), __webpack_require__(159)) :
 	typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
 	(factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -34678,7 +34975,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37121,10 +37418,10 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47938,10 +48235,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(159).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(161).setImmediate))
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -47994,7 +48291,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(160);
+__webpack_require__(162);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -48005,10 +48302,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -48198,18 +48495,18 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(125)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(128)))
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(130)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(162)
+var __vue_script__ = __webpack_require__(164)
 /* template */
-var __vue_template__ = __webpack_require__(163)
+var __vue_template__ = __webpack_require__(165)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48248,7 +48545,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48277,7 +48574,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48320,19 +48617,19 @@ if (false) {
 }
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(178)
+  __webpack_require__(167)
 }
-var normalizeComponent = __webpack_require__(130)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(165)
+var __vue_script__ = __webpack_require__(170)
 /* template */
-var __vue_template__ = __webpack_require__(166)
+var __vue_template__ = __webpack_require__(171)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48371,7 +48668,80 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 165 */
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(168);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("90f003b6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48582,7 +48952,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 166 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48704,417 +49074,19 @@ if (false) {
 }
 
 /***/ }),
-/* 167 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 168 */,
-/* 169 */,
-/* 170 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(179);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(180)("90f003b6", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(170)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(181)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 181 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 182 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(183)
+  __webpack_require__(173)
 }
-var normalizeComponent = __webpack_require__(130)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(185)
+var __vue_script__ = __webpack_require__(175)
 /* template */
-var __vue_template__ = __webpack_require__(186)
+var __vue_template__ = __webpack_require__(176)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49153,17 +49125,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 183 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(184);
+var content = __webpack_require__(174);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(180)("059cd27a", content, false, {});
+var update = __webpack_require__(6)("059cd27a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49179,10 +49151,10 @@ if(false) {
 }
 
 /***/ }),
-/* 184 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(170)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -49193,13 +49165,14 @@ exports.push([module.i, "\n.size--date{\n    font-size: 0.7em;\n}\n", ""]);
 
 
 /***/ }),
-/* 185 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
 //
 //
 //
@@ -49250,17 +49223,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             weeks: moment.weekdays(),
             weeksShort: moment.weekdaysShort(),
             weeksDay: [],
+            weekNumber: moment().week(),
             work: [],
             cal: []
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('addWeek', function (data) {
+            _this.weekNumber = data + 1;
+            _this.cal = _this.getDayOfWeek();
+            Event.$emit('syncWeek', _this.weekNumber);
+            Event.$emit('getWorks', _this.weekNumber);
+        });
+
+        Event.$on('subWeek', function (data) {
+            _this.weekNumber = data - 1;
+            _this.cal = _this.getDayOfWeek();
+            Event.$emit('syncWeek', _this.weekNumber);
+            Event.$emit('getWorks', _this.weekNumber);
+        });
+
+        Event.$on('resetWeek', function (data) {
+            _this.resetWeek();
+            _this.cal = _this.getDayOfWeek();
+            Event.$emit('syncWeek', _this.weekNumber);
+        });
+
         this.weeksShort.shift();
         this.weeksShort.pop();
+        this.weekNumber = this.week;
         this.cal = this.getDayOfWeek();
-        this.getWorksWeek();
     },
 
+    props: ['week'],
     filters: {
         capitalize: function capitalize(value) {
             if (!value) return '';
@@ -49284,15 +49281,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getWorksWeek: function getWorksWeek() {
-            var _this = this;
+            var _this2 = this;
 
-            axios.get('/team/get/work/9').then(function (response) {
-                _this.work = response.data;
+            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
+                _this2.work = response.data;
             });
         },
         getDayOfWeek: function getDayOfWeek() {
+            //console.log(dayWeek);
+            var start_ = this.selectedDateSession.startOf('week');
+            var start = moment().startOf('year').add(this.weekNumber, 'weeks');
 
-            var start = this.selectedDateSession.startOf('week');
             var i = void 0;
             var calendar = [];
 
@@ -49315,101 +49314,83 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var date_y = this.selectedDateSession.format('Y');
             return date_y % 4 === 0 && date_y % 100 !== 0 || date_y % 400 === 0;
         },
-        makeCalendar: function makeCalendar() {
-            this.cal = [];
-        },
-        subYear: function subYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.getMovement();
-            this.makeCalendar();
-        },
-        addYear: function addYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        subMonth: function subMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        addMonth: function addMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
-        reset: function reset() {
-            this.selectedDateSession = moment();
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
+        subWeek: function subWeek() {},
+        addWeek: function addWeek() {},
+        resetWeek: function resetWeek() {
+            this.weekNumber = this.today.week();
         }
     }
 });
 
 /***/ }),
-/* 186 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "row" },
-      _vm._l(_vm.cal, function(date) {
-        return _c("div", { staticClass: "col border" }, [
-          _vm._v(
-            "\n            " +
-              _vm._s(_vm._f("capitalize")(date.dn)) +
-              "\n            "
-          ),
-          _c("br"),
-          _vm._v(" "),
-          _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
-        ])
-      })
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row" },
-      _vm._l(_vm.work, function(content) {
-        return _c(
-          "div",
-          { staticClass: "col border" },
-          [
-            _vm._l(content, function(cmd) {
-              return content !== 0
-                ? _c("div", { staticClass: "row p-1 border" }, [
-                    _c("div", { staticClass: "col " }, [
-                      _c("div", { staticClass: "row" }, [
-                        _vm._m(0, true),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-auto" }, [
-                          _vm._v(" " + _vm._s(cmd.id_cmd))
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(1, true)
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        { staticClass: "row" },
+        _vm._l(_vm.cal, function(date, index) {
+          return _c("div", { staticClass: "col border" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm._f("capitalize")(date.dn)) +
+                "\n            "
+            ),
+            _c("br"),
+            _vm._v(" "),
+            _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row", staticStyle: { display: "none" } },
+        _vm._l(_vm.work, function(content) {
+          return _c(
+            "div",
+            { staticClass: "col border" },
+            [
+              _vm._l(content, function(cmd) {
+                return content !== 0
+                  ? _c("div", { staticClass: "row p-1 border" }, [
+                      _c("div", { staticClass: "col " }, [
+                        _c("div", { staticClass: "row" }, [
+                          _vm._m(0, true),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-auto" }, [
+                            _vm._v(" " + _vm._s(cmd.id_cmd))
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(1, true)
+                        ])
                       ])
                     ])
+                  : _vm._e()
+              }),
+              _vm._v(" "),
+              content === 0
+                ? _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col" }, [_vm._v("Empty")])
                   ])
                 : _vm._e()
-            }),
-            _vm._v(" "),
-            content === 0
-              ? _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [_vm._v("Empty")])
-                ])
-              : _vm._e()
-          ],
-          2
-        )
-      })
-    )
-  ])
+            ],
+            2
+          )
+        })
+      ),
+      _vm._v(" "),
+      _c("work", { attrs: { semaine: _vm.weekNumber } })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -49439,3130 +49420,2381 @@ if (false) {
 }
 
 /***/ }),
-/* 187 */
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, setImmediate, process) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * vue-dragula v2.5.3
- * (c) 2018 Yichang Liu
- * Released under the MIT License.
- */
-(function (global, factory) {
-	 true ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.vueDragula = global.vueDragula || {})));
-}(this, function (exports) { 'use strict';
-
-	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {}
-
-	function interopDefault(ex) {
-		return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex;
-	}
-
-	function createCommonjsModule(fn, module) {
-		return module = { exports: {} }, fn(module, module.exports), module.exports;
-	}
-
-	var atoa = createCommonjsModule(function (module) {
-	  module.exports = function atoa(a, n) {
-	    return Array.prototype.slice.call(a, n);
-	  };
-	});
-
-	var atoa$1 = interopDefault(atoa);
-
-var require$$1 = Object.freeze({
-	  default: atoa$1
-	});
-
-	var ticky = createCommonjsModule(function (module) {
-	  var si = typeof setImmediate === 'function',
-	      tick;
-	  if (si) {
-	    tick = function tick(fn) {
-	      setImmediate(fn);
-	    };
-	  } else if (typeof process !== 'undefined' && process.nextTick) {
-	    tick = process.nextTick;
-	  } else {
-	    tick = function tick(fn) {
-	      setTimeout(fn, 0);
-	    };
-	  }
-
-	  module.exports = tick;
-	});
-
-	var ticky$1 = interopDefault(ticky);
-
-var require$$0$1 = Object.freeze({
-	  default: ticky$1
-	});
-
-	var debounce = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var ticky = interopDefault(require$$0$1);
-
-	  module.exports = function debounce(fn, args, ctx) {
-	    if (!fn) {
-	      return;
-	    }
-	    ticky(function run() {
-	      fn.apply(ctx || null, args || []);
-	    });
-	  };
-	});
-
-	var debounce$1 = interopDefault(debounce);
-
-var require$$0 = Object.freeze({
-	  default: debounce$1
-	});
-
-	var emitter = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var atoa = interopDefault(require$$1);
-	  var debounce = interopDefault(require$$0);
-
-	  module.exports = function emitter(thing, options) {
-	    var opts = options || {};
-	    var evt = {};
-	    if (thing === undefined) {
-	      thing = {};
-	    }
-	    thing.on = function (type, fn) {
-	      if (!evt[type]) {
-	        evt[type] = [fn];
-	      } else {
-	        evt[type].push(fn);
-	      }
-	      return thing;
-	    };
-	    thing.once = function (type, fn) {
-	      fn._once = true; // thing.off(fn) still works!
-	      thing.on(type, fn);
-	      return thing;
-	    };
-	    thing.off = function (type, fn) {
-	      var c = arguments.length;
-	      if (c === 1) {
-	        delete evt[type];
-	      } else if (c === 0) {
-	        evt = {};
-	      } else {
-	        var et = evt[type];
-	        if (!et) {
-	          return thing;
-	        }
-	        et.splice(et.indexOf(fn), 1);
-	      }
-	      return thing;
-	    };
-	    thing.emit = function () {
-	      var args = atoa(arguments);
-	      return thing.emitterSnapshot(args.shift()).apply(this, args);
-	    };
-	    thing.emitterSnapshot = function (type) {
-	      var et = (evt[type] || []).slice(0);
-	      return function () {
-	        var args = atoa(arguments);
-	        var ctx = this || thing;
-	        if (type === 'error' && opts.throws !== false && !et.length) {
-	          throw args.length === 1 ? args[0] : args;
-	        }
-	        et.forEach(function emitter(listen) {
-	          if (opts.async) {
-	            debounce(listen, args, ctx);
-	          } else {
-	            listen.apply(ctx, args);
-	          }
-	          if (listen._once) {
-	            thing.off(type, listen);
-	          }
-	        });
-	        return thing;
-	      };
-	    };
-	    return thing;
-	  };
-	});
-
-	var emitter$1 = interopDefault(emitter);
-
-var require$$2 = Object.freeze({
-	  default: emitter$1
-	});
-
-	var index = createCommonjsModule(function (module) {
-	  var NativeCustomEvent = commonjsGlobal.CustomEvent;
-
-	  function useNative() {
-	    try {
-	      var p = new NativeCustomEvent('cat', { detail: { foo: 'bar' } });
-	      return 'cat' === p.type && 'bar' === p.detail.foo;
-	    } catch (e) {}
-	    return false;
-	  }
-
-	  /**
-	   * Cross-browser `CustomEvent` constructor.
-	   *
-	   * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.CustomEvent
-	   *
-	   * @public
-	   */
-
-	  module.exports = useNative() ? NativeCustomEvent :
-
-	  // IE >= 9
-	  'function' === typeof document.createEvent ? function CustomEvent(type, params) {
-	    var e = document.createEvent('CustomEvent');
-	    if (params) {
-	      e.initCustomEvent(type, params.bubbles, params.cancelable, params.detail);
-	    } else {
-	      e.initCustomEvent(type, false, false, void 0);
-	    }
-	    return e;
-	  } :
-
-	  // IE <= 8
-	  function CustomEvent(type, params) {
-	    var e = document.createEventObject();
-	    e.type = type;
-	    if (params) {
-	      e.bubbles = Boolean(params.bubbles);
-	      e.cancelable = Boolean(params.cancelable);
-	      e.detail = params.detail;
-	    } else {
-	      e.bubbles = false;
-	      e.cancelable = false;
-	      e.detail = void 0;
-	    }
-	    return e;
-	  };
-	});
-
-	var index$1 = interopDefault(index);
-
-var require$$1$2 = Object.freeze({
-	  default: index$1
-	});
-
-	var eventmap = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var eventmap = [];
-	  var eventname = '';
-	  var ron = /^on/;
-
-	  for (eventname in commonjsGlobal) {
-	    if (ron.test(eventname)) {
-	      eventmap.push(eventname.slice(2));
-	    }
-	  }
-
-	  module.exports = eventmap;
-	});
-
-	var eventmap$1 = interopDefault(eventmap);
-
-var require$$0$2 = Object.freeze({
-	  default: eventmap$1
-	});
-
-	var crossvent = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var customEvent = interopDefault(require$$1$2);
-	  var eventmap = interopDefault(require$$0$2);
-	  var doc = commonjsGlobal.document;
-	  var addEvent = addEventEasy;
-	  var removeEvent = removeEventEasy;
-	  var hardCache = [];
-
-	  if (!commonjsGlobal.addEventListener) {
-	    addEvent = addEventHard;
-	    removeEvent = removeEventHard;
-	  }
-
-	  module.exports = {
-	    add: addEvent,
-	    remove: removeEvent,
-	    fabricate: fabricateEvent
-	  };
-
-	  function addEventEasy(el, type, fn, capturing) {
-	    return el.addEventListener(type, fn, capturing);
-	  }
-
-	  function addEventHard(el, type, fn) {
-	    return el.attachEvent('on' + type, wrap(el, type, fn));
-	  }
-
-	  function removeEventEasy(el, type, fn, capturing) {
-	    return el.removeEventListener(type, fn, capturing);
-	  }
-
-	  function removeEventHard(el, type, fn) {
-	    var listener = unwrap(el, type, fn);
-	    if (listener) {
-	      return el.detachEvent('on' + type, listener);
-	    }
-	  }
-
-	  function fabricateEvent(el, type, model) {
-	    var e = eventmap.indexOf(type) === -1 ? makeCustomEvent() : makeClassicEvent();
-	    if (el.dispatchEvent) {
-	      el.dispatchEvent(e);
-	    } else {
-	      el.fireEvent('on' + type, e);
-	    }
-	    function makeClassicEvent() {
-	      var e;
-	      if (doc.createEvent) {
-	        e = doc.createEvent('Event');
-	        e.initEvent(type, true, true);
-	      } else if (doc.createEventObject) {
-	        e = doc.createEventObject();
-	      }
-	      return e;
-	    }
-	    function makeCustomEvent() {
-	      return new customEvent(type, { detail: model });
-	    }
-	  }
-
-	  function wrapperFactory(el, type, fn) {
-	    return function wrapper(originalEvent) {
-	      var e = originalEvent || commonjsGlobal.event;
-	      e.target = e.target || e.srcElement;
-	      e.preventDefault = e.preventDefault || function preventDefault() {
-	        e.returnValue = false;
-	      };
-	      e.stopPropagation = e.stopPropagation || function stopPropagation() {
-	        e.cancelBubble = true;
-	      };
-	      e.which = e.which || e.keyCode;
-	      fn.call(el, e);
-	    };
-	  }
-
-	  function wrap(el, type, fn) {
-	    var wrapper = unwrap(el, type, fn) || wrapperFactory(el, type, fn);
-	    hardCache.push({
-	      wrapper: wrapper,
-	      element: el,
-	      type: type,
-	      fn: fn
-	    });
-	    return wrapper;
-	  }
-
-	  function unwrap(el, type, fn) {
-	    var i = find(el, type, fn);
-	    if (i) {
-	      var wrapper = hardCache[i].wrapper;
-	      hardCache.splice(i, 1); // free up a tad of memory
-	      return wrapper;
-	    }
-	  }
-
-	  function find(el, type, fn) {
-	    var i, item;
-	    for (i = 0; i < hardCache.length; i++) {
-	      item = hardCache[i];
-	      if (item.element === el && item.type === type && item.fn === fn) {
-	        return i;
-	      }
-	    }
-	  }
-	});
-
-	var crossvent$1 = interopDefault(crossvent);
-	var add = crossvent.add;
-	var remove = crossvent.remove;
-	var fabricate = crossvent.fabricate;
-
-var require$$1$1 = Object.freeze({
-	  default: crossvent$1,
-	  add: add,
-	  remove: remove,
-	  fabricate: fabricate
-	});
-
-	var classes = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var cache = {};
-	  var start = '(?:^|\\s)';
-	  var end = '(?:\\s|$)';
-
-	  function lookupClass(className) {
-	    var cached = cache[className];
-	    if (cached) {
-	      cached.lastIndex = 0;
-	    } else {
-	      cache[className] = cached = new RegExp(start + className + end, 'g');
-	    }
-	    return cached;
-	  }
-
-	  function addClass(el, className) {
-	    var current = el.className;
-	    if (!current.length) {
-	      el.className = className;
-	    } else if (!lookupClass(className).test(current)) {
-	      el.className += ' ' + className;
-	    }
-	  }
-
-	  function rmClass(el, className) {
-	    el.className = el.className.replace(lookupClass(className), ' ').trim();
-	  }
-
-	  module.exports = {
-	    add: addClass,
-	    rm: rmClass
-	  };
-	});
-
-	var classes$1 = interopDefault(classes);
-	var add$1 = classes.add;
-	var rm = classes.rm;
-
-var require$$0$3 = Object.freeze({
-	  default: classes$1,
-	  add: add$1,
-	  rm: rm
-	});
-
-	var dragula = createCommonjsModule(function (module) {
-	  'use strict';
-
-	  var emitter = interopDefault(require$$2);
-	  var crossvent = interopDefault(require$$1$1);
-	  var classes = interopDefault(require$$0$3);
-	  var doc = document;
-	  var documentElement = doc.documentElement;
-
-	  function dragula(initialContainers, options) {
-	    var len = arguments.length;
-	    if (len === 1 && Array.isArray(initialContainers) === false) {
-	      options = initialContainers;
-	      initialContainers = [];
-	    }
-	    var _mirror; // mirror image
-	    var _source; // source container
-	    var _item; // item being dragged
-	    var _offsetX; // reference x
-	    var _offsetY; // reference y
-	    var _moveX; // reference move x
-	    var _moveY; // reference move y
-	    var _initialSibling; // reference sibling when grabbed
-	    var _currentSibling; // reference sibling now
-	    var _copy; // item used for copying
-	    var _renderTimer; // timer for setTimeout renderMirrorImage
-	    var _lastDropTarget = null; // last container item was over
-	    var _grabbed; // holds mousedown context until first mousemove
-
-	    var o = options || {};
-	    if (o.moves === void 0) {
-	      o.moves = always;
-	    }
-	    if (o.accepts === void 0) {
-	      o.accepts = always;
-	    }
-	    if (o.invalid === void 0) {
-	      o.invalid = invalidTarget;
-	    }
-	    if (o.containers === void 0) {
-	      o.containers = initialContainers || [];
-	    }
-	    if (o.isContainer === void 0) {
-	      o.isContainer = never;
-	    }
-	    if (o.copy === void 0) {
-	      o.copy = false;
-	    }
-	    if (o.copySortSource === void 0) {
-	      o.copySortSource = false;
-	    }
-	    if (o.revertOnSpill === void 0) {
-	      o.revertOnSpill = false;
-	    }
-	    if (o.removeOnSpill === void 0) {
-	      o.removeOnSpill = false;
-	    }
-	    if (o.direction === void 0) {
-	      o.direction = 'vertical';
-	    }
-	    if (o.ignoreInputTextSelection === void 0) {
-	      o.ignoreInputTextSelection = true;
-	    }
-	    if (o.mirrorContainer === void 0) {
-	      o.mirrorContainer = doc.body;
-	    }
-
-	    var drake = emitter({
-	      containers: o.containers,
-	      start: manualStart,
-	      end: end,
-	      cancel: cancel,
-	      remove: remove,
-	      destroy: destroy,
-	      canMove: canMove,
-	      dragging: false
-	    });
-
-	    if (o.removeOnSpill === true) {
-	      drake.on('over', spillOver).on('out', spillOut);
-	    }
-
-	    events();
-
-	    return drake;
-
-	    function isContainer(el) {
-	      return drake.containers.indexOf(el) !== -1 || o.isContainer(el);
-	    }
-
-	    function events(remove) {
-	      var op = remove ? 'remove' : 'add';
-	      touchy(documentElement, op, 'mousedown', grab);
-	      touchy(documentElement, op, 'mouseup', release);
-	    }
-
-	    function eventualMovements(remove) {
-	      var op = remove ? 'remove' : 'add';
-	      touchy(documentElement, op, 'mousemove', startBecauseMouseMoved);
-	    }
-
-	    function movements(remove) {
-	      var op = remove ? 'remove' : 'add';
-	      crossvent[op](documentElement, 'selectstart', preventGrabbed); // IE8
-	      crossvent[op](documentElement, 'click', preventGrabbed);
-	    }
-
-	    function destroy() {
-	      events(true);
-	      release({});
-	    }
-
-	    function preventGrabbed(e) {
-	      if (_grabbed) {
-	        e.preventDefault();
-	      }
-	    }
-
-	    function grab(e) {
-	      _moveX = e.clientX;
-	      _moveY = e.clientY;
-
-	      var ignore = whichMouseButton(e) !== 1 || e.metaKey || e.ctrlKey;
-	      if (ignore) {
-	        return; // we only care about honest-to-god left clicks and touch events
-	      }
-	      var item = e.target;
-	      var context = canStart(item);
-	      if (!context) {
-	        return;
-	      }
-	      _grabbed = context;
-	      eventualMovements();
-	      if (e.type === 'mousedown') {
-	        if (isInput(item)) {
-	          // see also: https://github.com/bevacqua/dragula/issues/208
-	          item.focus(); // fixes https://github.com/bevacqua/dragula/issues/176
-	        } else {
-	          e.preventDefault(); // fixes https://github.com/bevacqua/dragula/issues/155
-	        }
-	      }
-	    }
-
-	    function startBecauseMouseMoved(e) {
-	      if (!_grabbed) {
-	        return;
-	      }
-	      if (whichMouseButton(e) === 0) {
-	        release({});
-	        return; // when text is selected on an input and then dragged, mouseup doesn't fire. this is our only hope
-	      }
-	      // truthy check fixes #239, equality fixes #207
-	      if (e.clientX !== void 0 && e.clientX === _moveX && e.clientY !== void 0 && e.clientY === _moveY) {
-	        return;
-	      }
-	      if (o.ignoreInputTextSelection) {
-	        var clientX = getCoord('clientX', e);
-	        var clientY = getCoord('clientY', e);
-	        var elementBehindCursor = doc.elementFromPoint(clientX, clientY);
-	        if (isInput(elementBehindCursor)) {
-	          return;
-	        }
-	      }
-
-	      var grabbed = _grabbed; // call to end() unsets _grabbed
-	      eventualMovements(true);
-	      movements();
-	      end();
-	      start(grabbed);
-
-	      var offset = getOffset(_item);
-	      _offsetX = getCoord('pageX', e) - offset.left;
-	      _offsetY = getCoord('pageY', e) - offset.top;
-
-	      classes.add(_copy || _item, 'gu-transit');
-	      renderMirrorImage();
-	      drag(e);
-	    }
-
-	    function canStart(item) {
-	      if (drake.dragging && _mirror) {
-	        return;
-	      }
-	      if (isContainer(item)) {
-	        return; // don't drag container itself
-	      }
-	      var handle = item;
-	      while (getParent(item) && isContainer(getParent(item)) === false) {
-	        if (o.invalid(item, handle)) {
-	          return;
-	        }
-	        item = getParent(item); // drag target should be a top element
-	        if (!item) {
-	          return;
-	        }
-	      }
-	      var source = getParent(item);
-	      if (!source) {
-	        return;
-	      }
-	      if (o.invalid(item, handle)) {
-	        return;
-	      }
-
-	      var movable = o.moves(item, source, handle, nextEl(item));
-	      if (!movable) {
-	        return;
-	      }
-
-	      return {
-	        item: item,
-	        source: source
-	      };
-	    }
-
-	    function canMove(item) {
-	      return !!canStart(item);
-	    }
-
-	    function manualStart(item) {
-	      var context = canStart(item);
-	      if (context) {
-	        start(context);
-	      }
-	    }
-
-	    function start(context) {
-	      if (isCopy(context.item, context.source)) {
-	        _copy = context.item.cloneNode(true);
-	        drake.emit('cloned', _copy, context.item, 'copy');
-	      }
-
-	      _source = context.source;
-	      _item = context.item;
-	      _initialSibling = _currentSibling = nextEl(context.item);
-
-	      drake.dragging = true;
-	      drake.emit('drag', _item, _source);
-	    }
-
-	    function invalidTarget() {
-	      return false;
-	    }
-
-	    function end() {
-	      if (!drake.dragging) {
-	        return;
-	      }
-	      var item = _copy || _item;
-	      drop(item, getParent(item));
-	    }
-
-	    function ungrab() {
-	      _grabbed = false;
-	      eventualMovements(true);
-	      movements(true);
-	    }
-
-	    function release(e) {
-	      ungrab();
-
-	      if (!drake.dragging) {
-	        return;
-	      }
-	      var item = _copy || _item;
-	      var clientX = getCoord('clientX', e);
-	      var clientY = getCoord('clientY', e);
-	      var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	      var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	      if (dropTarget && (_copy && o.copySortSource || !_copy || dropTarget !== _source)) {
-	        drop(item, dropTarget);
-	      } else if (o.removeOnSpill) {
-	        remove();
-	      } else {
-	        cancel();
-	      }
-	    }
-
-	    function drop(item, target) {
-	      var parent = getParent(item);
-	      if (_copy && o.copySortSource && target === _source) {
-	        parent.removeChild(_item);
-	      }
-	      if (isInitialPlacement(target)) {
-	        drake.emit('cancel', item, _source, _source);
-	      } else {
-	        drake.emit('drop', item, target, _source, _currentSibling);
-	      }
-	      cleanup();
-	    }
-
-	    function remove() {
-	      if (!drake.dragging) {
-	        return;
-	      }
-	      var item = _copy || _item;
-	      var parent = getParent(item);
-	      if (parent) {
-	        parent.removeChild(item);
-	      }
-	      drake.emit(_copy ? 'cancel' : 'remove', item, parent, _source);
-	      cleanup();
-	    }
-
-	    function cancel(revert) {
-	      if (!drake.dragging) {
-	        return;
-	      }
-	      var reverts = arguments.length > 0 ? revert : o.revertOnSpill;
-	      var item = _copy || _item;
-	      var parent = getParent(item);
-	      var initial = isInitialPlacement(parent);
-	      if (initial === false && reverts) {
-	        if (_copy) {
-	          if (parent) {
-	            parent.removeChild(_copy);
-	          }
-	        } else {
-	          _source.insertBefore(item, _initialSibling);
-	        }
-	      }
-	      if (initial || reverts) {
-	        drake.emit('cancel', item, _source, _source);
-	      } else {
-	        drake.emit('drop', item, parent, _source, _currentSibling);
-	      }
-	      cleanup();
-	    }
-
-	    function cleanup() {
-	      var item = _copy || _item;
-	      ungrab();
-	      removeMirrorImage();
-	      if (item) {
-	        classes.rm(item, 'gu-transit');
-	      }
-	      if (_renderTimer) {
-	        clearTimeout(_renderTimer);
-	      }
-	      drake.dragging = false;
-	      if (_lastDropTarget) {
-	        drake.emit('out', item, _lastDropTarget, _source);
-	      }
-	      drake.emit('dragend', item);
-	      _source = _item = _copy = _initialSibling = _currentSibling = _renderTimer = _lastDropTarget = null;
-	    }
-
-	    function isInitialPlacement(target, s) {
-	      var sibling;
-	      if (s !== void 0) {
-	        sibling = s;
-	      } else if (_mirror) {
-	        sibling = _currentSibling;
-	      } else {
-	        sibling = nextEl(_copy || _item);
-	      }
-	      return target === _source && sibling === _initialSibling;
-	    }
-
-	    function findDropTarget(elementBehindCursor, clientX, clientY) {
-	      var target = elementBehindCursor;
-	      while (target && !accepted()) {
-	        target = getParent(target);
-	      }
-	      return target;
-
-	      function accepted() {
-	        var droppable = isContainer(target);
-	        if (droppable === false) {
-	          return false;
-	        }
-
-	        var immediate = getImmediateChild(target, elementBehindCursor);
-	        var reference = getReference(target, immediate, clientX, clientY);
-	        var initial = isInitialPlacement(target, reference);
-	        if (initial) {
-	          return true; // should always be able to drop it right back where it was
-	        }
-	        return o.accepts(_item, target, _source, reference);
-	      }
-	    }
-
-	    function drag(e) {
-	      if (!_mirror) {
-	        return;
-	      }
-	      e.preventDefault();
-
-	      var clientX = getCoord('clientX', e);
-	      var clientY = getCoord('clientY', e);
-	      var x = clientX - _offsetX;
-	      var y = clientY - _offsetY;
-
-	      _mirror.style.left = x + 'px';
-	      _mirror.style.top = y + 'px';
-
-	      var item = _copy || _item;
-	      var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	      var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	      var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
-	      if (changed || dropTarget === null) {
-	        out();
-	        _lastDropTarget = dropTarget;
-	        over();
-	      }
-	      var parent = getParent(item);
-	      if (dropTarget === _source && _copy && !o.copySortSource) {
-	        if (parent) {
-	          parent.removeChild(item);
-	        }
-	        return;
-	      }
-	      var reference;
-	      var immediate = getImmediateChild(dropTarget, elementBehindCursor);
-	      if (immediate !== null) {
-	        reference = getReference(dropTarget, immediate, clientX, clientY);
-	      } else if (o.revertOnSpill === true && !_copy) {
-	        reference = _initialSibling;
-	        dropTarget = _source;
-	      } else {
-	        if (_copy && parent) {
-	          parent.removeChild(item);
-	        }
-	        return;
-	      }
-	      if (reference === null && changed || reference !== item && reference !== nextEl(item)) {
-	        _currentSibling = reference;
-	        dropTarget.insertBefore(item, reference);
-	        drake.emit('shadow', item, dropTarget, _source);
-	      }
-	      function moved(type) {
-	        drake.emit(type, item, _lastDropTarget, _source);
-	      }
-	      function over() {
-	        if (changed) {
-	          moved('over');
-	        }
-	      }
-	      function out() {
-	        if (_lastDropTarget) {
-	          moved('out');
-	        }
-	      }
-	    }
-
-	    function spillOver(el) {
-	      classes.rm(el, 'gu-hide');
-	    }
-
-	    function spillOut(el) {
-	      if (drake.dragging) {
-	        classes.add(el, 'gu-hide');
-	      }
-	    }
-
-	    function renderMirrorImage() {
-	      if (_mirror) {
-	        return;
-	      }
-	      var rect = _item.getBoundingClientRect();
-	      _mirror = _item.cloneNode(true);
-	      _mirror.style.width = getRectWidth(rect) + 'px';
-	      _mirror.style.height = getRectHeight(rect) + 'px';
-	      classes.rm(_mirror, 'gu-transit');
-	      classes.add(_mirror, 'gu-mirror');
-	      o.mirrorContainer.appendChild(_mirror);
-	      touchy(documentElement, 'add', 'mousemove', drag);
-	      classes.add(o.mirrorContainer, 'gu-unselectable');
-	      drake.emit('cloned', _mirror, _item, 'mirror');
-	    }
-
-	    function removeMirrorImage() {
-	      if (_mirror) {
-	        classes.rm(o.mirrorContainer, 'gu-unselectable');
-	        touchy(documentElement, 'remove', 'mousemove', drag);
-	        getParent(_mirror).removeChild(_mirror);
-	        _mirror = null;
-	      }
-	    }
-
-	    function getImmediateChild(dropTarget, target) {
-	      var immediate = target;
-	      while (immediate !== dropTarget && getParent(immediate) !== dropTarget) {
-	        immediate = getParent(immediate);
-	      }
-	      if (immediate === documentElement) {
-	        return null;
-	      }
-	      return immediate;
-	    }
-
-	    function getReference(dropTarget, target, x, y) {
-	      var horizontal = o.direction === 'horizontal';
-	      var reference = target !== dropTarget ? inside() : outside();
-	      return reference;
-
-	      function outside() {
-	        // slower, but able to figure out any position
-	        var len = dropTarget.children.length;
-	        var i;
-	        var el;
-	        var rect;
-	        for (i = 0; i < len; i++) {
-	          el = dropTarget.children[i];
-	          rect = el.getBoundingClientRect();
-	          if (horizontal && rect.left + rect.width / 2 > x) {
-	            return el;
-	          }
-	          if (!horizontal && rect.top + rect.height / 2 > y) {
-	            return el;
-	          }
-	        }
-	        return null;
-	      }
-
-	      function inside() {
-	        // faster, but only available if dropped inside a child element
-	        var rect = target.getBoundingClientRect();
-	        if (horizontal) {
-	          return resolve(x > rect.left + getRectWidth(rect) / 2);
-	        }
-	        return resolve(y > rect.top + getRectHeight(rect) / 2);
-	      }
-
-	      function resolve(after) {
-	        return after ? nextEl(target) : target;
-	      }
-	    }
-
-	    function isCopy(item, container) {
-	      return typeof o.copy === 'boolean' ? o.copy : o.copy(item, container);
-	    }
-	  }
-
-	  function touchy(el, op, type, fn) {
-	    var touch = {
-	      mouseup: 'touchend',
-	      mousedown: 'touchstart',
-	      mousemove: 'touchmove'
-	    };
-	    var pointers = {
-	      mouseup: 'pointerup',
-	      mousedown: 'pointerdown',
-	      mousemove: 'pointermove'
-	    };
-	    var microsoft = {
-	      mouseup: 'MSPointerUp',
-	      mousedown: 'MSPointerDown',
-	      mousemove: 'MSPointerMove'
-	    };
-	    if (commonjsGlobal.navigator.pointerEnabled) {
-	      crossvent[op](el, pointers[type], fn);
-	    } else if (commonjsGlobal.navigator.msPointerEnabled) {
-	      crossvent[op](el, microsoft[type], fn);
-	    } else {
-	      crossvent[op](el, touch[type], fn);
-	      crossvent[op](el, type, fn);
-	    }
-	  }
-
-	  function whichMouseButton(e) {
-	    if (e.touches !== void 0) {
-	      return e.touches.length;
-	    }
-	    if (e.which !== void 0 && e.which !== 0) {
-	      return e.which;
-	    } // see https://github.com/bevacqua/dragula/issues/261
-	    if (e.buttons !== void 0) {
-	      return e.buttons;
-	    }
-	    var button = e.button;
-	    if (button !== void 0) {
-	      // see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575
-	      return button & 1 ? 1 : button & 2 ? 3 : button & 4 ? 2 : 0;
-	    }
-	  }
-
-	  function getOffset(el) {
-	    var rect = el.getBoundingClientRect();
-	    return {
-	      left: rect.left + getScroll('scrollLeft', 'pageXOffset'),
-	      top: rect.top + getScroll('scrollTop', 'pageYOffset')
-	    };
-	  }
-
-	  function getScroll(scrollProp, offsetProp) {
-	    if (typeof commonjsGlobal[offsetProp] !== 'undefined') {
-	      return commonjsGlobal[offsetProp];
-	    }
-	    if (documentElement.clientHeight) {
-	      return documentElement[scrollProp];
-	    }
-	    return doc.body[scrollProp];
-	  }
-
-	  function getElementBehindPoint(point, x, y) {
-	    var p = point || {};
-	    var state = p.className;
-	    var el;
-	    p.className += ' gu-hide';
-	    el = doc.elementFromPoint(x, y);
-	    p.className = state;
-	    return el;
-	  }
-
-	  function never() {
-	    return false;
-	  }
-	  function always() {
-	    return true;
-	  }
-	  function getRectWidth(rect) {
-	    return rect.width || rect.right - rect.left;
-	  }
-	  function getRectHeight(rect) {
-	    return rect.height || rect.bottom - rect.top;
-	  }
-	  function getParent(el) {
-	    return el.parentNode === doc ? null : el.parentNode;
-	  }
-	  function isInput(el) {
-	    return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || isEditable(el);
-	  }
-	  function isEditable(el) {
-	    if (!el) {
-	      return false;
-	    } // no parents were editable
-	    if (el.contentEditable === 'false') {
-	      return false;
-	    } // stop the lookup
-	    if (el.contentEditable === 'true') {
-	      return true;
-	    } // found a contentEditable element in the chain
-	    return isEditable(getParent(el)); // contentEditable is set to 'inherit'
-	  }
-
-	  function nextEl(el) {
-	    return el.nextElementSibling || manually();
-	    function manually() {
-	      var sibling = el;
-	      do {
-	        sibling = sibling.nextSibling;
-	      } while (sibling && sibling.nodeType !== 1);
-	      return sibling;
-	    }
-	  }
-
-	  function getEventHost(e) {
-	    // on touchend event, we have to use `e.changedTouches`
-	    // see http://stackoverflow.com/questions/7192563/touchend-event-properties
-	    // see https://github.com/bevacqua/dragula/issues/34
-	    if (e.targetTouches && e.targetTouches.length) {
-	      return e.targetTouches[0];
-	    }
-	    if (e.changedTouches && e.changedTouches.length) {
-	      return e.changedTouches[0];
-	    }
-	    return e;
-	  }
-
-	  function getCoord(coord, e) {
-	    var host = getEventHost(e);
-	    var missMap = {
-	      pageX: 'clientX', // IE8
-	      pageY: 'clientY' // IE8
-	    };
-	    if (coord in missMap && !(coord in host) && missMap[coord] in host) {
-	      coord = missMap[coord];
-	    }
-	    return host[coord];
-	  }
-
-	  module.exports = dragula;
-	});
-
-	var dragula$1 = interopDefault(dragula);
-
-	var classCallCheck = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-
-	var createClass = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	      Object.defineProperty(target, descriptor.key, descriptor);
-	    }
-	  }
-
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	}();
-
-	var inherits = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	  }
-
-	  subClass.prototype = Object.create(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	};
-
-	var possibleConstructorReturn = function (self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-
-	  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-	};
-
-	var raf = window.requestAnimationFrame;
-
-	function raffy(fn) {
-	  raf(function () {
-	    raf(fn);
-	  });
-	}
-
-	function winTimeout(fn) {
-	  window.setTimeout(fn, 50);
-	}
-
-	var waitForTransition = raf ? raffy : winTimeout;
-
-	function isObject(obj) {
-	  return obj === Object(obj);
-	}
-
-	var DragHandler = function () {
-	  function DragHandler(_ref) {
-	    var ctx = _ref.ctx,
-	        name = _ref.name,
-	        drake = _ref.drake,
-	        options = _ref.options;
-	    classCallCheck(this, DragHandler);
-
-	    this.dragElm = null;
-	    this.dragIndex = null;
-	    this.dropIndex = null;
-	    this.sourceModel = null;
-	    this.logging = ctx.logging;
-	    this.ctx = ctx;
-	    this.serviceName = ctx.name;
-	    this.modelManager = ctx.modelManager;
-	    this.drake = drake;
-	    this.name = name;
-	    this.eventBus = ctx.eventBus;
-	    this.findModelForContainer = ctx.findModelForContainer.bind(ctx);
-	    this.domIndexOf = ctx.domIndexOf.bind(ctx);
-	  }
-
-	  createClass(DragHandler, [{
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      (_console = console).log.apply(_console, [this.clazzName + ' [' + this.name + '] :', event].concat(args));
-	    }
-
-	    /**
-	     * Remove model at drag index
-	     */
-
-	  }, {
-	    key: 'removeModel',
-	    value: function removeModel() {
-	      this.log('removeModel', {
-	        sourceModel: this.sourceModel,
-	        dragIndex: this.dragIndex
-	      });
-	      this.sourceModel.removeAt(this.dragIndex);
-	    }
-
-	    /**
-	     * Drop model on same container
-	     * Move model from dropIndex to dragIndex
-	     */
-
-	  }, {
-	    key: 'dropModelSame',
-	    value: function dropModelSame() {
-	      this.log('dropModelSame', {
-	        sourceModel: this.sourceModel,
-	        dragIndex: this.dragIndex,
-	        dropIndex: this.dropIndex
-	      });
-
-	      this.sourceModel.move({
-	        dropIndex: this.dropIndex,
-	        dragIndex: this.dragIndex
-	      });
-	    }
-
-	    /**
-	     * Insert model on targetModel
-	     * @param {*} targetModel
-	     * @param {*} dropElmModel
-	     * @param {*} elements
-	     */
-
-	  }, {
-	    key: 'insertModel',
-	    value: function insertModel(targetModel, dropElmModel, elements) {
-	      this.log('insertModel', {
-	        targetModel: targetModel,
-	        dropIndex: this.dropIndex,
-	        dropElmModel: dropElmModel,
-	        elements: elements
-	      });
-
-	      targetModel.insertAt(this.dropIndex, dropElmModel);
-
-	      this.emit('insertAt', {
-	        elements: elements,
-	        targetModel: targetModel,
-	        transitModel: dropElmModel,
-	        dragIndex: this.dragIndex,
-	        dropIndex: this.dropIndex,
-	        models: {
-	          source: this.sourceModel,
-	          target: targetModel,
-	          transit: dropElmModel
-	        },
-	        indexes: {
-	          source: this.dragIndex,
-	          target: this.dropIndex
-	        }
-	      });
-	    }
-
-	    /**
-	     * If not copy, we remove model from source model after a nice transition
-	     */
-
-	  }, {
-	    key: 'notCopy',
-	    value: function notCopy() {
-	      var _this = this;
-
-	      waitForTransition(function () {
-	        _this.sourceModel.removeAt(_this.dragIndex);
-	      });
-	    }
-
-	    /**
-	     * Cancel drop
-	     * @param {*} target
-	     */
-
-	  }, {
-	    key: 'cancelDrop',
-	    value: function cancelDrop(target) {
-	      this.log('No targetModel could be found for target:', {
-	        target: target
-	      });
-	      this.log('in drake:', {
-	        drake: this.drake
-	      });
-	      this.drake.cancel(true);
-	    }
-
-	    /**
-	     * Handle drop model from source to target
-	     * @param {*} dropElm
-	     * @param {*} target
-	     * @param {*} source
-	     */
-
-	  }, {
-	    key: 'dropModelTarget',
-	    value: function dropModelTarget(dropElm, target, source) {
-	      this.log('dropModelTarget', {
-	        dropElm: dropElm,
-	        target: target,
-	        source: source
-	      });
-	      var notCopy = this.dragElm === dropElm;
-	      var targetModel = this.getModel(target);
-	      var dropElmModel = notCopy ? this.dropElmModel() : this.jsonDropElmModel();
-
-	      if (notCopy) {
-	        this.notCopy();
-	      }
-
-	      if (!targetModel) {
-	        return this.cancelDrop(target);
-	      }
-
-	      var elements = {
-	        drop: dropElm,
-	        target: target,
-	        source: source
-	      };
-
-	      this.insertModel(targetModel, dropElmModel, elements);
-	    }
-	  }, {
-	    key: 'dropModel',
-	    value: function dropModel(dropElm, target, source) {
-	      this.log('dropModel', {
-	        dropElm: dropElm,
-	        target: target,
-	        source: source
-	      });
-	      target === source ? this.dropModelSame() : this.dropModelTarget(dropElm, target, source);
-	    }
-	  }, {
-	    key: 'emit',
-	    value: function emit(eventName) {
-	      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	      this.log('emit', {
-	        eventName: eventName,
-	        opts: opts
-	      });
-	      opts.sourceModel = this.sourceModel;
-	      opts.name = this.name;
-	      this.eventBus.$emit(eventName, opts);
-
-	      this.log('emit service', {
-	        serviceEventName: serviceEventName,
-	        eventName: eventName,
-	        opts: opts
-	      });
-	      var serviceEventName = this.serviceName + ':' + eventName;
-	      this.eventBus.$emit(serviceEventName, opts);
-	    }
-
-	    /**
-	     * Get model from location in
-	     * @param {*} location
-	     */
-
-	  }, {
-	    key: 'getModel',
-	    value: function getModel(location) {
-	      var model = this.findModelForContainer(location, this.drake);
-	      this.log('getModel', {
-	        location: location,
-	        model: model
-	      });
-
-	      return this.modelManager.createFor({
-	        name: this.name,
-	        drake: this.drake,
-	        logging: this.logging,
-	        model: model
-	      });
-	    }
-
-	    /**
-	     * Remov element from container in source
-	     * @param {*} el
-	     * @param {*} container
-	     * @param {*} source
-	     */
-
-	  }, {
-	    key: 'remove',
-	    value: function remove(el, container, source) {
-	      this.log('remove', {
-	        el: el,
-	        container: container,
-	        source: source
-	      });
-	      if (!this.drake.models) {
-	        this.log('Warning: Can NOT remove it. Must have models:', this.drake.models);
-	        return;
-	      }
-
-	      this.sourceModel = this.getModel(source);
-	      this.removeModel();
-	      this.drake.cancel(true);
-
-	      this.emit('removeModel', {
-	        el: el,
-	        source: source,
-	        dragIndex: this.dragIndex
-	      });
-	    }
-
-	    /**
-	     * Handle drag element from source
-	     * @param {*} el
-	     * @param {*} source
-	     */
-
-	  }, {
-	    key: 'drag',
-	    value: function drag(el, source) {
-	      this.log('drag', {
-	        el: el,
-	        source: source
-	      });
-	      this.dragElm = el;
-	      this.dragIndex = this.domIndexOf(el, source);
-	    }
-
-	    /**
-	     * Handle drop element from source to target
-	     * @param {*} dropEl
-	     * @param {*} target
-	     * @param {*} source
-	     */
-
-	  }, {
-	    key: 'drop',
-	    value: function drop(dropEl, target, source) {
-	      this.log('drop', {
-	        dropEl: dropEl,
-	        target: target,
-	        source: source
-	      });
-	      if (!this.drake.models && !target) {
-	        this.log('Warning: Can NOT drop it. Must have either models:', this.drake.models, ' or target:', target);
-	        return;
-	      }
-	      this.dropIndex = this.domIndexOf(dropEl, target);
-	      this.sourceModel = this.getModel(source);
-	      this.dropModel(dropEl, target, source);
-
-	      this.emit('dropModel', {
-	        target: target,
-	        source: source,
-	        el: dropEl,
-	        dragIndex: this.dragIndex,
-	        dropIndex: this.dropIndex
-	      });
-	    }
-	  }, {
-	    key: 'dropElmModel',
-	    value: function dropElmModel() {
-	      return this.sourceModel.at(this.dragIndex);
-	    }
-	  }, {
-	    key: 'jsonDropElmModel',
-	    value: function jsonDropElmModel() {
-	      var model = this.sourceModel.at(this.dragIndex);
-	      var stringable = model ? model.model || model.stringable : model;
-	      var md = stringable || model;
-	      if (!isObject(md)) {
-	        this.log('jsonDropElmModel', 'invalid element model, must be some sort of Object', stringable, model);
-	      }
-	      try {
-	        var jsonStr = JSON.stringify(stringable || model);
-	        return JSON.parse(jsonStr);
-	      } catch (e) {
-	        this.log('jsonDropElmModel', 'JSON stringify/parse error', e);
-	      }
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'DragHandler';
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging && this.logging.dragHandler;
-	    }
-	  }]);
-	  return DragHandler;
-	}();
-
-	var BaseModelManager = function () {
-	  function BaseModelManager() {
-	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    classCallCheck(this, BaseModelManager);
-
-	    if (Array.isArray(opts)) {
-	      opts = {
-	        model: opts
-	      };
-	    }
-	    opts.drake = opts.drake || {};
-	    this.opts = opts;
-	    this.copy = opts.copy || opts.drake.copy;
-	    this.name = opts.name;
-	    this.drake = opts.drake;
-	    this.logging = opts.logging;
-	    this.logging = opts.logging;
-	    this.modelRef = opts.model || [];
-	  }
-
-	  createClass(BaseModelManager, [{
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      (_console = console).log.apply(_console, [this.clazzName + ' [' + this.name + '] :', event].concat(args));
-	    }
-	  }, {
-	    key: 'notYet',
-	    value: function notYet(name) {
-	      this.log(name, 'not yet implemented');
-	    }
-	  }, {
-	    key: 'undo',
-	    value: function undo() {
-	      this.notYet('undo');
-	    }
-	  }, {
-	    key: 'redo',
-	    value: function redo() {
-	      this.notYet('redo');
-	    }
-	  }, {
-	    key: 'at',
-	    value: function at(index) {
-	      this.notYet('at');
-	    }
-	  }, {
-	    key: 'clear',
-	    value: function clear() {
-	      this.notYet('clear');
-	    }
-	  }, {
-	    key: 'createModel',
-	    value: function createModel(model) {
-	      this.notYet('createModel');
-	    }
-	  }, {
-	    key: 'createFor',
-	    value: function createFor() {
-	      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      this.notYet('createFor');
-	    }
-	  }, {
-	    key: 'removeAt',
-	    value: function removeAt(index) {
-	      this.notYet('removeAt');
-	    }
-	  }, {
-	    key: 'insertAt',
-	    value: function insertAt(index, dropModel) {
-	      this.notYet('removeAt');
-	    }
-	  }, {
-	    key: 'move',
-	    value: function move(_ref) {
-	      var dragIndex = _ref.dragIndex,
-	          dropIndex = _ref.dropIndex;
-
-	      this.notYet('move');
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'BaseModelManager';
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging && this.logging.modelManager;
-	    }
-	  }]);
-	  return BaseModelManager;
-	}();
-
-	var ModelManager = function (_BaseModelManager) {
-	  inherits(ModelManager, _BaseModelManager);
-
-	  function ModelManager() {
-	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    classCallCheck(this, ModelManager);
-
-	    var _this = possibleConstructorReturn(this, (ModelManager.__proto__ || Object.getPrototypeOf(ModelManager)).call(this, opts));
-
-	    _this.model = _this.createModel(_this.modelRef);
-	    _this.log('CREATE', opts);
-	    return _this;
-	  }
-
-	  createClass(ModelManager, [{
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      (_console = console).log.apply(_console, [this.clazzName + ' [' + this.name + '] :', event].concat(args));
-	    }
-	  }, {
-	    key: 'undo',
-	    value: function undo() {
-	      this.log('undo', 'not yet implemented');
-	    }
-	  }, {
-	    key: 'redo',
-	    value: function redo() {
-	      this.log('redo', 'not yet implemented');
-	    }
-	  }, {
-	    key: 'at',
-	    value: function at(index) {
-	      return this.model.get ? this.model.get(index) : this.model[index];
-	    }
-	  }, {
-	    key: 'clear',
-	    value: function clear() {
-	      this.model = this.createModel();
-	    }
-	  }, {
-	    key: 'createModel',
-	    value: function createModel(model) {
-	      return this.model || model || [];
-	    }
-	  }, {
-	    key: 'createFor',
-	    value: function createFor() {
-	      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      return new ModelManager(opts);
-	    }
-	  }, {
-	    key: 'removeAt',
-	    value: function removeAt(index) {
-	      if (this.copy) return;
-	      this.log('removeAt', {
-	        model: this.model,
-	        index: index
-	      });
-	      var splicedModel = this.model.splice(index, 1);
-	      var removedModel = this.model;
-
-	      this.log({
-	        splicedModel: splicedModel,
-	        removedModel: removedModel
-	      });
-	      return splicedModel;
-	    }
-	  }, {
-	    key: 'insertAt',
-	    value: function insertAt(index, insertModel) {
-	      this.log('insertAt', {
-	        model: this.model,
-	        index: index,
-	        insertModel: insertModel
-	      });
-	      // according to Vue docs, Vue wraps splice method to mutate array in place and update view
-	      var splicedModel = this.model.splice(index, 0, insertModel);
-	      var modelAfterInsert = this.model;
-
-	      this.log('insertAt', {
-	        splicedModel: splicedModel,
-	        modelAfterInsert: modelAfterInsert
-	      });
-	      return modelAfterInsert;
-	    }
-	  }, {
-	    key: 'move',
-	    value: function move(_ref) {
-	      var dragIndex = _ref.dragIndex,
-	          dropIndex = _ref.dropIndex;
-
-	      if (this.copy) return;
-	      this.log('move', {
-	        model: this.model,
-	        dragIndex: dragIndex,
-	        dropIndex: dropIndex
-	      });
-	      var splicedRemainder = this.model.splice(dragIndex, 1);
-	      var remainder = splicedRemainder[0];
-
-	      var modelAfterRemove = this.model.splice(dropIndex, 0, remainder);
-	      var movedModel = this.model;
-
-	      this.log('move', {
-	        splicedRemainder: splicedRemainder,
-	        modelAfterRemove: modelAfterRemove,
-	        movedModel: movedModel
-	      });
-	      return modelAfterRemove;
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'ModelManager';
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging && this.logging.modelManager;
-	    }
-	  }]);
-	  return ModelManager;
-	}(BaseModelManager);
-
-	if (!dragula$1) {
-	  throw new Error('[vue-dragula] cannot locate dragula.');
-	}
-
-	function createDragHandler(_ref) {
-	  var ctx = _ref.ctx,
-	      name = _ref.name,
-	      drake = _ref.drake;
-
-	  return new DragHandler({
-	    ctx: ctx,
-	    name: name,
-	    drake: drake
-	  });
-	}
-
-	function createModelManager(opts) {
-	  return new ModelManager(opts);
-	}
-
-	var DragulaService = function () {
-	  function DragulaService() {
-	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    classCallCheck(this, DragulaService);
-	    var name = opts.name,
-	        eventBus = opts.eventBus,
-	        drakes = opts.drakes,
-	        options = opts.options;
-
-	    options = options || {};
-	    this.options = options;
-	    this.logging = options.logging;
-
-	    this.log('CREATE DragulaService', opts);
-
-	    this.name = name;
-	    this.drakes = drakes || {}; // drake store
-	    this.eventBus = eventBus;
-	    this.createDragHandler = options.createDragHandler || createDragHandler;
-	    this.createModelManager = options.createModelManager || createModelManager;
-
-	    this.modelManager = this.createModelManager(options);
-
-	    // Dragula events supported
-	    this.events = ['cancel', 'cloned', 'drag', 'dragend', 'drop', 'out', 'over', 'remove', 'shadow', 'dropModel', 'removeModel', 'accepts', 'moves', 'invalid'];
-	  }
-
-	  createClass(DragulaService, [{
-	    key: 'addEvents',
-	    value: function addEvents() {
-	      var _events;
-
-	      this.events = (_events = this.events).concat.apply(_events, arguments);
-	    }
-	  }, {
-	    key: 'removeEvents',
-	    value: function removeEvents() {
-	      for (var _len = arguments.length, eventNames = Array(_len), _key = 0; _key < _len; _key++) {
-	        eventNames[_key] = arguments[_key];
-	      }
-
-	      this.events = this.events.filter(function (name) {
-	        return eventNames.includes(name);
-	      });
-	    }
-	  }, {
-	    key: 'createModel',
-	    value: function createModel() {
-	      return this.modelManager.createModel();
-	    }
-	  }, {
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-	        args[_key2 - 1] = arguments[_key2];
-	      }
-
-	      (_console = console).log.apply(_console, ['DragulaService [' + this.name + '] :', event].concat(args));
-	    }
-	  }, {
-	    key: 'error',
-	    value: function error(msg) {
-	      console.error(msg);
-	      throw new Error(msg);
-	    }
-	  }, {
-	    key: '_validate',
-	    value: function _validate(method, name) {
-	      if (!name) {
-	        this.error(method + ' must take a drake name as the first argument');
-	      }
-	    }
-	  }, {
-	    key: 'add',
-	    value: function add(name, drake) {
-	      this.log('add (drake)', name, drake);
-	      this._validate('add', name);
-	      if (this.find(name)) {
-	        this.log('existing drakes', this.drakeNames);
-	        var errMsg = 'Drake named: "' + name + '" already exists for this service [' + this.name + '].\n      Most likely this error in cause by a race condition evaluating multiple template elements with\n      the v-dragula directive having the same drake name. Please initialise the drake in the created() life cycle hook of the VM to fix this problem.';
-	        this.error(errMsg);
-	      }
-
-	      this.drakes[name] = drake;
-	      if (drake.models) {
-	        this.handleModels(name, drake);
-	      }
-	      if (!drake.initEvents) {
-	        this.setupEvents(name, drake);
-	      }
-	      return drake;
-	    }
-	  }, {
-	    key: 'find',
-	    value: function find(name) {
-	      this.log('find (drake) by name', name);
-	      this._validate('find', name);
-	      return this.drakes[name];
-	    }
-	  }, {
-	    key: 'handleModels',
-	    value: function handleModels(name, drake) {
-	      this.log('handleModels', name, drake);
-	      this._validate('handleModels', name);
-	      if (drake.registered) {
-	        // do not register events twice
-	        this.log('handleModels', 'already registered');
-	        return;
-	      }
-
-	      var dragHandler = this.createDragHandler({
-	        ctx: this,
-	        name: name,
-	        drake: drake
-	      });
-	      this.log('created dragHandler for service', dragHandler);
-
-	      drake.on('remove', dragHandler.remove.bind(dragHandler));
-	      drake.on('drag', dragHandler.drag.bind(dragHandler));
-	      drake.on('drop', dragHandler.drop.bind(dragHandler));
-
-	      drake.registered = true;
-	    }
-
-	    // convenience to set eventBus handlers via Object
-
-	  }, {
-	    key: 'on',
-	    value: function on() {
-	      var _this2 = this;
-
-	      var handlerConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      this.log('on (events) ', handlerConfig);
-	      Object.keys(handlerConfig).forEach(function (handlerName) {
-	        var handlerFunction = handlerConfig[handlerName];
-	        _this2.log('$on', handlerName, handlerFunction);
-	        _this2.eventBus.$on(handlerName, handlerFunction);
-	      });
-	    }
-	  }, {
-	    key: 'destroy',
-	    value: function destroy(name) {
-	      this.log('destroy (drake) ', name);
-	      this._validate('destroy', name);
-	      var drake = this.find(name);
-	      if (!drake) {
-	        return;
-	      }
-	      drake.destroy();
-	      this._delete(name);
-	    }
-	  }, {
-	    key: '_delete',
-	    value: function _delete(name) {
-	      delete this.drakes[name];
-	    }
-	  }, {
-	    key: 'setOptions',
-	    value: function setOptions(name, options) {
-	      this.log('setOptions (drake)', name, options);
-	      this._validate('setOptions', name);
-	      var drake = this.add(name, dragula$1(options));
-	      this.handleModels(name, drake);
-	      return this;
-	    }
-	  }, {
-	    key: 'calcOpts',
-	    value: function calcOpts(name, args) {
-	      function noOpts() {
-	        return {};
-	      }
-	      var argEventMap = this.argsEventMap[name] || this.argsEventMap.defaultEvent || noOpts;
-	      return argEventMap(args);
-	    }
-	  }, {
-	    key: 'setupEvents',
-	    value: function setupEvents(name) {
-	      var drake = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	      this.log('setupEvents', name, drake);
-	      this._validate('setupEvents', name);
-	      drake.initEvents = true;
-	      var _this = this;
-
-	      var emitter = function emitter(type) {
-	        _this.log('emitter', type);
-
-	        function replicate() {
-	          var args = Array.prototype.slice.call(arguments);
-	          var opts = _this.calcOpts(name, args);
-	          opts.name = name;
-	          opts.service = this;
-	          opts.drake = drake;
-	          _this.log('eventBus.$emit', type, name, opts);
-	          _this.eventBus.$emit(type, opts);
-	          _this.eventBus.$emit(this.name + ':' + type, opts);
-	        }
-
-	        drake.on(type, replicate);
-	      };
-	      this.events.forEach(emitter);
-	    }
-	  }, {
-	    key: 'domIndexOf',
-	    value: function domIndexOf(child, parent) {
-	      return Array.prototype.indexOf.call(parent.children, child);
-	    }
-	  }, {
-	    key: 'findModelForContainer',
-	    value: function findModelForContainer(container, drake) {
-	      this.log('findModelForContainer', container, drake);
-	      return (this.findModelContainerByContainer(container, drake) || {}).model;
-	    }
-	  }, {
-	    key: 'findModelContainerByContainer',
-	    value: function findModelContainerByContainer(container, drake) {
-	      if (!drake.models) {
-	        this.log('findModelContainerByContainer', 'warning: no models found');
-	        return;
-	      }
-	      var found = drake.models.find(function (model) {
-	        return model.container === container;
-	      });
-	      if (!found) {
-	        this.log('No matching model could be found for container:', container);
-	        this.log('in drake', drake.name, ' models:', drake.models);
-	      }
-	      return found;
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging && this.logging.service;
-	    }
-	  }, {
-	    key: 'drakeNames',
-	    get: function get() {
-	      return Object.keys(this.drakes);
-	    }
-	  }, {
-	    key: 'argsEventMap',
-	    get: function get() {
-	      this._argsEventMap = this._argsEventMap || this.defaultArgsEventMap;
-	      return this._argsEventMap;
-	    },
-	    set: function set(customArgsEventMap) {
-	      this._argsEventMap = customArgsEventMap;
-	    }
-	  }, {
-	    key: 'defaultArgsEventMap',
-	    get: function get() {
-	      return {
-	        cloned: function cloned(args) {
-	          return {
-	            clone: args[0],
-	            original: args[1],
-	            type: args[2]
-	          };
-	        },
-	        moves: function moves(args) {
-	          return {
-	            el: args[0],
-	            source: args[1],
-	            handle: args[2],
-	            sibling: args[3]
-	          };
-	        },
-	        copy: function copy(args) {
-	          return {
-	            el: args[0],
-	            source: args[1]
-	          };
-	        },
-	        accepts: function accepts(args) {
-	          return {
-	            el: args[0],
-	            target: args[1],
-	            source: args[2],
-	            sibling: args[3]
-	          };
-	        },
-	        invalid: function invalid(args) {
-	          return {
-	            el: args[0],
-	            handle: args[1]
-	          };
-	        },
-	        drag: function drag(args) {
-	          return {
-	            el: args[0],
-	            source: args[1]
-	          };
-	        },
-	        dragend: function dragend(args) {
-	          return {
-	            el: args[0]
-	          };
-	        },
-	        drop: function drop(args) {
-	          return {
-	            el: args[0],
-	            target: args[1],
-	            source: args[2],
-	            sibling: args[3]
-	          };
-	        },
-	        defaultEvent: function defaultEvent(args) {
-	          return {
-	            el: args[0],
-	            container: args[1],
-	            source: args[2]
-	          };
-	        }
-	      };
-	    }
-	  }]);
-	  return DragulaService;
-	}();
-
-	if (!dragula$1) {
-	  throw new Error('[vue-dragula] cannot locate dragula.');
-	}
-
-	var defaults = {
-	  createService: function createService(_ref) {
-	    var name = _ref.name,
-	        eventBus = _ref.eventBus,
-	        drakes = _ref.drakes,
-	        options = _ref.options;
-
-	    return new DragulaService({
-	      name: name,
-	      eventBus: eventBus,
-	      drakes: drakes,
-	      options: options
-	    });
-	  },
-	  createEventBus: function createEventBus(Vue) {
-	    return new Vue();
-	  }
-	};
-
-	function isEmpty(str) {
-	  if (!str) return true;
-	  if (str.length === 0) return true;
-	  return false;
-	}
-
-	function VueDragula (Vue) {
-	  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	  // set full fine-grained logging if true
-	  if (options.logging === true) {
-	    options.logging = {
-	      plugin: true,
-	      directive: true,
-	      service: true,
-	      dragHandler: true
-	    };
-	  }
-
-	  function logPlugin() {
-	    var _console;
-
-	    if (!options.logging) return;
-	    if (!options.logging.plugin) return;
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    (_console = console).log.apply(_console, ['vue-dragula plugin'].concat(args));
-	  }
-
-	  function logServiceConfig() {
-	    var _console2;
-
-	    if (!options.logging) return;
-	    if (!options.logging.service) return;
-
-	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	      args[_key2] = arguments[_key2];
-	    }
-
-	    (_console2 = console).log.apply(_console2, ['vue-dragula service config: '].concat(args));
-	  }
-
-	  function logDir() {
-	    var _console3;
-
-	    if (!options.logging) return;
-	    if (!options.logging.directive) return;
-
-	    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-	      args[_key3] = arguments[_key3];
-	    }
-
-	    (_console3 = console).log.apply(_console3, ['v-dragula directive'].concat(args));
-	  }
-
-	  logPlugin('Initializing vue-dragula plugin', options);
-
-	  var _createService = options.createService || defaults.createService;
-	  var createEventBus = options.createEventBus || defaults.createEventBus || new Vue();
-
-	  logPlugin('create eventBus', createEventBus);
-	  var eventBus = createEventBus(Vue, options);
-
-	  if (!eventBus) {
-	    console.warn('Eventbus could not be created');
-	    throw new Error('Eventbus could not be created');
-	  }
-
-	  logPlugin('eventBus created', eventBus);
-
-	  // global service
-	  var appService = _createService({
-	    name: 'global.dragula',
-	    eventBus: eventBus,
-	    drakes: options.drakes,
-	    options: options
-	  });
-
-	  var globalName = 'globalDrake';
-
-	  var Dragula = function () {
-	    function Dragula(options) {
-	      classCallCheck(this, Dragula);
-
-	      this.options = options;
-
-	      // convenience functions on global service
-	      this.$service = {
-	        options: appService.setOptions.bind(appService),
-	        find: appService.find.bind(appService),
-	        eventBus: appService.eventBus
-	        // add default drake on global app service
-	      };this.$service.options('default', {});
-
-	      // alias
-	      this.createServices = this.createService;
-	    }
-
-	    createClass(Dragula, [{
-	      key: 'optionsFor',
-	      value: function optionsFor(name) {
-	        var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	        this.service(name).setOptions(opts);
-	        return this;
-	      }
-	    }, {
-	      key: 'createService',
-	      value: function createService() {
-	        var _this = this;
-
-	        var serviceOpts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	        logServiceConfig('createService', serviceOpts);
-
-	        this._serviceMap = this._serviceMap || {};
-
-	        var names = serviceOpts.names || [];
-	        var name = serviceOpts.name || [];
-	        var drakes = serviceOpts.drakes || {};
-	        var drake = serviceOpts.drake;
-	        var opts = Object.assign({}, options, serviceOpts);
-	        names = names.length > 0 ? names : [name];
-	        var eventBus = serviceOpts.eventBus || appService.eventBus;
-	        if (!eventBus) {
-	          console.warn('Eventbus could not be created', eventBus);
-	        }
-
-	        logServiceConfig('names', names);
-	        names.forEach(function (name) {
-	          var createOpts = {
-	            name: name,
-	            eventBus: eventBus,
-	            options: opts
-	          };
-	          logServiceConfig('create DragulaService', name, createOpts);
-	          _this._serviceMap[name] = _createService(createOpts);
-
-	          // use 'default' drakes if none specified
-	          if (!drakes.default) {
-	            drakes.default = drake || true;
-	          }
-
-	          _this.drakesFor(name, drakes);
-	        });
-	        return this;
-	      }
-	    }, {
-	      key: 'drakesFor',
-	      value: function drakesFor(name) {
-	        var drakes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	        logServiceConfig('drakesFor', name, drakes);
-	        var service = this.service(name);
-
-	        if (Array.isArray(drakes)) {
-	          // turn Array into object of [name]: true
-	          drakes = drakes.reduce(function (obj, name) {
-	            obj[name] = true;
-	            return obj;
-	          }, {});
-	        }
-
-	        Object.keys(drakes).forEach(function (drakeName) {
-	          var drakeOpts = drakes[drakeName];
-	          if (drakeOpts === true) {
-	            drakeOpts = {};
-	          }
-
-	          service.setOptions(drakeName, drakeOpts);
-	        });
-	        return this;
-	      }
-	    }, {
-	      key: 'on',
-	      value: function on(name) {
-	        var _this2 = this;
-
-	        var handlerConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	        logServiceConfig('on', name, handlerConfig);
-	        if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
-	          handlerConfig = name;
-	          // add event handlers for all services
-	          var serviceNames = this.serviceNames;
-
-	          if (!serviceNames || serviceNames.length < 1) {
-	            console.warn('vue-dragula: No services found to add events handlers for', this._serviceMap);
-	            return this;
-	          }
-
-	          logServiceConfig('add event handlers for', serviceNames);
-	          serviceNames.forEach(function (serviceName) {
-	            _this2.on(serviceName, handlerConfig);
-	          });
-	          return this;
-	        }
-
-	        var service = this.service(name);
-	        if (!service) {
-	          console.warn('vue-dragula: no service ' + name + ' to add event handlers for');
-	          return this;
-	        }
-	        logServiceConfig('service.on', service, handlerConfig);
-	        service.on(handlerConfig);
-	        return this;
-	      }
-	    }, {
-	      key: 'service',
-
-
-	      // return named service or first service
-	      value: function service(name) {
-	        if (!this._serviceMap) return;
-
-	        var found = this._serviceMap[name];
-	        logServiceConfig('lookup service', name, found);
-
-	        if (!found) {
-	          logServiceConfig('not found by name, get default');
-	          var keys = this.serviceNames;
-	          if (keys) {
-	            found = this._serviceMap[keys[0]];
-	          }
-	        }
-	        return found;
-	      }
-	    }, {
-	      key: 'serviceNames',
-	      get: function get() {
-	        return Object.keys(this._serviceMap);
-	      }
-	    }, {
-	      key: 'services',
-	      get: function get() {
-	        return Object.values(this._serviceMap);
-	      }
-	    }]);
-	    return Dragula;
-	  }();
-
-	  Vue.$dragula = new Dragula(options);
-
-	  var drakeContainers = {};
-
-	  Vue.prototype.$dragula = Vue.$dragula;
-
-	  function findService(name, vnode, serviceName) {
-	    // first try to register on DragulaService of component
-	    if (vnode) {
-	      var _dragula = vnode.context.$dragula;
-	      if (_dragula) {
-	        logDir('trying to find and use component service');
-
-	        var componentService = _dragula.service(serviceName);
-	        if (componentService) {
-	          logDir('using component service', componentService);
-	          return componentService;
-	        }
-	      }
-	    }
-	    logDir('using global service', appService);
-	    return appService;
-	  }
-
-	  function calcNames(name, vnode, ctx) {
-	    var drakeName = vnode ? vnode.data.attrs.drake : this.params.drake;
-	    var serviceName = vnode ? vnode.data.attrs.service : this.params.service;
-
-	    if (drakeName !== undefined && drakeName.length !== 0) {
-	      name = drakeName;
-	    }
-	    drakeName = isEmpty(drakeName) ? 'default' : drakeName;
-
-	    return {
-	      name: name,
-	      drakeName: drakeName,
-	      serviceName: serviceName
-	    };
-	  }
-
-	  function updateDirective(container, binding, vnode, oldVnode) {
-	    logDir('updateDirective');
-	    var newValue = vnode ? binding.value : container;
-	    if (!newValue) {
-	      return;
-	    }
-
-	    var _calcNames = calcNames(globalName, vnode, this),
-	        name = _calcNames.name,
-	        drakeName = _calcNames.drakeName,
-	        serviceName = _calcNames.serviceName;
-
-	    var service = findService(name, vnode, serviceName);
-	    var drake = service.find(drakeName, vnode);
-
-	    drakeContainers[drakeName] = drakeContainers[drakeName] || [];
-	    var dc = drakeContainers[drakeName];
-
-	    // skip if has already been configured (same container in same drake)
-	    if (dc) {
-	      var found = dc.find(function (c) {
-	        return c === container;
-	      });
-	      if (found) {
-	        logDir('already has drake container configured', drakeName, container);
-	        return;
-	      }
-	    }
-
-	    if (!service) {
-	      logDir('no service found', name, drakeName);
-	      return;
-	    }
-
-	    if (!drake.models) {
-	      drake.models = [];
-	    }
-
-	    if (!vnode) {
-	      container = this.el; // Vue 1
-	    }
-
-	    var modelContainer = service.findModelContainerByContainer(container, drake);
-
-	    dc.push(container);
-
-	    logDir('DATA', {
-	      service: {
-	        name: serviceName,
-	        instance: service
-	      },
-	      drake: {
-	        name: drakeName,
-	        instance: drake
-	      },
-	      container: container,
-	      modelContainer: modelContainer
-	    });
-
-	    if (modelContainer) {
-	      logDir('set model of container', newValue);
-	      modelContainer.model = newValue;
-	    } else {
-	      logDir('push model and container on drake', newValue, container);
-	      drake.models.push({
-	        model: newValue,
-	        container: container
-	      });
-	    }
-	  }
-
-	  Vue.directive('dragula', {
-	    params: ['drake', 'service'],
-
-	    bind: function bind(container, binding, vnode) {
-	      logDir('BIND', container, binding, vnode);
-
-	      var _calcNames2 = calcNames(globalName, vnode, this),
-	          name = _calcNames2.name,
-	          drakeName = _calcNames2.drakeName,
-	          serviceName = _calcNames2.serviceName;
-
-	      var service = findService(name, vnode, serviceName);
-	      var drake = service.find(drakeName, vnode);
-
-	      if (!vnode) {
-	        container = this.el; // Vue 1
-	      }
-
-	      logDir({
-	        service: {
-	          name: serviceName,
-	          instance: service
-	        },
-	        drake: {
-	          name: drakeName,
-	          instance: drake
-	        },
-	        container: container
-	      });
-
-	      if (drake) {
-	        drake.containers.push(container);
-	        return;
-	      }
-	      var newDrake = dragula$1({
-	        containers: [container]
-	      });
-	      service.add(name, newDrake);
-
-	      service.handleModels(name, newDrake);
-	    },
-	    update: function update(container, binding, vnode, oldVnode) {
-	      logDir('UPDATE', container, binding, vnode);
-	      // Vue 1
-	      if (Vue.version === 1) {
-	        updateDirective(container, binding, vnode, oldVnode);
-	      }
-	    },
-	    componentUpdated: function componentUpdated(container, binding, vnode, oldVnode) {
-	      logDir('COMPONENT UPDATED', container, binding, vnode);
-	    },
-	    inserted: function inserted(container, binding, vnode, oldVnode) {
-	      logDir('INSERTED', container, binding, vnode);
-	      // Vue 2
-	      updateDirective(container, binding, vnode, oldVnode);
-	    },
-	    unbind: function unbind(container, binding, vnode) {
-	      logDir('UNBIND', container, binding, vnode);
-
-	      var _calcNames3 = calcNames(globalName, vnode, this),
-	          name = _calcNames3.name,
-	          drakeName = _calcNames3.drakeName,
-	          serviceName = _calcNames3.serviceName;
-
-	      var service = findService(name, vnode, serviceName);
-	      var drake = service.find(drakeName, vnode);
-
-	      logDir({
-	        service: {
-	          name: serviceName,
-	          instance: service
-	        },
-	        drake: {
-	          name: drakeName,
-	          instance: drake
-	        },
-	        container: container
-	      });
-
-	      if (!drake) {
-	        return;
-	      }
-
-	      var containerIndex = drake.containers.indexOf(container);
-
-	      if (containerIndex > -1) {
-	        logDir('remove container', containerIndex);
-	        drake.containers.splice(containerIndex, 1);
-	      }
-
-	      if (drake.containers.length === 0) {
-	        logDir('destroy service');
-	        service.destroy(name);
-	      }
-	    }
-	  });
-	}
-
-	var TimeMachine = function () {
-	  function TimeMachine(_ref) {
-	    var name = _ref.name,
-	        model = _ref.model,
-	        modelRef = _ref.modelRef,
-	        history = _ref.history,
-	        logging = _ref.logging;
-	    classCallCheck(this, TimeMachine);
-
-	    this.name = name || 'default';
-	    this.model = model;
-	    this.modelRef = modelRef;
-	    this.logging = logging;
-	    this.history = history || this.createHistory();
-	    this.history.push(this.model);
-	    this.timeIndex = 0;
-	  }
-
-	  createClass(TimeMachine, [{
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      (_console = console).log.apply(_console, [this.clazzName + ' [' + this.name + '] :', event].concat(args));
-	    }
-	  }, {
-	    key: 'createHistory',
-	    value: function createHistory() {
-	      return this.history || [];
-	    }
-	  }, {
-	    key: 'timeTravel',
-	    value: function timeTravel(index) {
-	      this.log('timeTravel to', index);
-	      this.model = this.history[index];
-	      this.updateModelRef();
-	      return this;
-	    }
-	  }, {
-	    key: 'updateModelRef',
-	    value: function updateModelRef() {
-	      var _this = this;
-
-	      // this.modelRef = mutable
-	      // this.log('set modelRef', this.modelRef, this.model)
-	      this.modelRef.splice(0, this.modelRef.length);
-	      this.model.forEach(function (item) {
-	        _this.modelRef.push(item);
-	      });
-	    }
-	  }, {
-	    key: 'undo',
-	    value: function undo() {
-	      this.log('undo timeIndex', this.timeIndex);
-	      if (this.timeIndex === 0) {
-	        return false;
-	      }
-	      this.timeIndex--;
-	      this.timeTravel(this.timeIndex);
-	      return this;
-	    }
-	  }, {
-	    key: 'redo',
-	    value: function redo() {
-	      this.log('redo timeIndex', this.timeIndex, this.history.length);
-	      if (this.timeIndex > this.history.length - 1) {
-	        return false;
-	      }
-	      this.timeIndex++;
-	      this.timeTravel(this.timeIndex);
-	      return this;
-	    }
-	  }, {
-	    key: 'addToHistory',
-	    value: function addToHistory(newModel) {
-	      this.log('addToHistory');
-	      this.log('old', this.model);
-	      this.log('new', newModel);
-	      this.model = newModel;
-	      this.log('model was set to', this.model);
-	      this.history.push(newModel);
-	      this.timeIndex++;
-	      this.updateModelRef();
-	      return this;
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging && this.logging.modelManager;
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'TimeMachine';
-	    }
-	  }]);
-	  return TimeMachine;
-	}();
-
-	var createDefaultTimeMachine = function createDefaultTimeMachine(opts) {
-	  return new TimeMachine(opts);
-	};
-
-	var ImmutableModelManager = function (_ModelManager) {
-	  inherits(ImmutableModelManager, _ModelManager);
-
-	  function ImmutableModelManager() {
-	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    classCallCheck(this, ImmutableModelManager);
-
-	    var _this = possibleConstructorReturn(this, (ImmutableModelManager.__proto__ || Object.getPrototypeOf(ImmutableModelManager)).call(this, opts));
-
-	    _this.timeOut = opts.timeOut || 800;
-	    var createTimeMachine = opts.createTimeMachine || createDefaultTimeMachine;
-	    _this.timeMachine = createTimeMachine(Object.assign(opts, {
-	      model: _this.model,
-	      modelRef: _this.modelRef
-	    }));
-	    return _this;
-	  }
-
-	  createClass(ImmutableModelManager, [{
-	    key: 'timeTravel',
-
-
-	    /**
-	     * Travel to specific point in action history stack
-	     * @param {*} index
-	     */
-	    value: function timeTravel(index) {
-	      return this.timeMachine.timeTravel(index);
-	    }
-
-	    /**
-	     * Undo previous action from history
-	     */
-
-	  }, {
-	    key: 'undo',
-	    value: function undo() {
-	      // this.log('UNDO', this.timeMachine)
-	      this.timeMachine.undo();
-	      return this;
-	    }
-
-	    /**
-	     * Redo undone action
-	     */
-
-	  }, {
-	    key: 'redo',
-	    value: function redo() {
-	      // this.log('REDO', this.timeMachine)
-	      this.timeMachine.redo();
-	      return this;
-	    }
-	  }, {
-	    key: 'addToHistory',
-	    value: function addToHistory(model) {
-	      this.timeMachine.addToHistory(model);
-	      return this;
-	    }
-
-	    // override with Immutable
-
-	  }, {
-	    key: 'createModel',
-	    value: function createModel(model) {
-	      return model || [];
-	    }
-
-	    // TODO: add to history!?
-
-	  }, {
-	    key: 'createFor',
-	    value: function createFor() {
-	      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-	      return new ImmutableModelManager(opts);
-	    }
-	  }, {
-	    key: 'isEmpty',
-	    value: function isEmpty() {
-	      return this.model.length === 0;
-	    }
-	  }, {
-	    key: 'actionUpdateModel',
-	    value: function actionUpdateModel(newModel) {
-	      var _this2 = this;
-
-	      setTimeout(function () {
-	        _this2.addToHistory(newModel);
-	      }, this.timeOut || 800);
-	    }
-
-	    /**
-	     * Removes item at index
-	     * @param {*} index
-	     */
-
-	  }, {
-	    key: 'removeAt',
-	    value: function removeAt(index) {
-	      if (this.copy) return;
-	      this.log('removeAt', {
-	        model: this.model,
-	        index: index
-	      });
-	      // create new model with self excluded
-	      var before = this.model.slice(0, index);
-	      var exclAfter = this.model.slice(index + 1);
-
-	      this.log('removeAt: concat', before, exclAfter);
-	      var newModel = this.createModel().concat(before, exclAfter);
-
-	      this.actionUpdateModel(newModel);
-	      return newModel;
-	    }
-
-	    /**
-	     * Inserts a dropModel at specific index
-	     * NOTE: Copy needs to insert the copied item only, no remove or move involved
-	     * @param {*} index
-	     * @param {*} dropModel
-	     */
-
-	  }, {
-	    key: 'insertAt',
-	    value: function insertAt(index, insertModel) {
-	      this.log('insertAt', {
-	        model: this.model,
-	        index: index,
-	        insertModel: insertModel
-	      });
-
-	      // create new model with new inserted
-
-	      // Slice off the items BEFORE the insertion index
-	      var itemsBefore = this.sliceBefore(index);
-
-	      // Slice off the items ATER the insertion index
-	      var itemsAfter = this._sliceAfter(index);
-
-	      this.log('insertAt: concat', {
-	        itemsBefore: itemsBefore,
-	        insertModel: insertModel,
-	        itemsAfter: itemsAfter
-	      });
-
-	      var newModel = this._createNewModelFromInsert(itemsBefore, insertModel, itemsAfter);
-
-	      this.log({
-	        newModel: newModel
-	      });
-
-	      this.actionUpdateModel(newModel);
-	      return newModel;
-	    }
-	  }, {
-	    key: '_createNewModelFromInsert',
-	    value: function _createNewModelFromInsert(itemsBefore, insertItem, itemsAfter) {
-	      return this.createModel().concat(itemsBefore, insertItem, itemsAfter);
-	    }
-
-	    /**
-	     * Slice off the items before the insertion index
-	     * @param {*} index
-	     */
-
-	  }, {
-	    key: '_sliceBefore',
-	    value: function _sliceBefore(index) {
-	      return this.model.slice(0, index);
-	    }
-
-	    /**
-	     * Slice off the items after the insertion index
-	     * @param {*} index
-	     */
-
-	  }, {
-	    key: '_sliceAfter',
-	    value: function _sliceAfter(index) {
-	      this.model.slice(index);
-	    }
-
-	    /**
-	     * Moves item from one index to another
-	     * NOTE: If we are doing a copy, we should never perform a move (ie. a remove and insert)
-	     * @param {*} param0
-	     */
-
-	  }, {
-	    key: 'move',
-	    value: function move(_ref) {
-	      var dragIndex = _ref.dragIndex,
-	          dropIndex = _ref.dropIndex;
-
-	      if (this.copy) return;
-	      this.log('move', {
-	        model: this.model,
-	        dragIndex: dragIndex,
-	        dropIndex: dropIndex
-	      });
-	      this.timeMachine.undo();
-	      return this;
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'ImmutableModelManager';
-	    }
-	  }, {
-	    key: 'model',
-	    get: function get() {
-	      return this.timeMachine ? this.timeMachine.model : this._model;
-	    }
-	  }, {
-	    key: 'history',
-	    get: function get() {
-	      return this.timeMachine.history;
-	    }
-	  }, {
-	    key: 'timeIndex',
-	    get: function get() {
-	      return this.timeMachine.timeIndex;
-	    }
-	  }, {
-	    key: 'first',
-	    get: function get() {
-	      return this.at(0);
-	    }
-	  }, {
-	    key: 'last',
-	    get: function get() {
-	      return this.at(this.model.length - 1);
-	    }
-	  }]);
-	  return ImmutableModelManager;
-	}(ModelManager);
-
-	var ActionManager = function () {
-	  function ActionManager() {
-	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    classCallCheck(this, ActionManager);
-
-	    this.name = opts.name || 'default';
-	    this.logging = opts.logging;
-	    this.observer = {
-	      undo: function undo(action) {},
-	      redo: function redo(action) {}
-	    };
-
-	    this.actions = {
-	      // stack of actions to undo
-	      done: [],
-	      // stack of actions undone to be redone(via. redo)
-	      undone: []
-	    };
-	  }
-
-	  createClass(ActionManager, [{
-	    key: 'log',
-	    value: function log(event) {
-	      var _console;
-
-	      if (!this.shouldLog) return;
-
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      (_console = console).log.apply(_console, [this.clazzName + ' [' + this.name + '] :', event].concat(args));
-	    }
-	  }, {
-	    key: 'clear',
-	    value: function clear() {
-	      this.actions.done = [];
-	      this.actions.undone = [];
-	    }
-
-	    // perform undo/redo on model (container)
-
-	  }, {
-	    key: 'doAct',
-	    value: function doAct(container, action) {
-	      this.log('doAct', {
-	        container: container,
-	        action: action
-	      });
-	      var actFun = container[action].bind(container);
-	      // this.log('doAct', actFun, container, action)
-	      if (!actFun) {
-	        throw new Error(container, 'missing', action, 'method');
-	      }
-	      actFun();
-	    }
-
-	    // if not a copy action, do the action on source container also
-
-	  }, {
-	    key: 'isSourceContainerAction',
-	    value: function isSourceContainerAction(action) {
-	      return action !== 'copy';
-	    }
-	  }, {
-	    key: 'isTargetContainerAction',
-	    value: function isTargetContainerAction(action) {
-	      return true;
-	    }
-	  }, {
-	    key: 'do',
-	    value: function _do(_ref) {
-	      var name = _ref.name,
-	          container = _ref.container;
-
-	      // this.log(name)
-	      var cDo = container.do;
-	      var cUndo = container.undo;
-	      if (!cDo.length) {
-	        // this.log('actions empty', cDo)
-	        return;
-	      }
-	      var action = cDo.pop();
-	      // TODO: use elements, indexes to create visual transition/animation effect
-	      var models = action.models;
-
-	      this.log('do', {
-	        name: name,
-	        action: action,
-	        source: source,
-	        target: target
-	      });
-
-	      var source = models.source,
-	          target = models.target;
-
-	      // perform one action on source and one on target
-	      // this could be the cause of the double copy problem
-	      // since a copy action only takes effect on the target container
-
-	      if (this.isSourceContainerAction(action)) {
-	        this.doAct(source, name);
-	      }
-	      if (this.isTargetContainerAction(action)) {
-	        this.doAct(target, name);
-	      }
-
-	      this.emitAction(name, action);
-
-	      cUndo.push(action);
-	      // this.log('actions undo', cUndo)
-	    }
-	  }, {
-	    key: 'emitAction',
-	    value: function emitAction(name, action) {
-	      this.log('emitAction', {
-	        name: name,
-	        action: action
-	      });
-	      var fun = this.observer[name];
-	      if (typeof fun === 'function') fun(action);
-	    }
-	  }, {
-	    key: 'onUndo',
-	    value: function onUndo(fun) {
-	      this.observer.undo = fun;
-	    }
-	  }, {
-	    key: 'onRedo',
-	    value: function onRedo(fun) {
-	      this.observer.redo = fun;
-	    }
-	  }, {
-	    key: 'undo',
-	    value: function undo() {
-	      this.log('UNDO');
-
-	      this.do({
-	        name: 'undo',
-	        container: {
-	          do: this.actions.done,
-	          undo: this.actions.undone
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'redo',
-	    value: function redo() {
-	      this.log('REDO');
-	      this.do({
-	        name: 'redo',
-	        container: {
-	          do: this.actions.undone,
-	          undo: this.actions.done
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'act',
-	    value: function act() {
-	      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	      var name = action.name,
-	          models = action.models,
-	          indexes = action.indexes,
-	          elements = action.elements;
-
-	      this.log('act (store action on stack)', {
-	        name: name,
-	        models: models,
-	        indexes: indexes,
-	        elements: elements
-	      });
-	      this.actions.done.push(action);
-	    }
-	  }, {
-	    key: 'clazzName',
-	    get: function get() {
-	      return this.constructor.name || 'ActionManager';
-	    }
-	  }, {
-	    key: 'shouldLog',
-	    get: function get() {
-	      return this.logging;
-	    }
-	  }]);
-	  return ActionManager;
-	}();
-
-	function plugin(Vue) {
-	  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	  if (plugin.installed) {
-	    console.warn('[vue-dragula] already installed.');
-	  }
-
-	  console.log('Add Dragula plugin:', options);
-	  VueDragula(Vue, options);
-	}
-
-	plugin.version = '2.0.1';
-
-	var Vue2Dragula = plugin;
-
-	if (true) {
-	  // eslint-disable-line
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-	    plugin;
-	  }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // eslint-disable-line
-	} else if (window.Vue) {
-	  window.Vue.use(plugin);
-	}
-
-	exports.Vue2Dragula = Vue2Dragula;
-	exports.DragulaService = DragulaService;
-	exports.DragHandler = DragHandler;
-	exports.ModelManager = ModelManager;
-	exports.ImmutableModelManager = ImmutableModelManager;
-	exports.TimeMachine = TimeMachine;
-	exports.ActionManager = ActionManager;
-
-}));
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(159).setImmediate, __webpack_require__(125)))
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+(function () {
+  "use strict";
+
+  if (!Array.from) {
+    Array.from = function (object) {
+      return [].slice.call(object);
+    };
+  }
+
+  function buildAttribute(object, propName, value) {
+    if (value == undefined) {
+      return object;
+    }
+    object = object == null ? {} : object;
+    object[propName] = value;
+    return object;
+  }
+
+  function buildDraggable(Sortable) {
+    function removeNode(node) {
+      node.parentElement.removeChild(node);
+    }
+
+    function insertNodeAt(fatherNode, node, position) {
+      var refNode = position === 0 ? fatherNode.children[0] : fatherNode.children[position - 1].nextSibling;
+      fatherNode.insertBefore(node, refNode);
+    }
+
+    function computeVmIndex(vnodes, element) {
+      return vnodes.map(function (elt) {
+        return elt.elm;
+      }).indexOf(element);
+    }
+
+    function _computeIndexes(slots, children, isTransition) {
+      if (!slots) {
+        return [];
+      }
+
+      var elmFromNodes = slots.map(function (elt) {
+        return elt.elm;
+      });
+      var rawIndexes = [].concat(_toConsumableArray(children)).map(function (elt) {
+        return elmFromNodes.indexOf(elt);
+      });
+      return isTransition ? rawIndexes.filter(function (ind) {
+        return ind !== -1;
+      }) : rawIndexes;
+    }
+
+    function emit(evtName, evtData) {
+      var _this = this;
+
+      this.$nextTick(function () {
+        return _this.$emit(evtName.toLowerCase(), evtData);
+      });
+    }
+
+    function delegateAndEmit(evtName) {
+      var _this2 = this;
+
+      return function (evtData) {
+        if (_this2.realList !== null) {
+          _this2['onDrag' + evtName](evtData);
+        }
+        emit.call(_this2, evtName, evtData);
+      };
+    }
+
+    var eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End'];
+    var eventsToEmit = ['Choose', 'Sort', 'Filter', 'Clone'];
+    var readonlyProperties = ['Move'].concat(eventsListened, eventsToEmit).map(function (evt) {
+      return 'on' + evt;
+    });
+    var draggingElement = null;
+
+    var props = {
+      options: Object,
+      list: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      value: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      noTransitionOnDrag: {
+        type: Boolean,
+        default: false
+      },
+      clone: {
+        type: Function,
+        default: function _default(original) {
+          return original;
+        }
+      },
+      element: {
+        type: String,
+        default: 'div'
+      },
+      move: {
+        type: Function,
+        default: null
+      },
+      componentData: {
+        type: Object,
+        required: false,
+        default: null
+      }
+    };
+
+    var draggableComponent = {
+      name: 'draggable',
+
+      props: props,
+
+      data: function data() {
+        return {
+          transitionMode: false,
+          noneFunctionalComponentMode: false,
+          init: false
+        };
+      },
+      render: function render(h) {
+        var slots = this.$slots.default;
+        if (slots && slots.length === 1) {
+          var child = slots[0];
+          if (child.componentOptions && child.componentOptions.tag === "transition-group") {
+            this.transitionMode = true;
+          }
+        }
+        var children = slots;
+        var footer = this.$slots.footer;
+
+        if (footer) {
+          children = slots ? [].concat(_toConsumableArray(slots), _toConsumableArray(footer)) : [].concat(_toConsumableArray(footer));
+        }
+        var attributes = null;
+        var update = function update(name, value) {
+          attributes = buildAttribute(attributes, name, value);
+        };
+        update('attrs', this.$attrs);
+        if (this.componentData) {
+          var _componentData = this.componentData,
+              on = _componentData.on,
+              _props = _componentData.props;
+
+          update('on', on);
+          update('props', _props);
+        }
+        return h(this.element, attributes, children);
+      },
+      mounted: function mounted() {
+        var _this3 = this;
+
+        this.noneFunctionalComponentMode = this.element.toLowerCase() !== this.$el.nodeName.toLowerCase();
+        if (this.noneFunctionalComponentMode && this.transitionMode) {
+          throw new Error('Transition-group inside component is not supported. Please alter element value or remove transition-group. Current element value: ' + this.element);
+        }
+        var optionsAdded = {};
+        eventsListened.forEach(function (elt) {
+          optionsAdded['on' + elt] = delegateAndEmit.call(_this3, elt);
+        });
+
+        eventsToEmit.forEach(function (elt) {
+          optionsAdded['on' + elt] = emit.bind(_this3, elt);
+        });
+
+        var options = _extends({}, this.options, optionsAdded, { onMove: function onMove(evt, originalEvent) {
+            return _this3.onDragMove(evt, originalEvent);
+          } });
+        !('draggable' in options) && (options.draggable = '>*');
+        this._sortable = new Sortable(this.rootContainer, options);
+        this.computeIndexes();
+      },
+      beforeDestroy: function beforeDestroy() {
+        this._sortable.destroy();
+      },
+
+
+      computed: {
+        rootContainer: function rootContainer() {
+          return this.transitionMode ? this.$el.children[0] : this.$el;
+        },
+        isCloning: function isCloning() {
+          return !!this.options && !!this.options.group && this.options.group.pull === 'clone';
+        },
+        realList: function realList() {
+          return !!this.list ? this.list : this.value;
+        }
+      },
+
+      watch: {
+        options: {
+          handler: function handler(newOptionValue) {
+            for (var property in newOptionValue) {
+              if (readonlyProperties.indexOf(property) == -1) {
+                this._sortable.option(property, newOptionValue[property]);
+              }
+            }
+          },
+
+          deep: true
+        },
+
+        realList: function realList() {
+          this.computeIndexes();
+        }
+      },
+
+      methods: {
+        getChildrenNodes: function getChildrenNodes() {
+          if (!this.init) {
+            this.noneFunctionalComponentMode = this.noneFunctionalComponentMode && this.$children.length == 1;
+            this.init = true;
+          }
+
+          if (this.noneFunctionalComponentMode) {
+            return this.$children[0].$slots.default;
+          }
+          var rawNodes = this.$slots.default;
+          return this.transitionMode ? rawNodes[0].child.$slots.default : rawNodes;
+        },
+        computeIndexes: function computeIndexes() {
+          var _this4 = this;
+
+          this.$nextTick(function () {
+            _this4.visibleIndexes = _computeIndexes(_this4.getChildrenNodes(), _this4.rootContainer.children, _this4.transitionMode);
+          });
+        },
+        getUnderlyingVm: function getUnderlyingVm(htmlElt) {
+          var index = computeVmIndex(this.getChildrenNodes() || [], htmlElt);
+          if (index === -1) {
+            //Edge case during move callback: related element might be
+            //an element different from collection
+            return null;
+          }
+          var element = this.realList[index];
+          return { index: index, element: element };
+        },
+        getUnderlyingPotencialDraggableComponent: function getUnderlyingPotencialDraggableComponent(_ref) {
+          var __vue__ = _ref.__vue__;
+
+          if (!__vue__ || !__vue__.$options || __vue__.$options._componentTag !== "transition-group") {
+            return __vue__;
+          }
+          return __vue__.$parent;
+        },
+        emitChanges: function emitChanges(evt) {
+          var _this5 = this;
+
+          this.$nextTick(function () {
+            _this5.$emit('change', evt);
+          });
+        },
+        alterList: function alterList(onList) {
+          if (!!this.list) {
+            onList(this.list);
+          } else {
+            var newList = [].concat(_toConsumableArray(this.value));
+            onList(newList);
+            this.$emit('input', newList);
+          }
+        },
+        spliceList: function spliceList() {
+          var _arguments = arguments;
+
+          var spliceList = function spliceList(list) {
+            return list.splice.apply(list, _arguments);
+          };
+          this.alterList(spliceList);
+        },
+        updatePosition: function updatePosition(oldIndex, newIndex) {
+          var updatePosition = function updatePosition(list) {
+            return list.splice(newIndex, 0, list.splice(oldIndex, 1)[0]);
+          };
+          this.alterList(updatePosition);
+        },
+        getRelatedContextFromMoveEvent: function getRelatedContextFromMoveEvent(_ref2) {
+          var to = _ref2.to,
+              related = _ref2.related;
+
+          var component = this.getUnderlyingPotencialDraggableComponent(to);
+          if (!component) {
+            return { component: component };
+          }
+          var list = component.realList;
+          var context = { list: list, component: component };
+          if (to !== related && list && component.getUnderlyingVm) {
+            var destination = component.getUnderlyingVm(related);
+            if (destination) {
+              return _extends(destination, context);
+            }
+          }
+
+          return context;
+        },
+        getVmIndex: function getVmIndex(domIndex) {
+          var indexes = this.visibleIndexes;
+          var numberIndexes = indexes.length;
+          return domIndex > numberIndexes - 1 ? numberIndexes : indexes[domIndex];
+        },
+        getComponent: function getComponent() {
+          return this.$slots.default[0].componentInstance;
+        },
+        resetTransitionData: function resetTransitionData(index) {
+          if (!this.noTransitionOnDrag || !this.transitionMode) {
+            return;
+          }
+          var nodes = this.getChildrenNodes();
+          nodes[index].data = null;
+          var transitionContainer = this.getComponent();
+          transitionContainer.children = [];
+          transitionContainer.kept = undefined;
+        },
+        onDragStart: function onDragStart(evt) {
+          this.context = this.getUnderlyingVm(evt.item);
+          evt.item._underlying_vm_ = this.clone(this.context.element);
+          draggingElement = evt.item;
+        },
+        onDragAdd: function onDragAdd(evt) {
+          var element = evt.item._underlying_vm_;
+          if (element === undefined) {
+            return;
+          }
+          removeNode(evt.item);
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.spliceList(newIndex, 0, element);
+          this.computeIndexes();
+          var added = { element: element, newIndex: newIndex };
+          this.emitChanges({ added: added });
+        },
+        onDragRemove: function onDragRemove(evt) {
+          insertNodeAt(this.rootContainer, evt.item, evt.oldIndex);
+          if (this.isCloning) {
+            removeNode(evt.clone);
+            return;
+          }
+          var oldIndex = this.context.index;
+          this.spliceList(oldIndex, 1);
+          var removed = { element: this.context.element, oldIndex: oldIndex };
+          this.resetTransitionData(oldIndex);
+          this.emitChanges({ removed: removed });
+        },
+        onDragUpdate: function onDragUpdate(evt) {
+          removeNode(evt.item);
+          insertNodeAt(evt.from, evt.item, evt.oldIndex);
+          var oldIndex = this.context.index;
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.updatePosition(oldIndex, newIndex);
+          var moved = { element: this.context.element, oldIndex: oldIndex, newIndex: newIndex };
+          this.emitChanges({ moved: moved });
+        },
+        computeFutureIndex: function computeFutureIndex(relatedContext, evt) {
+          if (!relatedContext.element) {
+            return 0;
+          }
+          var domChildren = [].concat(_toConsumableArray(evt.to.children)).filter(function (el) {
+            return el.style['display'] !== 'none';
+          });
+          var currentDOMIndex = domChildren.indexOf(evt.related);
+          var currentIndex = relatedContext.component.getVmIndex(currentDOMIndex);
+          var draggedInList = domChildren.indexOf(draggingElement) != -1;
+          return draggedInList || !evt.willInsertAfter ? currentIndex : currentIndex + 1;
+        },
+        onDragMove: function onDragMove(evt, originalEvent) {
+          var onMove = this.move;
+          if (!onMove || !this.realList) {
+            return true;
+          }
+
+          var relatedContext = this.getRelatedContextFromMoveEvent(evt);
+          var draggedContext = this.context;
+          var futureIndex = this.computeFutureIndex(relatedContext, evt);
+          _extends(draggedContext, { futureIndex: futureIndex });
+          _extends(evt, { relatedContext: relatedContext, draggedContext: draggedContext });
+          return onMove(evt, originalEvent);
+        },
+        onDragEnd: function onDragEnd(evt) {
+          this.computeIndexes();
+          draggingElement = null;
+        }
+      }
+    };
+    return draggableComponent;
+  }
+
+  if (true) {
+    var Sortable = __webpack_require__(182);
+    module.exports = buildDraggable(Sortable);
+  } else if (typeof define == "function" && define.amd) {
+    define(['sortablejs'], function (Sortable) {
+      return buildDraggable(Sortable);
+    });
+  } else if (window && window.Vue && window.Sortable) {
+    var draggable = buildDraggable(window.Sortable);
+    Vue.component('draggable', draggable);
+  }
+})();
 
 /***/ }),
-/* 188 */
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
+ * Sortable
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @license MIT
+ */
+
+(function sortableModule(factory) {
+	"use strict";
+
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	}
+	else {
+		/* jshint sub:true */
+		window["Sortable"] = factory();
+	}
+})(function sortableFactory() {
+	"use strict";
+
+	if (typeof window === "undefined" || !window.document) {
+		return function sortableError() {
+			throw new Error("Sortable.js requires a window with a document");
+		};
+	}
+
+	var dragEl,
+		parentEl,
+		ghostEl,
+		cloneEl,
+		rootEl,
+		nextEl,
+		lastDownEl,
+
+		scrollEl,
+		scrollParentEl,
+		scrollCustomFn,
+
+		lastEl,
+		lastCSS,
+		lastParentCSS,
+
+		oldIndex,
+		newIndex,
+
+		activeGroup,
+		putSortable,
+
+		autoScroll = {},
+
+		tapEvt,
+		touchEvt,
+
+		moved,
+
+		/** @const */
+		R_SPACE = /\s+/g,
+		R_FLOAT = /left|right|inline/,
+
+		expando = 'Sortable' + (new Date).getTime(),
+
+		win = window,
+		document = win.document,
+		parseInt = win.parseInt,
+		setTimeout = win.setTimeout,
+
+		$ = win.jQuery || win.Zepto,
+		Polymer = win.Polymer,
+
+		captureMode = false,
+		passiveMode = false,
+
+		supportDraggable = ('draggable' in document.createElement('div')),
+		supportCssPointerEvents = (function (el) {
+			// false when IE11
+			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+				return false;
+			}
+			el = document.createElement('x');
+			el.style.cssText = 'pointer-events:auto';
+			return el.style.pointerEvents === 'auto';
+		})(),
+
+		_silent = false,
+
+		abs = Math.abs,
+		min = Math.min,
+
+		savedInputChecked = [],
+		touchDragOverListeners = [],
+
+		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+			if (rootEl && options.scroll) {
+				var _this = rootEl[expando],
+					el,
+					rect,
+					sens = options.scrollSensitivity,
+					speed = options.scrollSpeed,
+
+					x = evt.clientX,
+					y = evt.clientY,
+
+					winWidth = window.innerWidth,
+					winHeight = window.innerHeight,
+
+					vx,
+					vy,
+
+					scrollOffsetX,
+					scrollOffsetY
+				;
+
+				// Delect scrollEl
+				if (scrollParentEl !== rootEl) {
+					scrollEl = options.scroll;
+					scrollParentEl = rootEl;
+					scrollCustomFn = options.scrollFn;
+
+					if (scrollEl === true) {
+						scrollEl = rootEl;
+
+						do {
+							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
+								(scrollEl.offsetHeight < scrollEl.scrollHeight)
+							) {
+								break;
+							}
+							/* jshint boss:true */
+						} while (scrollEl = scrollEl.parentNode);
+					}
+				}
+
+				if (scrollEl) {
+					el = scrollEl;
+					rect = scrollEl.getBoundingClientRect();
+					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
+					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
+				}
+
+
+				if (!(vx || vy)) {
+					vx = (winWidth - x <= sens) - (x <= sens);
+					vy = (winHeight - y <= sens) - (y <= sens);
+
+					/* jshint expr:true */
+					(vx || vy) && (el = win);
+				}
+
+
+				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
+					autoScroll.el = el;
+					autoScroll.vx = vx;
+					autoScroll.vy = vy;
+
+					clearInterval(autoScroll.pid);
+
+					if (el) {
+						autoScroll.pid = setInterval(function () {
+							scrollOffsetY = vy ? vy * speed : 0;
+							scrollOffsetX = vx ? vx * speed : 0;
+
+							if ('function' === typeof(scrollCustomFn)) {
+								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
+							}
+
+							if (el === win) {
+								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
+							} else {
+								el.scrollTop += scrollOffsetY;
+								el.scrollLeft += scrollOffsetX;
+							}
+						}, 24);
+					}
+				}
+			}
+		}, 30),
+
+		_prepareGroup = function (options) {
+			function toFn(value, pull) {
+				if (value === void 0 || value === true) {
+					value = group.name;
+				}
+
+				if (typeof value === 'function') {
+					return value;
+				} else {
+					return function (to, from) {
+						var fromGroup = from.options.group.name;
+
+						return pull
+							? value
+							: value && (value.join
+								? value.indexOf(fromGroup) > -1
+								: (fromGroup == value)
+							);
+					};
+				}
+			}
+
+			var group = {};
+			var originalGroup = options.group;
+
+			if (!originalGroup || typeof originalGroup != 'object') {
+				originalGroup = {name: originalGroup};
+			}
+
+			group.name = originalGroup.name;
+			group.checkPull = toFn(originalGroup.pull, true);
+			group.checkPut = toFn(originalGroup.put);
+			group.revertClone = originalGroup.revertClone;
+
+			options.group = group;
+		}
+	;
+
+	// Detect support a passive mode
+	try {
+		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+			get: function () {
+				// `false`, because everything starts to work incorrectly and instead of d'n'd,
+				// begins the page has scrolled.
+				passiveMode = false;
+				captureMode = {
+					capture: false,
+					passive: passiveMode
+				};
+			}
+		}));
+	} catch (err) {}
+
+	/**
+	 * @class  Sortable
+	 * @param  {HTMLElement}  el
+	 * @param  {Object}       [options]
+	 */
+	function Sortable(el, options) {
+		if (!(el && el.nodeType && el.nodeType === 1)) {
+			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+		}
+
+		this.el = el; // root element
+		this.options = options = _extend({}, options);
+
+
+		// Export instance
+		el[expando] = this;
+
+		// Default options
+		var defaults = {
+			group: Math.random(),
+			sort: true,
+			disabled: false,
+			store: null,
+			handle: null,
+			scroll: true,
+			scrollSensitivity: 30,
+			scrollSpeed: 10,
+			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+			ghostClass: 'sortable-ghost',
+			chosenClass: 'sortable-chosen',
+			dragClass: 'sortable-drag',
+			ignore: 'a, img',
+			filter: null,
+			preventOnFilter: true,
+			animation: 0,
+			setData: function (dataTransfer, dragEl) {
+				dataTransfer.setData('Text', dragEl.textContent);
+			},
+			dropBubble: false,
+			dragoverBubble: false,
+			dataIdAttr: 'data-id',
+			delay: 0,
+			forceFallback: false,
+			fallbackClass: 'sortable-fallback',
+			fallbackOnBody: false,
+			fallbackTolerance: 0,
+			fallbackOffset: {x: 0, y: 0},
+			supportPointer: Sortable.supportPointer !== false
+		};
+
+
+		// Set default options
+		for (var name in defaults) {
+			!(name in options) && (options[name] = defaults[name]);
+		}
+
+		_prepareGroup(options);
+
+		// Bind all private methods
+		for (var fn in this) {
+			if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+				this[fn] = this[fn].bind(this);
+			}
+		}
+
+		// Setup drag mode
+		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+
+		// Bind events
+		_on(el, 'mousedown', this._onTapStart);
+		_on(el, 'touchstart', this._onTapStart);
+		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+
+		if (this.nativeDraggable) {
+			_on(el, 'dragover', this);
+			_on(el, 'dragenter', this);
+		}
+
+		touchDragOverListeners.push(this._onDragOver);
+
+		// Restore sorting
+		options.store && this.sort(options.store.get(this));
+	}
+
+
+	Sortable.prototype = /** @lends Sortable.prototype */ {
+		constructor: Sortable,
+
+		_onTapStart: function (/** Event|TouchEvent */evt) {
+			var _this = this,
+				el = this.el,
+				options = this.options,
+				preventOnFilter = options.preventOnFilter,
+				type = evt.type,
+				touch = evt.touches && evt.touches[0],
+				target = (touch || evt).target,
+				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				filter = options.filter,
+				startIndex;
+
+			_saveInputCheckedState(el);
+
+
+			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
+			if (dragEl) {
+				return;
+			}
+
+			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+				return; // only left button or enabled
+			}
+
+			// cancel dnd if original target is content editable
+			if (originalTarget.isContentEditable) {
+				return;
+			}
+
+			target = _closest(target, options.draggable, el);
+
+			if (!target) {
+				return;
+			}
+
+			if (lastDownEl === target) {
+				// Ignoring duplicate `down`
+				return;
+			}
+
+			// Get the index of the dragged element within its parent
+			startIndex = _index(target, options.draggable);
+
+			// Check filter
+			if (typeof filter === 'function') {
+				if (filter.call(this, evt, target, this)) {
+					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+			else if (filter) {
+				filter = filter.split(',').some(function (criteria) {
+					criteria = _closest(originalTarget, criteria.trim(), el);
+
+					if (criteria) {
+						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
+						return true;
+					}
+				});
+
+				if (filter) {
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+
+			if (options.handle && !_closest(originalTarget, options.handle, el)) {
+				return;
+			}
+
+			// Prepare `dragstart`
+			this._prepareDragStart(evt, touch, target, startIndex);
+		},
+
+		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
+			var _this = this,
+				el = _this.el,
+				options = _this.options,
+				ownerDocument = el.ownerDocument,
+				dragStartFn;
+
+			if (target && !dragEl && (target.parentNode === el)) {
+				tapEvt = evt;
+
+				rootEl = el;
+				dragEl = target;
+				parentEl = dragEl.parentNode;
+				nextEl = dragEl.nextSibling;
+				lastDownEl = target;
+				activeGroup = options.group;
+				oldIndex = startIndex;
+
+				this._lastX = (touch || evt).clientX;
+				this._lastY = (touch || evt).clientY;
+
+				dragEl.style['will-change'] = 'all';
+
+				dragStartFn = function () {
+					// Delayed drag has been triggered
+					// we can re-enable the events: touchmove/mousemove
+					_this._disableDelayedDrag();
+
+					// Make the element draggable
+					dragEl.draggable = _this.nativeDraggable;
+
+					// Chosen item
+					_toggleClass(dragEl, options.chosenClass, true);
+
+					// Bind the events: dragstart/dragend
+					_this._triggerDragStart(evt, touch);
+
+					// Drag start event
+					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+				};
+
+				// Disable "draggable"
+				options.ignore.split(',').forEach(function (criteria) {
+					_find(dragEl, criteria.trim(), _disableDraggable);
+				});
+
+				_on(ownerDocument, 'mouseup', _this._onDrop);
+				_on(ownerDocument, 'touchend', _this._onDrop);
+				_on(ownerDocument, 'touchcancel', _this._onDrop);
+				_on(ownerDocument, 'selectstart', _this);
+				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
+
+				if (options.delay) {
+					// If the user moves the pointer or let go the click or touch
+					// before the delay has been reached:
+					// disable the delayed drag
+					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
+					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+
+					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+				} else {
+					dragStartFn();
+				}
+
+
+			}
+		},
+
+		_disableDelayedDrag: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			clearTimeout(this._dragStartTimer);
+			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
+			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
+		},
+
+		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
+			touch = touch || (evt.pointerType == 'touch' ? evt : null);
+
+			if (touch) {
+				// Touch device support
+				tapEvt = {
+					target: dragEl,
+					clientX: touch.clientX,
+					clientY: touch.clientY
+				};
+
+				this._onDragStart(tapEvt, 'touch');
+			}
+			else if (!this.nativeDraggable) {
+				this._onDragStart(tapEvt, true);
+			}
+			else {
+				_on(dragEl, 'dragend', this);
+				_on(rootEl, 'dragstart', this._onDragStart);
+			}
+
+			try {
+				if (document.selection) {
+					// Timeout neccessary for IE9
+					_nextTick(function () {
+						document.selection.empty();
+					});
+				} else {
+					window.getSelection().removeAllRanges();
+				}
+			} catch (err) {
+			}
+		},
+
+		_dragStarted: function () {
+			if (rootEl && dragEl) {
+				var options = this.options;
+
+				// Apply effect
+				_toggleClass(dragEl, options.ghostClass, true);
+				_toggleClass(dragEl, options.dragClass, false);
+
+				Sortable.active = this;
+
+				// Drag start event
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+			} else {
+				this._nulling();
+			}
+		},
+
+		_emulateDragOver: function () {
+			if (touchEvt) {
+				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+					return;
+				}
+
+				this._lastX = touchEvt.clientX;
+				this._lastY = touchEvt.clientY;
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', 'none');
+				}
+
+				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+				var parent = target;
+				var i = touchDragOverListeners.length;
+
+				if (target && target.shadowRoot) {
+					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+					parent = target;
+				}
+
+				if (parent) {
+					do {
+						if (parent[expando]) {
+							while (i--) {
+								touchDragOverListeners[i]({
+									clientX: touchEvt.clientX,
+									clientY: touchEvt.clientY,
+									target: target,
+									rootEl: parent
+								});
+							}
+
+							break;
+						}
+
+						target = parent; // store last element
+					}
+					/* jshint boss:true */
+					while (parent = parent.parentNode);
+				}
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', '');
+				}
+			}
+		},
+
+
+		_onTouchMove: function (/**TouchEvent*/evt) {
+			if (tapEvt) {
+				var	options = this.options,
+					fallbackTolerance = options.fallbackTolerance,
+					fallbackOffset = options.fallbackOffset,
+					touch = evt.touches ? evt.touches[0] : evt,
+					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
+					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
+					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
+
+				// only set the status to dragging, when we are actually dragging
+				if (!Sortable.active) {
+					if (fallbackTolerance &&
+						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
+					) {
+						return;
+					}
+
+					this._dragStarted();
+				}
+
+				// as well as creating the ghost element on the document body
+				this._appendGhost();
+
+				moved = true;
+				touchEvt = touch;
+
+				_css(ghostEl, 'webkitTransform', translate3d);
+				_css(ghostEl, 'mozTransform', translate3d);
+				_css(ghostEl, 'msTransform', translate3d);
+				_css(ghostEl, 'transform', translate3d);
+
+				evt.preventDefault();
+			}
+		},
+
+		_appendGhost: function () {
+			if (!ghostEl) {
+				var rect = dragEl.getBoundingClientRect(),
+					css = _css(dragEl),
+					options = this.options,
+					ghostRect;
+
+				ghostEl = dragEl.cloneNode(true);
+
+				_toggleClass(ghostEl, options.ghostClass, false);
+				_toggleClass(ghostEl, options.fallbackClass, true);
+				_toggleClass(ghostEl, options.dragClass, true);
+
+				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
+				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+				_css(ghostEl, 'width', rect.width);
+				_css(ghostEl, 'height', rect.height);
+				_css(ghostEl, 'opacity', '0.8');
+				_css(ghostEl, 'position', 'fixed');
+				_css(ghostEl, 'zIndex', '100000');
+				_css(ghostEl, 'pointerEvents', 'none');
+
+				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
+
+				// Fixing dimensions.
+				ghostRect = ghostEl.getBoundingClientRect();
+				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
+				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+			}
+		},
+
+		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+			var _this = this;
+			var dataTransfer = evt.dataTransfer;
+			var options = _this.options;
+
+			_this._offUpEvents();
+
+			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
+				cloneEl = _clone(dragEl);
+
+				cloneEl.draggable = false;
+				cloneEl.style['will-change'] = '';
+
+				_css(cloneEl, 'display', 'none');
+				_toggleClass(cloneEl, _this.options.chosenClass, false);
+
+				// #1143: IFrame support workaround
+				_this._cloneId = _nextTick(function () {
+					rootEl.insertBefore(cloneEl, dragEl);
+					_dispatchEvent(_this, rootEl, 'clone', dragEl);
+				});
+			}
+
+			_toggleClass(dragEl, options.dragClass, true);
+
+			if (useFallback) {
+				if (useFallback === 'touch') {
+					// Bind touch events
+					_on(document, 'touchmove', _this._onTouchMove);
+					_on(document, 'touchend', _this._onDrop);
+					_on(document, 'touchcancel', _this._onDrop);
+
+					if (options.supportPointer) {
+						_on(document, 'pointermove', _this._onTouchMove);
+						_on(document, 'pointerup', _this._onDrop);
+					}
+				} else {
+					// Old brwoser
+					_on(document, 'mousemove', _this._onTouchMove);
+					_on(document, 'mouseup', _this._onDrop);
+				}
+
+				_this._loopId = setInterval(_this._emulateDragOver, 50);
+			}
+			else {
+				if (dataTransfer) {
+					dataTransfer.effectAllowed = 'move';
+					options.setData && options.setData.call(_this, dataTransfer, dragEl);
+				}
+
+				_on(document, 'drop', _this);
+
+				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
+				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
+				// Breaking Chrome 62+
+				// _on(document, 'mouseover', _this);
+
+				_this._dragStartId = _nextTick(_this._dragStarted);
+			}
+		},
+
+		_onDragOver: function (/**Event*/evt) {
+			var el = this.el,
+				target,
+				dragRect,
+				targetRect,
+				revert,
+				options = this.options,
+				group = options.group,
+				activeSortable = Sortable.active,
+				isOwner = (activeGroup === group),
+				isMovingBetweenSortable = false,
+				canSort = options.sort;
+
+			if (evt.preventDefault !== void 0) {
+				evt.preventDefault();
+				!options.dragoverBubble && evt.stopPropagation();
+			}
+
+			if (dragEl.animated) {
+				return;
+			}
+
+			moved = true;
+
+			if (activeSortable && !options.disabled &&
+				(isOwner
+					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+					: (
+						putSortable === this ||
+						(
+							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+							group.checkPut(this, activeSortable, dragEl, evt)
+						)
+					)
+				) &&
+				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+			) {
+				// Smart auto-scrolling
+				_autoScroll(evt, options, this.el);
+
+				if (_silent) {
+					return;
+				}
+
+				target = _closest(evt.target, options.draggable, el);
+				dragRect = dragEl.getBoundingClientRect();
+
+				if (putSortable !== this) {
+					putSortable = this;
+					isMovingBetweenSortable = true;
+				}
+
+				if (revert) {
+					_cloneHide(activeSortable, true);
+					parentEl = rootEl; // actualization
+
+					if (cloneEl || nextEl) {
+						rootEl.insertBefore(dragEl, cloneEl || nextEl);
+					}
+					else if (!canSort) {
+						rootEl.appendChild(dragEl);
+					}
+
+					return;
+				}
+
+
+				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
+					(el === evt.target) && (_ghostIsLast(el, evt))
+				) {
+					//assign target only if condition is true
+					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
+						target = el.lastElementChild;
+					}
+
+					if (target) {
+						if (target.animated) {
+							return;
+						}
+
+						targetRect = target.getBoundingClientRect();
+					}
+
+					_cloneHide(activeSortable, isOwner);
+
+					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
+						if (!dragEl.contains(el)) {
+							el.appendChild(dragEl);
+							parentEl = el; // actualization
+						}
+
+						this._animate(dragRect, dragEl);
+						target && this._animate(targetRect, target);
+					}
+				}
+				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
+					if (lastEl !== target) {
+						lastEl = target;
+						lastCSS = _css(target);
+						lastParentCSS = _css(target.parentNode);
+					}
+
+					targetRect = target.getBoundingClientRect();
+
+					var width = targetRect.right - targetRect.left,
+						height = targetRect.bottom - targetRect.top,
+						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
+							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
+						isWide = (target.offsetWidth > dragEl.offsetWidth),
+						isLong = (target.offsetHeight > dragEl.offsetHeight),
+						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
+						nextSibling = target.nextElementSibling,
+						after = false
+					;
+
+					if (floating) {
+						var elTop = dragEl.offsetTop,
+							tgTop = target.offsetTop;
+
+						if (elTop === tgTop) {
+							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+						}
+						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
+							after = (evt.clientY - targetRect.top) / height > 0.5;
+						} else {
+							after = tgTop > elTop;
+						}
+						} else if (!isMovingBetweenSortable) {
+						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+					}
+
+					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+
+					if (moveVector !== false) {
+						if (moveVector === 1 || moveVector === -1) {
+							after = (moveVector === 1);
+						}
+
+						_silent = true;
+						setTimeout(_unsilent, 30);
+
+						_cloneHide(activeSortable, isOwner);
+
+						if (!dragEl.contains(el)) {
+							if (after && !nextSibling) {
+								el.appendChild(dragEl);
+							} else {
+								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+							}
+						}
+
+						parentEl = dragEl.parentNode; // actualization
+
+						this._animate(dragRect, dragEl);
+						this._animate(targetRect, target);
+					}
+				}
+			}
+		},
+
+		_animate: function (prevRect, target) {
+			var ms = this.options.animation;
+
+			if (ms) {
+				var currentRect = target.getBoundingClientRect();
+
+				if (prevRect.nodeType === 1) {
+					prevRect = prevRect.getBoundingClientRect();
+				}
+
+				_css(target, 'transition', 'none');
+				_css(target, 'transform', 'translate3d('
+					+ (prevRect.left - currentRect.left) + 'px,'
+					+ (prevRect.top - currentRect.top) + 'px,0)'
+				);
+
+				target.offsetWidth; // repaint
+
+				_css(target, 'transition', 'all ' + ms + 'ms');
+				_css(target, 'transform', 'translate3d(0,0,0)');
+
+				clearTimeout(target.animated);
+				target.animated = setTimeout(function () {
+					_css(target, 'transition', '');
+					_css(target, 'transform', '');
+					target.animated = false;
+				}, ms);
+			}
+		},
+
+		_offUpEvents: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			_off(document, 'touchmove', this._onTouchMove);
+			_off(document, 'pointermove', this._onTouchMove);
+			_off(ownerDocument, 'mouseup', this._onDrop);
+			_off(ownerDocument, 'touchend', this._onDrop);
+			_off(ownerDocument, 'pointerup', this._onDrop);
+			_off(ownerDocument, 'touchcancel', this._onDrop);
+			_off(ownerDocument, 'pointercancel', this._onDrop);
+			_off(ownerDocument, 'selectstart', this);
+		},
+
+		_onDrop: function (/**Event*/evt) {
+			var el = this.el,
+				options = this.options;
+
+			clearInterval(this._loopId);
+			clearInterval(autoScroll.pid);
+			clearTimeout(this._dragStartTimer);
+
+			_cancelNextTick(this._cloneId);
+			_cancelNextTick(this._dragStartId);
+
+			// Unbind events
+			_off(document, 'mouseover', this);
+			_off(document, 'mousemove', this._onTouchMove);
+
+			if (this.nativeDraggable) {
+				_off(document, 'drop', this);
+				_off(el, 'dragstart', this._onDragStart);
+			}
+
+			this._offUpEvents();
+
+			if (evt) {
+				if (moved) {
+					evt.preventDefault();
+					!options.dropBubble && evt.stopPropagation();
+				}
+
+				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+
+				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
+					// Remove clone
+					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+				}
+
+				if (dragEl) {
+					if (this.nativeDraggable) {
+						_off(dragEl, 'dragend', this);
+					}
+
+					_disableDraggable(dragEl);
+					dragEl.style['will-change'] = '';
+
+					// Remove class's
+					_toggleClass(dragEl, this.options.ghostClass, false);
+					_toggleClass(dragEl, this.options.chosenClass, false);
+
+					// Drag stop event
+					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
+
+					if (rootEl !== parentEl) {
+						newIndex = _index(dragEl, options.draggable);
+
+						if (newIndex >= 0) {
+							// Add event
+							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// Remove event
+							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// drag from one list and drop into another
+							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						}
+					}
+					else {
+						if (dragEl.nextSibling !== nextEl) {
+							// Get the index of the dragged element within its parent
+							newIndex = _index(dragEl, options.draggable);
+
+							if (newIndex >= 0) {
+								// drag & drop within the same list
+								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							}
+						}
+					}
+
+					if (Sortable.active) {
+						/* jshint eqnull:true */
+						if (newIndex == null || newIndex === -1) {
+							newIndex = oldIndex;
+						}
+
+						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+						// Save sorting
+						this.save();
+					}
+				}
+
+			}
+
+			this._nulling();
+		},
+
+		_nulling: function() {
+			rootEl =
+			dragEl =
+			parentEl =
+			ghostEl =
+			nextEl =
+			cloneEl =
+			lastDownEl =
+
+			scrollEl =
+			scrollParentEl =
+
+			tapEvt =
+			touchEvt =
+
+			moved =
+			newIndex =
+
+			lastEl =
+			lastCSS =
+
+			putSortable =
+			activeGroup =
+			Sortable.active = null;
+
+			savedInputChecked.forEach(function (el) {
+				el.checked = true;
+			});
+			savedInputChecked.length = 0;
+		},
+
+		handleEvent: function (/**Event*/evt) {
+			switch (evt.type) {
+				case 'drop':
+				case 'dragend':
+					this._onDrop(evt);
+					break;
+
+				case 'dragover':
+				case 'dragenter':
+					if (dragEl) {
+						this._onDragOver(evt);
+						_globalDragOver(evt);
+					}
+					break;
+
+				case 'mouseover':
+					this._onDrop(evt);
+					break;
+
+				case 'selectstart':
+					evt.preventDefault();
+					break;
+			}
+		},
+
+
+		/**
+		 * Serializes the item into an array of string.
+		 * @returns {String[]}
+		 */
+		toArray: function () {
+			var order = [],
+				el,
+				children = this.el.children,
+				i = 0,
+				n = children.length,
+				options = this.options;
+
+			for (; i < n; i++) {
+				el = children[i];
+				if (_closest(el, options.draggable, this.el)) {
+					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+				}
+			}
+
+			return order;
+		},
+
+
+		/**
+		 * Sorts the elements according to the array.
+		 * @param  {String[]}  order  order of the items
+		 */
+		sort: function (order) {
+			var items = {}, rootEl = this.el;
+
+			this.toArray().forEach(function (id, i) {
+				var el = rootEl.children[i];
+
+				if (_closest(el, this.options.draggable, rootEl)) {
+					items[id] = el;
+				}
+			}, this);
+
+			order.forEach(function (id) {
+				if (items[id]) {
+					rootEl.removeChild(items[id]);
+					rootEl.appendChild(items[id]);
+				}
+			});
+		},
+
+
+		/**
+		 * Save the current sorting
+		 */
+		save: function () {
+			var store = this.options.store;
+			store && store.set(this);
+		},
+
+
+		/**
+		 * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+		 * @param   {HTMLElement}  el
+		 * @param   {String}       [selector]  default: `options.draggable`
+		 * @returns {HTMLElement|null}
+		 */
+		closest: function (el, selector) {
+			return _closest(el, selector || this.options.draggable, this.el);
+		},
+
+
+		/**
+		 * Set/get option
+		 * @param   {string} name
+		 * @param   {*}      [value]
+		 * @returns {*}
+		 */
+		option: function (name, value) {
+			var options = this.options;
+
+			if (value === void 0) {
+				return options[name];
+			} else {
+				options[name] = value;
+
+				if (name === 'group') {
+					_prepareGroup(options);
+				}
+			}
+		},
+
+
+		/**
+		 * Destroy
+		 */
+		destroy: function () {
+			var el = this.el;
+
+			el[expando] = null;
+
+			_off(el, 'mousedown', this._onTapStart);
+			_off(el, 'touchstart', this._onTapStart);
+			_off(el, 'pointerdown', this._onTapStart);
+
+			if (this.nativeDraggable) {
+				_off(el, 'dragover', this);
+				_off(el, 'dragenter', this);
+			}
+
+			// Remove draggable attributes
+			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
+				el.removeAttribute('draggable');
+			});
+
+			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
+
+			this._onDrop();
+
+			this.el = el = null;
+		}
+	};
+
+
+	function _cloneHide(sortable, state) {
+		if (sortable.lastPullMode !== 'clone') {
+			state = true;
+		}
+
+		if (cloneEl && (cloneEl.state !== state)) {
+			_css(cloneEl, 'display', state ? 'none' : '');
+
+			if (!state) {
+				if (cloneEl.state) {
+					if (sortable.options.group.revertClone) {
+						rootEl.insertBefore(cloneEl, nextEl);
+						sortable._animate(dragEl, cloneEl);
+					} else {
+						rootEl.insertBefore(cloneEl, dragEl);
+					}
+				}
+			}
+
+			cloneEl.state = state;
+		}
+	}
+
+
+	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+		if (el) {
+			ctx = ctx || document;
+
+			do {
+				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
+					return el;
+				}
+				/* jshint boss:true */
+			} while (el = _getParentOrHost(el));
+		}
+
+		return null;
+	}
+
+
+	function _getParentOrHost(el) {
+		var parent = el.host;
+
+		return (parent && parent.nodeType) ? parent : el.parentNode;
+	}
+
+
+	function _globalDragOver(/**Event*/evt) {
+		if (evt.dataTransfer) {
+			evt.dataTransfer.dropEffect = 'move';
+		}
+		evt.preventDefault();
+	}
+
+
+	function _on(el, event, fn) {
+		el.addEventListener(event, fn, captureMode);
+	}
+
+
+	function _off(el, event, fn) {
+		el.removeEventListener(event, fn, captureMode);
+	}
+
+
+	function _toggleClass(el, name, state) {
+		if (el) {
+			if (el.classList) {
+				el.classList[state ? 'add' : 'remove'](name);
+			}
+			else {
+				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+			}
+		}
+	}
+
+
+	function _css(el, prop, val) {
+		var style = el && el.style;
+
+		if (style) {
+			if (val === void 0) {
+				if (document.defaultView && document.defaultView.getComputedStyle) {
+					val = document.defaultView.getComputedStyle(el, '');
+				}
+				else if (el.currentStyle) {
+					val = el.currentStyle;
+				}
+
+				return prop === void 0 ? val : val[prop];
+			}
+			else {
+				if (!(prop in style)) {
+					prop = '-webkit-' + prop;
+				}
+
+				style[prop] = val + (typeof val === 'string' ? '' : 'px');
+			}
+		}
+	}
+
+
+	function _find(ctx, tagName, iterator) {
+		if (ctx) {
+			var list = ctx.getElementsByTagName(tagName), i = 0, n = list.length;
+
+			if (iterator) {
+				for (; i < n; i++) {
+					iterator(list[i], i);
+				}
+			}
+
+			return list;
+		}
+
+		return [];
+	}
+
+
+
+	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+		sortable = (sortable || rootEl[expando]);
+
+		var evt = document.createEvent('Event'),
+			options = sortable.options,
+			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
+
+		evt.initEvent(name, true, true);
+
+		evt.to = toEl || rootEl;
+		evt.from = fromEl || rootEl;
+		evt.item = targetEl || rootEl;
+		evt.clone = cloneEl;
+
+		evt.oldIndex = startIndex;
+		evt.newIndex = newIndex;
+
+		rootEl.dispatchEvent(evt);
+
+		if (options[onName]) {
+			options[onName].call(sortable, evt);
+		}
+	}
+
+
+	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt, willInsertAfter) {
+		var evt,
+			sortable = fromEl[expando],
+			onMoveFn = sortable.options.onMove,
+			retVal;
+
+		evt = document.createEvent('Event');
+		evt.initEvent('move', true, true);
+
+		evt.to = toEl;
+		evt.from = fromEl;
+		evt.dragged = dragEl;
+		evt.draggedRect = dragRect;
+		evt.related = targetEl || toEl;
+		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+		evt.willInsertAfter = willInsertAfter;
+
+		fromEl.dispatchEvent(evt);
+
+		if (onMoveFn) {
+			retVal = onMoveFn.call(sortable, evt, originalEvt);
+		}
+
+		return retVal;
+	}
+
+
+	function _disableDraggable(el) {
+		el.draggable = false;
+	}
+
+
+	function _unsilent() {
+		_silent = false;
+	}
+
+
+	/** @returns {HTMLElement|false} */
+	function _ghostIsLast(el, evt) {
+		var lastEl = el.lastElementChild,
+			rect = lastEl.getBoundingClientRect();
+
+		// 5 — min delta
+		// abs — нельзя добавлять, а то глюки при наведении сверху
+		return (evt.clientY - (rect.top + rect.height) > 5) ||
+			(evt.clientX - (rect.left + rect.width) > 5);
+	}
+
+
+	/**
+	 * Generate id
+	 * @param   {HTMLElement} el
+	 * @returns {String}
+	 * @private
+	 */
+	function _generateId(el) {
+		var str = el.tagName + el.className + el.src + el.href + el.textContent,
+			i = str.length,
+			sum = 0;
+
+		while (i--) {
+			sum += str.charCodeAt(i);
+		}
+
+		return sum.toString(36);
+	}
+
+	/**
+	 * Returns the index of an element within its parent for a selected set of
+	 * elements
+	 * @param  {HTMLElement} el
+	 * @param  {selector} selector
+	 * @return {number}
+	 */
+	function _index(el, selector) {
+		var index = 0;
+
+		if (!el || !el.parentNode) {
+			return -1;
+		}
+
+		while (el && (el = el.previousElementSibling)) {
+			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
+				index++;
+			}
+		}
+
+		return index;
+	}
+
+	function _matches(/**HTMLElement*/el, /**String*/selector) {
+		if (el) {
+			selector = selector.split('.');
+
+			var tag = selector.shift().toUpperCase(),
+				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
+
+			return (
+				(tag === '' || el.nodeName.toUpperCase() == tag) &&
+				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
+			);
+		}
+
+		return false;
+	}
+
+	function _throttle(callback, ms) {
+		var args, _this;
+
+		return function () {
+			if (args === void 0) {
+				args = arguments;
+				_this = this;
+
+				setTimeout(function () {
+					if (args.length === 1) {
+						callback.call(_this, args[0]);
+					} else {
+						callback.apply(_this, args);
+					}
+
+					args = void 0;
+				}, ms);
+			}
+		};
+	}
+
+	function _extend(dst, src) {
+		if (dst && src) {
+			for (var key in src) {
+				if (src.hasOwnProperty(key)) {
+					dst[key] = src[key];
+				}
+			}
+		}
+
+		return dst;
+	}
+
+	function _clone(el) {
+		if (Polymer && Polymer.dom) {
+			return Polymer.dom(el).cloneNode(true);
+		}
+		else if ($) {
+			return $(el).clone(true)[0];
+		}
+		else {
+			return el.cloneNode(true);
+		}
+	}
+
+	function _saveInputCheckedState(root) {
+		var inputs = root.getElementsByTagName('input');
+		var idx = inputs.length;
+
+		while (idx--) {
+			var el = inputs[idx];
+			el.checked && savedInputChecked.push(el);
+		}
+	}
+
+	function _nextTick(fn) {
+		return setTimeout(fn, 0);
+	}
+
+	function _cancelNextTick(id) {
+		return clearTimeout(id);
+	}
+
+	// Fixed #973:
+	_on(document, 'touchmove', function (evt) {
+		if (Sortable.active) {
+			evt.preventDefault();
+		}
+	});
+
+	// Export utils
+	Sortable.utils = {
+		on: _on,
+		off: _off,
+		css: _css,
+		find: _find,
+		is: function (el, selector) {
+			return !!_closest(el, selector, el);
+		},
+		extend: _extend,
+		throttle: _throttle,
+		closest: _closest,
+		toggleClass: _toggleClass,
+		clone: _clone,
+		index: _index,
+		nextTick: _nextTick,
+		cancelNextTick: _cancelNextTick
+	};
+
+
+	/**
+	 * Create sortable instance
+	 * @param {HTMLElement}  el
+	 * @param {Object}      [options]
+	 */
+	Sortable.create = function (el, options) {
+		return new Sortable(el, options);
+	};
+
+
+	// Export
+	Sortable.version = '1.7.0';
+	return Sortable;
+});
+
+
+/***/ }),
+/* 183 */,
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(185)
+/* template */
+var __vue_template__ = __webpack_require__(186)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Navbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cd7fb372", Component.options)
+  } else {
+    hotAPI.reload("data-v-cd7fb372", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 185 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            user: window.organizer.user,
+            signed: window.organizer.signedIn,
+            csrf: window.organizer.csrfToken,
+            app: window.organizer.app,
+            weekNumber: moment().week(),
+            date: moment()
+        };
+    },
+
+    props: ['week', 'date'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('syncWeek', function (data) {
+            _this.weekNumber = data;
+        });
+    },
+
+    methods: {
+        addWeek: function addWeek() {
+            Event.$emit('addWeek', this.weekNumber);
+        },
+        subWeek: function subWeek() {
+            Event.$emit('subWeek', this.weekNumber);
+        },
+        resetWeek: function resetWeek() {
+            Event.$emit('resetWeek');
+        }
+    }
+});
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
+    [
+      _c("div", { staticClass: "container" }, [
+        _c("a", { staticClass: "navbar-brand", attrs: { href: "" } }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse navbar-collapse",
+            attrs: { id: "navbarSupportedContent" }
+          },
+          [
+            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+              _c(
+                "a",
+                { staticClass: "navbar-brand mr-4", attrs: { href: "/" } },
+                [
+                  _c("img", {
+                    staticClass: "d-inline-block align-top",
+                    attrs: {
+                      src: "/images/light.png",
+                      width: "30",
+                      height: "30",
+                      alt: ""
+                    }
+                  }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.app) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-4 mr-4 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.resetWeek($event)
+                    }
+                  }
+                },
+                [_vm._v("\n                    Aujourd'hui\n                ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                { staticClass: "ml-4 navbar-brand", attrs: { href: "#" } },
+                [_vm._v("\n                   Février 2018\n                ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.subWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-left" })]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.addWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-right" })]
+              )
+            ]),
+            _vm._v(" "),
+            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Login")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Register")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("li", { staticClass: "nav-item dropdown" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link dropdown-toggle",
+                    attrs: {
+                      id: "navbarDropdown",
+                      href: "#",
+                      role: "button",
+                      "data-toggle": "dropdown",
+                      "aria-haspopup": "true",
+                      "aria-expanded": "false"
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "caret" }, [
+                      _vm._v(_vm._s(_vm.user.prenom))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarSupportedContent",
+          "aria-controls": "navbarSupportedContent",
+          "aria-expanded": "false",
+          "aria-label": "Toggle navigation"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "dropdown-menu",
+        attrs: { "aria-labelledby": "navbarDropdown" }
+      },
+      [
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-divider" }),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "dropdown-item",
+            attrs: {
+              href: "",
+              onclick:
+                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
+            }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-power-off mr-2",
+              staticStyle: { color: "indianred" }
+            }),
+            _vm._v("Deconnexion\n                        ")
+          ]
+        ),
+        _vm._v(" "),
+        _c("form", {
+          staticStyle: { display: "none" },
+          attrs: { id: "logout-form", action: "", method: "POST" }
+        })
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cd7fb372", module.exports)
+  }
+}
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(189)
+  __webpack_require__(198)
 }
-var normalizeComponent = __webpack_require__(130)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(191)
+var __vue_script__ = __webpack_require__(200)
 /* template */
-var __vue_template__ = __webpack_require__(192)
+var __vue_template__ = __webpack_require__(201)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52579,7 +51811,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\Hello.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Work.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -52588,9 +51820,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a0937a2a", Component.options)
+    hotAPI.createRecord("data-v-47d276f0", Component.options)
   } else {
-    hotAPI.reload("data-v-a0937a2a", Component.options)
+    hotAPI.reload("data-v-47d276f0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -52601,23 +51833,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 189 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(190);
+var content = __webpack_require__(199);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(180)("0921c70e", content, false, {});
+var update = __webpack_require__(6)("5cd7306e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a0937a2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Hello.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a0937a2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Hello.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52627,278 +51859,315 @@ if(false) {
 }
 
 /***/ }),
-/* 190 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(170)(false);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border:solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i{\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border: solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i {\n    cursor: pointer;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 191 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"vuedraggable\"");
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
-
-
-var lundi = ['111', '222', '333'];
-var mardi = ['111-2', '222-2'];
-var mercredi = ['111-3', '222-3'];
-var jeudi = ['111-4', '222-4'];
-var vendredi = ['111-5'];
-
-var message = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 'based', 'on', 'Sortablejs'];
-var message2 = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 'based', 'on', 'Sortablejs'];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'hello',
+    name: 'work',
     components: {
         draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
     },
     data: function data() {
         return {
-            lun: lundi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 1, fixed: false };
-            }),
-            mar: mardi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 2, fixed: false };
-            }),
-            mer: mercredi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 3, fixed: false };
-            }),
-            je: jeudi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 4, fixed: false };
-            }),
-            ven: vendredi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 5, fixed: false };
-            }),
-            list: message.map(function (name, index) {
-                return { name: name, order: index + 1, fixed: false };
-            }),
-            list2: message2.map(function (name, index) {
-                return { name: name, order: index + 1, fixed: false };
-            }),
+            wLun: [],
+            wMar: [],
+            wMer: [],
+            wJe: [],
+            wVen: [],
+            work: [],
             editable: true,
             isDragging: false,
             delayedDragging: false,
             selectedElement: '',
             replaceElement: 'add_in_new_column',
-            selectedColElement: ''
+            selectedColElement: '',
+            selectedNewIndexElement: '',
+            weekNumber: moment().week()
         };
     },
 
+    props: ['semaine'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('getWorks', function (data) {
+            _this.weekNumber = data;
+            _this.getWorksWeek();
+        });
+
+        this.getWorksWeek();
+    },
+
     methods: {
+        getWorksWeek: function getWorksWeek() {
+            var _this2 = this;
+
+            axios.get('/team/get/work/' + this.semaine).then(function (response) {
+                _this2.work = response.data;
+
+                _this2.wLun = response.data[0];
+                _this2.wMar = response.data[1];
+                _this2.wMer = response.data[2];
+                _this2.wJe = response.data[3];
+                _this2.wVen = response.data[4];
+            });
+        },
         onStart: function onStart(event, oEvent) {},
 
         onEnd: function onEnd( /**Event*/evt) {
             var itemEl = evt.item; // dragged HTMLElement
-
+            var colFrom = evt.from.getAttribute('id');
+            var colTo = evt.to.getAttribute('id');
+            console.log(colFrom);
+            console.log(colTo);
+            this.selectedColElement = colTo;
             //console.log(itemEl);    // target list
             //console.log(evt.to);    // target list
             //console.log(evt.from);  // previous list
             //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
-            //console.log('OldIndex- '+evt.newIndex);  // element's new index within new parent
+            this.selectedNewIndexElement = evt.newIndex + 1;
+
+            axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
+                console.log(response.data);
+            });
         },
         onAdd: function onAdd(event, oEvent) {
-            this.selectedColElement = event['to'].getAttribute('id');
             //console.log(event['to'].getAttribute('id'));
         },
         orderList: function orderList() {
@@ -52911,13 +52180,11 @@ var message2 = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 
             var relatedElement = event.relatedContext;
             var draggedElement = event.draggedContext;
 
-            this.selectedElement = draggedElement.element.name;
-
-            console.log(_typeof(this.replaceElement.element));
+            this.selectedElement = draggedElement.element.id;
 
             this.replaceElement = 'add_in_new_column';
 
-            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.name;
+            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.id;
 
             return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
         }
@@ -52935,19 +52202,19 @@ var message2 = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 
             return JSON.stringify(this.list, null, 2);
         },
         lunString: function lunString() {
-            return JSON.stringify(this.lun, null, 2);
+            return JSON.stringify(this.wLun, null, 2);
         },
         marString: function marString() {
-            return JSON.stringify(this.mar, null, 2);
+            return JSON.stringify(this.wMar, null, 2);
         },
         merString: function merString() {
-            return JSON.stringify(this.mer, null, 2);
+            return JSON.stringify(this.wMer, null, 2);
         },
         jeString: function jeString() {
-            return JSON.stringify(this.je, null, 2);
+            return JSON.stringify(this.wJe, null, 2);
         },
         venString: function venString() {
-            return JSON.stringify(this.ven, null, 2);
+            return JSON.stringify(this.wVen, null, 2);
         },
         list2String: function list2String() {
             return JSON.stringify(this.list2, null, 2);
@@ -52955,21 +52222,21 @@ var message2 = ['vue.draggable', 'draggable', 'component', 'for', 'vue.js 2.0', 
     },
     watch: {
         isDragging: function isDragging(newValue) {
-            var _this = this;
+            var _this3 = this;
 
             if (newValue) {
                 this.delayedDragging = true;
                 return;
             }
             this.$nextTick(function () {
-                _this.delayedDragging = false;
+                _this3.delayedDragging = false;
             });
         }
     }
 });
 
 /***/ }),
-/* 192 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52977,6 +52244,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Element draggé :\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Element remplacé:\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.replaceElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Colonne déposé\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedColElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            INDEX element deposer\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedNewIndexElement))])
+      ])
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c(
         "div",
@@ -52988,17 +52277,17 @@ var render = function() {
               staticClass: " row border",
               staticStyle: { "min-height": "400px" },
               attrs: {
-                list: _vm.lun,
+                list: _vm.wLun,
                 options: _vm.dragOptions,
                 move: _vm.onMove
               },
               on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
               model: {
-                value: _vm.lun,
+                value: _vm.wLun,
                 callback: function($$v) {
-                  _vm.lun = $$v
+                  _vm.wLun = $$v
                 },
-                expression: "lun"
+                expression: "wLun"
               }
             },
             [
@@ -53008,24 +52297,24 @@ var render = function() {
                   staticClass: "col ",
                   attrs: { type: "transition", name: "flip-list", id: "0" }
                 },
-                _vm._l(_vm.lun, function(element) {
+                _vm._l(_vm.wLun, function(element) {
                   return _c(
                     "div",
                     {
-                      key: element.order,
+                      key: element.id,
                       staticClass: "row border",
                       staticStyle: { height: "60px" }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.order))])
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
                         _vm._v(
-                          "\n                           " +
-                            _vm._s(element.name) +
-                            "\n                       "
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
                         )
                       ])
                     ]
@@ -53049,17 +52338,17 @@ var render = function() {
               staticClass: " row ",
               staticStyle: { "min-height": "400px" },
               attrs: {
-                list: _vm.mar,
+                list: _vm.wMar,
                 options: _vm.dragOptions,
                 move: _vm.onMove
               },
               on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
               model: {
-                value: _vm.mar,
+                value: _vm.wMar,
                 callback: function($$v) {
-                  _vm.mar = $$v
+                  _vm.wMar = $$v
                 },
-                expression: "mar"
+                expression: "wMar"
               }
             },
             [
@@ -53069,24 +52358,24 @@ var render = function() {
                   staticClass: "col",
                   attrs: { type: "transition", name: "flip-list", id: "1" }
                 },
-                _vm._l(_vm.mar, function(element) {
+                _vm._l(_vm.wMar, function(element) {
                   return _c(
                     "div",
                     {
-                      key: element.order,
+                      key: element.id,
                       staticClass: "row border",
                       staticStyle: { height: "60px" }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.order))])
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
                         _vm._v(
-                          "\n                           " +
-                            _vm._s(element.name) +
-                            "\n                       "
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
                         )
                       ])
                     ]
@@ -53110,17 +52399,17 @@ var render = function() {
               staticClass: " row ",
               staticStyle: { "min-height": "400px" },
               attrs: {
-                list: _vm.mer,
+                list: _vm.wMer,
                 options: _vm.dragOptions,
                 move: _vm.onMove
               },
               on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
               model: {
-                value: _vm.mer,
+                value: _vm.wMer,
                 callback: function($$v) {
-                  _vm.mer = $$v
+                  _vm.wMer = $$v
                 },
-                expression: "mer"
+                expression: "wMer"
               }
             },
             [
@@ -53130,24 +52419,24 @@ var render = function() {
                   staticClass: "col",
                   attrs: { type: "transition", name: "flip-list", id: "2" }
                 },
-                _vm._l(_vm.mer, function(element) {
+                _vm._l(_vm.wMer, function(element) {
                   return _c(
                     "div",
                     {
-                      key: element.order,
+                      key: element.id,
                       staticClass: "row border",
                       staticStyle: { height: "60px" }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.order))])
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
                         _vm._v(
-                          "\n                           " +
-                            _vm._s(element.name) +
-                            "\n                       "
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
                         )
                       ])
                     ]
@@ -53171,17 +52460,17 @@ var render = function() {
               staticClass: " row ",
               staticStyle: { "min-height": "400px" },
               attrs: {
-                list: _vm.je,
+                list: _vm.wJe,
                 options: _vm.dragOptions,
                 move: _vm.onMove
               },
               on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
               model: {
-                value: _vm.je,
+                value: _vm.wJe,
                 callback: function($$v) {
-                  _vm.je = $$v
+                  _vm.wJe = $$v
                 },
-                expression: "je"
+                expression: "wJe"
               }
             },
             [
@@ -53191,24 +52480,24 @@ var render = function() {
                   staticClass: "col ",
                   attrs: { type: "transition", name: "flip-list", id: "3" }
                 },
-                _vm._l(_vm.je, function(element) {
+                _vm._l(_vm.wJe, function(element) {
                   return _c(
                     "div",
                     {
-                      key: element.order,
+                      key: element.id,
                       staticClass: "row border",
                       staticStyle: { height: "60px" }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.order))])
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
                         _vm._v(
-                          "\n                           " +
-                            _vm._s(element.name) +
-                            "\n                       "
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
                         )
                       ])
                     ]
@@ -53232,17 +52521,17 @@ var render = function() {
               staticClass: " row ",
               staticStyle: { "min-height": "400px" },
               attrs: {
-                list: _vm.ven,
+                list: _vm.wVen,
                 options: _vm.dragOptions,
                 move: _vm.onMove
               },
               on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
               model: {
-                value: _vm.ven,
+                value: _vm.wVen,
                 callback: function($$v) {
-                  _vm.ven = $$v
+                  _vm.wVen = $$v
                 },
-                expression: "ven"
+                expression: "wVen"
               }
             },
             [
@@ -53252,24 +52541,24 @@ var render = function() {
                   staticClass: "col ",
                   attrs: { type: "transition", name: "flip-list", id: "4" }
                 },
-                _vm._l(_vm.ven, function(element) {
+                _vm._l(_vm.wVen, function(element) {
                   return _c(
                     "div",
                     {
-                      key: element.order,
+                      key: element.id,
                       staticClass: "row border",
                       staticStyle: { height: "60px", cursor: "pointer" }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.order))])
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
                         _vm._v(
-                          "\n                           " +
-                            _vm._s(element.name) +
-                            "\n                       "
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
                         )
                       ])
                     ]
@@ -53313,515 +52602,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a0937a2a", module.exports)
-  }
-}
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(194)
-}
-var normalizeComponent = __webpack_require__(130)
-/* script */
-var __vue_script__ = __webpack_require__(196)
-/* template */
-var __vue_template__ = __webpack_require__(197)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Drag.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b04f3daa", Component.options)
-  } else {
-    hotAPI.reload("data-v-b04f3daa", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 194 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(195);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(180)("85a66ff4", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b04f3daa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Drag.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b04f3daa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Drag.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(170)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: grey;\n}\n.list-group {\n    min-height: 20px;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i{\n    cursor: pointer;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 196 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"vuedraggable\"");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-var lundi = ['111', '222', '333'];
-var mardi = ['111-2', '222-2', '333-2'];
-var mercredi = ['111-3', '222-3', '333-3'];
-var jeudi = ['111-4', '222-4', '333-4'];
-var vendredi = ['111-5', '222-5', '333-5'];
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'hello',
-    components: {
-        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
-    },
-    data: function data() {
-        return {
-            lun: lundi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 1, fixed: false };
-            }),
-            mar: mardi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 2, fixed: false };
-            }),
-            mer: mercredi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 3, fixed: false };
-            }),
-            je: jeudi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 4, fixed: false };
-            }),
-            ven: vendredi.map(function (name, index) {
-                return { name: name, order: name + '-' + index, col: 5, fixed: false };
-            }),
-            editable: true,
-            isDragging: false,
-            delayedDragging: false
-        };
-    },
-
-    methods: {
-        orderList: function orderList() {
-            this.list = this.list.sort(function (one, two) {
-                return one.order - two.order;
-            });
-        },
-        onMove: function onMove(_ref) {
-            var relatedContext = _ref.relatedContext,
-                draggedContext = _ref.draggedContext;
-
-
-            var relatedElement = relatedContext.element;
-            var draggedElement = draggedContext.element;
-
-            console.log('element ' + draggedContext.element.name + ' est en train de se deplacer');
-            //console.log('pour prendre la place de '+relatedContext.element.name);
-            //console.log('dans la colonne n°'+relatedContext.element.col);
-
-            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
-        }
-    },
-    computed: {
-        dragOptions: function dragOptions() {
-            return {
-                animation: 0,
-                group: 'description',
-                disabled: !this.editable,
-                ghostClass: 'ghost'
-            };
-        },
-        listString: function listString() {
-            return JSON.stringify(this.list, null, 2);
-        },
-        list2String: function list2String() {
-            return JSON.stringify(this.list2, null, 2);
-        }
-    },
-    watch: {
-        isDragging: function isDragging(newValue) {
-            var _this = this;
-
-            if (newValue) {
-                this.delayedDragging = true;
-                return;
-            }
-            this.$nextTick(function () {
-                _this.delayedDragging = false;
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row p-0" }, [
-    _c(
-      "div",
-      { staticClass: "col p-0" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              element: "span",
-              options: _vm.dragOptions,
-              move: _vm.onMove
-            },
-            model: {
-              value: _vm.lun,
-              callback: function($$v) {
-                _vm.lun = $$v
-              },
-              expression: "lun"
-            }
-          },
-          [
-            _c(
-              "transition-group",
-              { staticClass: " list-group", attrs: { name: "no", tag: "ul" } },
-              _vm._l(_vm.lun, function(element) {
-                return _c(
-                  "li",
-                  { key: element.order, staticClass: " list-group-item" },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(element.name) +
-                        "\r\n                    "
-                    ),
-                    _c("span", { staticClass: "badge" }, [
-                      _vm._v(_vm._s(element.order))
-                    ])
-                  ]
-                )
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col p-0" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              element: "span",
-              options: _vm.dragOptions,
-              move: _vm.onMove
-            },
-            model: {
-              value: _vm.mar,
-              callback: function($$v) {
-                _vm.mar = $$v
-              },
-              expression: "mar"
-            }
-          },
-          [
-            _c(
-              "transition-group",
-              { staticClass: "list-group", attrs: { name: "no", tag: "ul" } },
-              _vm._l(_vm.mar, function(element) {
-                return _c(
-                  "li",
-                  { key: element.order, staticClass: "list-group-item" },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(element.name) +
-                        "\r\n                    "
-                    ),
-                    _c("span", { staticClass: "badge" }, [
-                      _vm._v(_vm._s(element.order))
-                    ])
-                  ]
-                )
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col p-0" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              element: "span",
-              options: _vm.dragOptions,
-              move: _vm.onMove
-            },
-            model: {
-              value: _vm.mer,
-              callback: function($$v) {
-                _vm.mer = $$v
-              },
-              expression: "mer"
-            }
-          },
-          [
-            _c(
-              "transition-group",
-              { staticClass: "list-group", attrs: { name: "no", tag: "ul" } },
-              _vm._l(_vm.mer, function(element) {
-                return _c(
-                  "li",
-                  { key: element.order, staticClass: "list-group-item" },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(element.name) +
-                        "\r\n                    "
-                    ),
-                    _c("span", { staticClass: "badge" }, [
-                      _vm._v(_vm._s(element.order))
-                    ])
-                  ]
-                )
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col p-0" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              element: "span",
-              options: _vm.dragOptions,
-              move: _vm.onMove
-            },
-            model: {
-              value: _vm.je,
-              callback: function($$v) {
-                _vm.je = $$v
-              },
-              expression: "je"
-            }
-          },
-          [
-            _c(
-              "transition-group",
-              { staticClass: "list-group", attrs: { name: "no", tag: "ul" } },
-              _vm._l(_vm.je, function(element) {
-                return _c(
-                  "li",
-                  { key: element.order, staticClass: "list-group-item" },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(element.name) +
-                        "\r\n                    "
-                    ),
-                    _c("span", { staticClass: "badge" }, [
-                      _vm._v(_vm._s(element.order))
-                    ])
-                  ]
-                )
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col p-0" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              element: "span",
-              options: _vm.dragOptions,
-              move: _vm.onMove
-            },
-            model: {
-              value: _vm.ven,
-              callback: function($$v) {
-                _vm.ven = $$v
-              },
-              expression: "ven"
-            }
-          },
-          [
-            _c(
-              "transition-group",
-              { staticClass: "list-group", attrs: { name: "no", tag: "ul" } },
-              _vm._l(_vm.ven, function(element) {
-                return _c(
-                  "li",
-                  { key: element.order, staticClass: "list-group-item" },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(element.name) +
-                        "\r\n                    "
-                    ),
-                    _c("span", { staticClass: "badge" }, [
-                      _vm._v(_vm._s(element.order))
-                    ])
-                  ]
-                )
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b04f3daa", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-47d276f0", module.exports)
   }
 }
 

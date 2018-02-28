@@ -62,7 +62,7 @@ class TeamController extends Controller
      */
     public function searchWork($semaine)
     {
-        $semaine = 9 ;
+
         $date = Carbon::now();
         $date->setISODate($date->copy()->format('Y'),$semaine);
         $start =  $date->startOfWeek();
@@ -73,14 +73,51 @@ class TeamController extends Controller
             $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
         }
 
-        $delais = Delais::where('semaine_envoie',$semaine)->get()->groupBy('date_envoie');
+        $delais = Delais::where('semaine_envoie',$semaine)->orderBy('order','ASC')->get()->groupBy('date_envoie');
 
         $data = [];
         foreach ($week as $index => $day) {
-            $data[$index] = isset($delais[$day->format('Y-m-d')]) ? $delais[$day->format('Y-m-d')] : 0 ;
+            $data[$index] = isset($delais[$day->format('Y-m-d')]) ? $delais[$day->format('Y-m-d')] : [] ;
         }
 
         return $data;
+    }
+
+    /**
+     * reorder/semaine/id-dragg/order/day
+     * addorder/semaine/id-dragg/order/day
+     */
+    public function updateColumn( $semaine , $id , $order , $numberOfDay)
+    {
+        $date = Carbon::now();
+        $date->setISODate($date->copy()->format('Y'),$semaine);
+        $start =  $date->startOfWeek();
+        $week = [];
+        $dt = new carbon($start);
+
+        for( $i=0 ; $i <5 ; $i++ ){
+            $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
+        }
+
+        $date = (new Carbon($week[$numberOfDay]))->format('Y-m-d');
+
+
+        // UPDATE ORDER PARTI superieur a order donné
+        $delais = Delais::where('order',">=",$order)->where('date_envoie',$date)->get();
+       // var_dump($delais);
+        foreach ($delais as $index => $delai) {
+            $state = $delai->update(['order'=>$delai->order+1]);
+        }
+
+        $item = Delais::where('id',$id)->first();
+
+        $state = $item->update([
+           'date_envoie' => $date,
+           'order' => $order,
+           'semaine_envoie' => $semaine,
+           ]);
+       
+        //return ['update OK'];
     }
 
     /**

@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="row" >
-            <div class="col border" v-for="date in cal">
+            <div class="col border" v-for="(date,index) in cal">
                 {{date.dn | capitalize}}
                 <br>
                 <h1>{{date.dnu.substr(-2)}}</h1>
             </div>
         </div>
 
-        <div class="row" >
+        <div class="row" style="display: none;">
             <div class="col border" v-for="content in work">
 
                 <div class="row p-1 border" v-if="content !== 0 " v-for="cmd in content">
@@ -26,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <work :semaine="weekNumber"></work>
     </div>
 
 </template>
@@ -48,17 +49,41 @@
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
                 weeksDay : [],
+                weekNumber : moment().week(),
                 work : [],
                 cal : [] ,
             }
         },
         mounted() {
+
+            Event.$on('addWeek',(data)=>{
+                this.weekNumber = data+1;
+                this.cal = this.getDayOfWeek();
+                Event.$emit('syncWeek', this.weekNumber )
+                Event.$emit('getWorks', this.weekNumber )
+            })
+
+            Event.$on('subWeek',(data)=>{
+                this.weekNumber = data-1;
+                this.cal = this.getDayOfWeek();
+                Event.$emit('syncWeek', this.weekNumber )
+                Event.$emit('getWorks', this.weekNumber )
+
+            })
+
+            Event.$on('resetWeek',(data)=>{
+                this.resetWeek();
+                this.cal = this.getDayOfWeek();
+                Event.$emit('syncWeek', this.weekNumber )
+            })
+
             this.weeksShort.shift();
             this.weeksShort.pop();
+            this.weekNumber = this.week;
             this.cal = this.getDayOfWeek();
-            this.getWorksWeek();
 
         },
+        props:['week'],
         filters:{
             capitalize: function (value) {
                 if (!value) return ''
@@ -83,15 +108,17 @@
         },
         methods: {
             getWorksWeek(){
-                axios.get('/team/get/work/9').then(
+                axios.get('/team/get/work/'+this.weekNumber).then(
                     response => {
                       this.work =  response.data;
                     }
                 );
             },
             getDayOfWeek(){
+                //console.log(dayWeek);
+                let start_ = this.selectedDateSession.startOf('week');
+                let start = moment().startOf('year').add(this.weekNumber, 'weeks');
 
-                let start = this.selectedDateSession.startOf('week');
                 let i;
                 let calendar = [] ;
 
@@ -109,7 +136,6 @@
                             'dnu' : start.format('Y-MM-DD')
                         };
                     }
-
                 }
                 return calendar;
             },
@@ -117,35 +143,12 @@
                 let date_y = this.selectedDateSession.format('Y');
                 return ((date_y % 4 === 0) && (date_y % 100 !== 0)) || (date_y % 400 === 0);
             },
-            makeCalendar(){
-                this.cal=[];
+            subWeek(){
             },
-
-            subYear(){
-                this.selectedDateSession = this.selectedDateSession.clone().subtract(1,'years');
-                axios.post('/configuration/calendar/set/session',{date:this.selectedDateSession});
-                this.getMovement();
-                this.makeCalendar();
+            addWeek(){
             },
-            addYear(){
-                this.selectedDateSession = this.selectedDateSession.clone().add(1,'years');
-                axios.post('/configuration/calendar/set/session',{date:this.selectedDateSession});
-                this.makeCalendar();
-            },
-            subMonth(){
-                this.selectedDateSession = this.selectedDateSession.clone().subtract(1,'months');
-                axios.post('/configuration/calendar/set/session',{date:this.selectedDateSession});
-                this.makeCalendar();
-            },
-            addMonth(){
-                this.selectedDateSession = this.selectedDateSession.clone().add(1,'months');
-                axios.post('/configuration/calendar/set/session',{date:this.selectedDateSession});
-                this.makeCalendar();
-            },
-            reset(){
-                this.selectedDateSession = moment();
-                axios.post('/configuration/calendar/set/session',{date:this.selectedDateSession});
-                this.makeCalendar();
+            resetWeek(){
+                this.weekNumber = this.today.week();
             },
         }
     }

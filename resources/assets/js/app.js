@@ -28,25 +28,15 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/ExampleComponent.vue'));
 Vue.component('calendar', require('./components/Calendar.vue'));
 Vue.component('week', require('./components/Week.vue'));
-Vue.component('hello', require('./components/Hello.vue'));
-Vue.component('drag', require('./components/Drag.vue'));
-
-
-
+Vue.component('work', require('./components/Work.vue'));
+Vue.component('navbar', require('./components/Navbar.vue'));
 
 window.Event = new Vue();
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
-import Vue from 'vue'
-import { Vue2Dragula } from 'vue2-dragula'
 
-Vue.use(Vue2Dragula, {
-    logging: {
-        service: false // to only log methods in service (DragulaService)
-    }
-});
 const app = new Vue({
     el: '#app',
 });

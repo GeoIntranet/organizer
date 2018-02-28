@@ -21,8 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 // TEAM WORKS ---------------------------------------------------------------------------------------------------------------------------
 Route::get('/team', ['as'=>'team','uses' => 'TeamController@index']);
 Route::get('/team/get/work/{semaine}', ['as'=>'searchwork','uses' => 'TeamController@searchWork']);
+Route::get('/team/{semaine}/{id}/{order}/{dayNumber}', ['as'=>'updatedElement','uses' => 'TeamController@updateColumn']);
 Route::get('/team/works/{date}', ['as'=>'works','uses' => 'TeamController@works']);
-Route::get('/team/works', ['as'=>'works','uses' => 'TeamController@works']);
+Route::get('/works/week', ['as'=>'works','uses' => 'TeamController@works']);
 Route::get('/team/{bl}/add', ['as'=>'works','uses' => 'TeamController@dayAdd']);
 Route::get('/team/{bl}/sub', ['as'=>'works','uses' => 'TeamController@daySub']);
 Route::get('/usercheck', ['as'=>'apicheck','uses' => 'TeamController@api']);

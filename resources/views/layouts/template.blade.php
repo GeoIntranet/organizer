@@ -12,11 +12,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.organizer = {!! json_encode([
+            'csrfToken' => csrf_token(),
+            'user' => Auth::user(),
+            'signedIn' => Auth::check(),
+            'app' => env('APP_NAME')
+        ]) !!};
+    </script>
 </head>
 <body>
 <div id="app">
 
-        @include('navbar')
+        @yield('menu')
 
     <div class="">
         @yield('content')
