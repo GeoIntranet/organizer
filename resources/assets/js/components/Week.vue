@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="row" >
             <div class="col border" v-for="date in cal">
                 {{date.dn | capitalize}}

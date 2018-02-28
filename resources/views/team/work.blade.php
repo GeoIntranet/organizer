@@ -9,8 +9,8 @@
             </div>
 
             <div class="col ">
-
                 <week></week>
+                <hello></hello>
 
                 <div class="row">
                     @foreach($week->getWeek() as $index => $day)

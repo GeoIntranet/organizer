@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -20,8 +19,6 @@ window.Laravel = {
 
 window.Vue = require('vue');
 
-
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -31,6 +28,10 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/ExampleComponent.vue'));
 Vue.component('calendar', require('./components/Calendar.vue'));
 Vue.component('week', require('./components/Week.vue'));
+Vue.component('hello', require('./components/Hello.vue'));
+Vue.component('drag', require('./components/Drag.vue'));
+
+
 
 
 window.Event = new Vue();
