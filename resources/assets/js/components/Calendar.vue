@@ -139,12 +139,6 @@
                 let endWeek = endDayWeek.week();
                 let diffWeek = startWeek-endWeek;
 
-                console.log(startDayWeek.format('Y-MM-DD'))
-                console.log(diffWeek);
-                //console.log(dateMutable.format('Y-MM-DD'))
-                //console.log(startWeek)
-                //console.log(endWeek)
-
 
                 /*
                   *  problematique de confition jamais remplie
@@ -156,8 +150,12 @@
 
                 // test années bisextile ( jour décallé )
                 if(this.yearLeap){
+                    console.log('anné bissextile')
                     if(lastWeekOnYear)
                     {
+                        console.log('derniere semaine'),
+                        console.log(startDayWeek.format('Y-MM-DD'))
+
                         startDayWeek.subtract(1,'days');
                         for( var test = 1 ; test <= diff ; test++ )
                         {
@@ -172,6 +170,9 @@
                         };
                     }
                     else{
+                        console.log('ce nest pas la derniere semaine de lannée')
+                        console.log(startDayWeek.format('Y-MM-DD'))
+                        startDayWeek.subtract(1,'days');
                         /*
                          * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
                          * */
@@ -193,9 +194,15 @@
                     }
                 }
                 else{
+
+                    /*
+                    * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                    * */
                     if(lastWeekOnYear)
                     {
+                        console.log(startDayWeek.format('Y-MM-DD'))
                         startDayWeek.subtract(1,'days');
+
                         for( var test = 1 ; test <= diff ; test++ )
                         {
                             if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
@@ -209,9 +216,7 @@
                         };
                     }
                     else{
-                        /*
-                         * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                         * */
+                       console.log(startDayWeek.format('Y-MM-DD'))
                         for( var week = startWeek; week <= endWeek  ; week++ ) {
                             if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
                             this.cal.push({

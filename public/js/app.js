@@ -48889,13 +48889,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var endWeek = endDayWeek.week();
             var diffWeek = startWeek - endWeek;
 
-            console.log(startDayWeek.format('Y-MM-DD'));
-            console.log(diffWeek);
-            //console.log(dateMutable.format('Y-MM-DD'))
-            //console.log(startWeek)
-            //console.log(endWeek)
-
-
             /*
               *  problematique de confition jamais remplie
               *  on ne rentre jamais dans la boucle car depart 52 fin 5 , condition 52 <= 5 jamais valider.
@@ -48906,7 +48899,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // test années bisextile ( jour décallé )
             if (this.yearLeap) {
+                console.log('anné bissextile');
                 if (lastWeekOnYear) {
+                    console.log('derniere semaine'), console.log(startDayWeek.format('Y-MM-DD'));
+
                     startDayWeek.subtract(1, 'days');
                     for (var test = 1; test <= diff; test++) {
                         if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
@@ -48921,6 +48917,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         w++;
                     };
                 } else {
+                    console.log('ce nest pas la derniere semaine de lannée');
+                    console.log(startDayWeek.format('Y-MM-DD'));
+                    startDayWeek.subtract(1, 'days');
                     /*
                      * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
                      * */
@@ -48935,8 +48934,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 }
             } else {
+
+                /*
+                * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
+                * */
                 if (lastWeekOnYear) {
+                    console.log(startDayWeek.format('Y-MM-DD'));
                     startDayWeek.subtract(1, 'days');
+
                     for (var test = 1; test <= diff; test++) {
                         if (w > startDayWeek.weeksInYear()) w = w - startDayWeek.weeksInYear();
 
@@ -48950,9 +48955,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         w++;
                     };
                 } else {
-                    /*
-                     * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                     * */
+                    console.log(startDayWeek.format('Y-MM-DD'));
                     for (var week = startWeek; week <= endWeek; week++) {
                         if (week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
                         this.cal.push({
