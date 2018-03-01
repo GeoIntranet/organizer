@@ -48918,8 +48918,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     };
                 } else {
                     console.log('ce nest pas la derniere semaine de lannée');
+                    //startDayWeek = startDayWeek.subtract(3,'days');
+
                     console.log(startDayWeek.format('Y-MM-DD'));
-                    startDayWeek.subtract(1, 'days');
                     /*
                      * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
                      * */
@@ -48927,7 +48928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         if (week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
                         this.cal.push({
                             week: week,
-                            date: Array(7).fill(-1).map(function (n, i) {
+                            date: Array(7).fill(0).map(function (n, i) {
                                 return moment().year(startDayWeek.year()).week(week).startOf('week').clone().add(n + i, 'day').format('YYYY-MM-DD');
                             })
                         });

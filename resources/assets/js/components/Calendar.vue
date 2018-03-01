@@ -171,8 +171,9 @@
                     }
                     else{
                         console.log('ce nest pas la derniere semaine de lannée')
+                        //startDayWeek = startDayWeek.subtract(3,'days');
+
                         console.log(startDayWeek.format('Y-MM-DD'))
-                        startDayWeek.subtract(1,'days');
                         /*
                          * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
                          * */
@@ -181,7 +182,7 @@
                             this.cal.push({
                                 week:week,
                                 date:
-                                    Array(7) .fill(-1)
+                                    Array(7) .fill(0)
                                         .map(
                                             (n, i) =>
                                                 moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
