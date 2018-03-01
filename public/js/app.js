@@ -27997,7 +27997,7 @@ window.Vue = __webpack_require__(160);
 Vue.component('example', __webpack_require__(163));
 Vue.component('calendar', __webpack_require__(166));
 Vue.component('week', __webpack_require__(172));
-Vue.component('work', __webpack_require__(197));
+Vue.component('work', __webpack_require__(177));
 Vue.component('navbar', __webpack_require__(184));
 
 window.Event = new Vue();
@@ -34982,7 +34982,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.12.9
+ * @version 1.13.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -48702,7 +48702,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48796,6 +48796,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48804,6 +48814,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             cal: [],
             selectedDateSession: moment(),
+            selectedDate: '',
             today: moment(),
             yearLeap: false,
             weeks: moment.weekdays(),
@@ -48811,13 +48822,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         var Sunday = [this.weeksShort.shift()];
-
         this.weeksShort = this.weeksShort.concat(Sunday);
-
         this.yearLeap = this.isLEap();
-
         this.makeCalendar();
+
+        Event.$on('subWeek', function (data) {
+
+            _this.selectedDateSession = data;
+            _this.selectedDate = data.format('Y-MM-DD');
+            _this.yearLeap = _this.isLEap();
+            _this.makeCalendar();
+        });
+
+        Event.$on('addWeek', function (data) {
+
+            _this.selectedDateSession = data;
+            _this.selectedDate = data.format('Y-MM-DD');
+            _this.yearLeap = _this.isLEap();
+            _this.makeCalendar();
+        });
+
+        Event.$on('resetWeek', function (data) {
+
+            _this.selectedDateSession = data;
+            _this.selectedDate = data.format('Y-MM-DD');
+            _this.yearLeap = _this.isLEap();
+            _this.makeCalendar();
+        });
     },
 
     filters: {
@@ -48837,19 +48871,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        isEqualMonth: function isEqualMonth(date) {
+            return date.substr(5, 2) !== this.selectedDateSession.format('Y-MM-DD').substr(5, 2);
+        },
         isLEap: function isLEap() {
             var date_y = this.selectedDateSession.format('Y');
             return date_y % 4 === 0 && date_y % 100 !== 0 || date_y % 400 === 0;
         },
         makeCalendar: function makeCalendar() {
-            this.cal = [];
 
+            this.cal = [];
             var dateMutable = this.selectedDateSession;
 
             var startWeek = moment(dateMutable).startOf('month').startOf('week').week();
             var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
             var endDayWeek = moment(dateMutable).endOf('month').endOf('week');
             var endWeek = endDayWeek.week();
+
+            console.log(startDayWeek);
+            console.log(dateMutable.format('Y-MM-DD'));
+            console.log(startWeek);
+            console.log(endWeek);
 
             /*
               *  problematique de confition jamais remplie
@@ -48858,8 +48900,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var diff = startDayWeek.weeksInYear() - startWeek + endWeek + 1;
             var w = startWeek;
             var lastWeekOnYear = startWeek > endWeek;
-
-            console.log(this.yearLeap);
 
             // test années bisextile ( jour décallé )
             if (this.yearLeap) {
@@ -48922,31 +48962,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
         },
-        subYear: function subYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.getMovement();
-            this.makeCalendar();
-        },
-        addYear: function addYear() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'years');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
-            this.makeCalendar();
-        },
         subMonth: function subMonth() {
             this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.yearLeap = this.isLEap();
             this.makeCalendar();
         },
         addMonth: function addMonth() {
             this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.yearLeap = this.isLEap();
             this.makeCalendar();
         },
         reset: function reset() {
             this.selectedDateSession = moment();
-            axios.post('/configuration/calendar/set/session', { date: this.selectedDateSession });
+            this.yearLeap = this.isLEap();
             this.makeCalendar();
+        },
+        chooseDate: function chooseDate(date) {
+            this.selectedDate = date;
+            Event.$emit('chooseDate', date);
         }
     }
 });
@@ -49029,15 +49062,25 @@ var render = function() {
         _vm._l(_vm.cal, function(week) {
           return _c(
             "div",
-            { staticClass: "row " },
+            { staticClass: "row bg-" },
             _vm._l(week.date, function(date) {
               return _c("div", { staticClass: "col size--date-number " }, [
                 date === _vm.today.format("Y-MM-DD")
                   ? _c(
                       "span",
                       {
-                        staticClass: "rounded-circle",
-                        staticStyle: { "background-color": "indianred" }
+                        staticClass: "rounded-circle ",
+                        staticStyle: {
+                          "background-color": "cornflowerblue",
+                          color: "white",
+                          "font-weight": "bold"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.chooseDate(date)
+                          }
+                        }
                       },
                       [
                         _vm._v(
@@ -49047,13 +49090,31 @@ var render = function() {
                         )
                       ]
                     )
-                  : _c("span", { staticClass: "rounded-circle" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm._f("substrDay")(date)) +
-                          "\n                    "
-                      )
-                    ])
+                  : _c(
+                      "span",
+                      {
+                        staticClass: "rounded-circle",
+                        class: {
+                          "rounded-circle": true,
+                          "bg-warning": date === _vm.selectedDate,
+                          b: date === _vm.selectedDate,
+                          lightgrey: _vm.isEqualMonth(date)
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.chooseDate(date)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm._f("substrDay")(date)) +
+                            "\n                    "
+                        )
+                      ]
+                    )
               ])
             })
           )
@@ -49196,21 +49257,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -49225,39 +49271,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             weeksDay: [],
             weekNumber: moment().week(),
             work: [],
-            cal: []
+            cal: [],
+            dayN: [],
+            yearN: [],
+            monthN: [],
+            dt: moment()
         };
     },
+
+    props: ['year', 'day', 'month'],
     mounted: function mounted() {
         var _this = this;
 
         Event.$on('addWeek', function (data) {
-            _this.weekNumber = data + 1;
-            _this.cal = _this.getDayOfWeek();
-            Event.$emit('syncWeek', _this.weekNumber);
-            Event.$emit('getWorks', _this.weekNumber);
+            _this.syncDate(data);
         });
 
         Event.$on('subWeek', function (data) {
-            _this.weekNumber = data - 1;
-            _this.cal = _this.getDayOfWeek();
-            Event.$emit('syncWeek', _this.weekNumber);
-            Event.$emit('getWorks', _this.weekNumber);
+            _this.syncDate(data);
         });
 
         Event.$on('resetWeek', function (data) {
-            _this.resetWeek();
-            _this.cal = _this.getDayOfWeek();
-            Event.$emit('syncWeek', _this.weekNumber);
+            _this.syncDate(data);
         });
+
+        Event.$on('chooseDate', function (data) {
+            _this.dt = moment(data);
+            _this.syncDate(_this.dt);
+        });
+
+        this.dayN = parseInt(this.day);
+        this.monthN = parseInt(this.month);
+        this.yearN = parseInt(this.year);
+
+        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
+        this.weekNumber = this.dt.week();
 
         this.weeksShort.shift();
         this.weeksShort.pop();
-        this.weekNumber = this.week;
+
         this.cal = this.getDayOfWeek();
     },
 
-    props: ['week'],
     filters: {
         capitalize: function capitalize(value) {
             if (!value) return '';
@@ -49280,6 +49336,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        syncDate: function syncDate(data) {
+            this.dt = data;
+            this.weekNumber = data.week();
+            this.cal = this.getDayOfWeek();
+            //Event.$emit('syncWeekNavbar', this.weekNumber )
+            Event.$emit('getWorks', this.weekNumber);
+        },
         getWorksWeek: function getWorksWeek() {
             var _this2 = this;
 
@@ -49288,9 +49351,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getDayOfWeek: function getDayOfWeek() {
-            //console.log(dayWeek);
-            var start_ = this.selectedDateSession.startOf('week');
-            var start = moment().startOf('year').add(this.weekNumber, 'weeks');
+
+            var start_ = this.dt.startOf('week');
+            var start = this.dt.startOf('week');
 
             var i = void 0;
             var calendar = [];
@@ -49336,55 +49399,25 @@ var render = function() {
       _c(
         "div",
         { staticClass: "row" },
-        _vm._l(_vm.cal, function(date, index) {
-          return _c("div", { staticClass: "col border" }, [
-            _vm._v(
-              "\n            " +
-                _vm._s(_vm._f("capitalize")(date.dn)) +
-                "\n            "
-            ),
-            _c("br"),
-            _vm._v(" "),
-            _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
-          ])
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row", staticStyle: { display: "none" } },
-        _vm._l(_vm.work, function(content) {
-          return _c(
-            "div",
-            { staticClass: "col border" },
-            [
-              _vm._l(content, function(cmd) {
-                return content !== 0
-                  ? _c("div", { staticClass: "row p-1 border" }, [
-                      _c("div", { staticClass: "col " }, [
-                        _c("div", { staticClass: "row" }, [
-                          _vm._m(0, true),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-auto" }, [
-                            _vm._v(" " + _vm._s(cmd.id_cmd))
-                          ]),
-                          _vm._v(" "),
-                          _vm._m(1, true)
-                        ])
-                      ])
-                    ])
-                  : _vm._e()
-              }),
+        [
+          _c("div", { staticClass: "col-md-auto border" }, [
+            _vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.cal, function(date, index) {
+            return _c("div", { staticClass: "col border" }, [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm._f("capitalize")(date.dn)) +
+                  "\n            "
+              ),
+              _c("br"),
               _vm._v(" "),
-              content === 0
-                ? _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col" }, [_vm._v("Empty")])
-                  ])
-                : _vm._e()
-            ],
-            2
-          )
-        })
+              _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
+            ])
+          })
+        ],
+        2
       ),
       _vm._v(" "),
       _c("work", { attrs: { semaine: _vm.weekNumber } })
@@ -49392,24 +49425,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-left" }, [
-      _c("i", { staticClass: "fa fa-angle-left" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text_right" }, [
-      _c("i", { staticClass: "fa fa-angle-right" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -49420,10 +49436,463 @@ if (false) {
 }
 
 /***/ }),
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(178)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(180)
+/* template */
+var __vue_template__ = __webpack_require__(183)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Work.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-47d276f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-47d276f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(179);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("5cd7306e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border: solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i {\n    cursor: pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'work',
+    components: {
+        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
+    },
+    data: function data() {
+        return {
+            wLun: [],
+            wMar: [],
+            wMer: [],
+            wJe: [],
+            wVen: [],
+            work: [],
+            editable: true,
+            isDragging: false,
+            delayedDragging: false,
+            selectedElement: '',
+            replaceElement: 'add_in_new_column',
+            selectedColElement: '',
+            selectedNewIndexElement: '',
+            weekNumber: moment().week()
+        };
+    },
+
+    props: ['semaine'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('getWorks', function (data) {
+            _this.weekNumber = data;
+            _this.getWorksWeek();
+        });
+
+        this.getWorksWeek();
+    },
+
+    methods: {
+        getWorksWeek: function getWorksWeek() {
+            var _this2 = this;
+
+            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
+                _this2.work = response.data;
+
+                _this2.wLun = response.data[0];
+                _this2.wMar = response.data[1];
+                _this2.wMer = response.data[2];
+                _this2.wJe = response.data[3];
+                _this2.wVen = response.data[4];
+            });
+        },
+        onStart: function onStart(event, oEvent) {},
+
+        onEnd: function onEnd( /**Event*/evt) {
+            var itemEl = evt.item; // dragged HTMLElement
+            var colFrom = evt.from.getAttribute('id');
+            var colTo = evt.to.getAttribute('id');
+            console.log(colFrom);
+            console.log(colTo);
+            this.selectedColElement = colTo;
+            //console.log(itemEl);    // target list
+            //console.log(evt.to);    // target list
+            //console.log(evt.from);  // previous list
+            //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
+            this.selectedNewIndexElement = evt.newIndex + 1;
+
+            axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
+                console.log(response.data);
+            });
+        },
+        onAdd: function onAdd(event, oEvent) {
+            //console.log(event['to'].getAttribute('id'));
+        },
+        orderList: function orderList() {
+            this.list = this.list.sort(function (one, two) {
+                return one.order - two.order;
+            });
+        },
+        onMove: function onMove(event, oEvent) {
+
+            var relatedElement = event.relatedContext;
+            var draggedElement = event.draggedContext;
+
+            this.selectedElement = draggedElement.element.id;
+
+            this.replaceElement = 'add_in_new_column';
+
+            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.id;
+
+            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
+        }
+    },
+    computed: {
+        dragOptions: function dragOptions() {
+            return {
+                animation: 0,
+                group: 'description',
+                disabled: !this.editable,
+                ghostClass: 'ghost'
+            };
+        },
+        listString: function listString() {
+            return JSON.stringify(this.list, null, 2);
+        },
+        lunString: function lunString() {
+            return JSON.stringify(this.wLun, null, 2);
+        },
+        marString: function marString() {
+            return JSON.stringify(this.wMar, null, 2);
+        },
+        merString: function merString() {
+            return JSON.stringify(this.wMer, null, 2);
+        },
+        jeString: function jeString() {
+            return JSON.stringify(this.wJe, null, 2);
+        },
+        venString: function venString() {
+            return JSON.stringify(this.wVen, null, 2);
+        },
+        list2String: function list2String() {
+            return JSON.stringify(this.list2, null, 2);
+        }
+    },
+    watch: {
+        isDragging: function isDragging(newValue) {
+            var _this3 = this;
+
+            if (newValue) {
+                this.delayedDragging = true;
+                return;
+            }
+            this.$nextTick(function () {
+                _this3.delayedDragging = false;
+            });
+        }
+    }
+});
+
+/***/ }),
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51387,856 +51856,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 
 
 /***/ }),
-/* 183 */,
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(185)
-/* template */
-var __vue_template__ = __webpack_require__(186)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Navbar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cd7fb372", Component.options)
-  } else {
-    hotAPI.reload("data-v-cd7fb372", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 185 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            user: window.organizer.user,
-            signed: window.organizer.signedIn,
-            csrf: window.organizer.csrfToken,
-            app: window.organizer.app,
-            weekNumber: moment().week(),
-            date: moment()
-        };
-    },
-
-    props: ['week', 'date'],
-    mounted: function mounted() {
-        var _this = this;
-
-        Event.$on('syncWeek', function (data) {
-            _this.weekNumber = data;
-        });
-    },
-
-    methods: {
-        addWeek: function addWeek() {
-            Event.$emit('addWeek', this.weekNumber);
-        },
-        subWeek: function subWeek() {
-            Event.$emit('subWeek', this.weekNumber);
-        },
-        resetWeek: function resetWeek() {
-            Event.$emit('resetWeek');
-        }
-    }
-});
-
-/***/ }),
-/* 186 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "nav",
-    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
-    [
-      _c("div", { staticClass: "container" }, [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: "" } }),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-              _c(
-                "a",
-                { staticClass: "navbar-brand mr-4", attrs: { href: "/" } },
-                [
-                  _c("img", {
-                    staticClass: "d-inline-block align-top",
-                    attrs: {
-                      src: "/images/light.png",
-                      width: "30",
-                      height: "30",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.app) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "ml-4 mr-4 navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.resetWeek($event)
-                    }
-                  }
-                },
-                [_vm._v("\n                    Aujourd'hui\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                { staticClass: "ml-4 navbar-brand", attrs: { href: "#" } },
-                [_vm._v("\n                   Février 2018\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.subWeek($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-left" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.addWeek($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-right" })]
-              )
-            ]),
-            _vm._v(" "),
-            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-              !_vm.signed
-                ? _c("li", [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
-                      _vm._v("Login")
-                    ])
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              !_vm.signed
-                ? _c("li", [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
-                      _vm._v("Register")
-                    ])
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item dropdown" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "nav-link dropdown-toggle",
-                    attrs: {
-                      id: "navbarDropdown",
-                      href: "#",
-                      role: "button",
-                      "data-toggle": "dropdown",
-                      "aria-haspopup": "true",
-                      "aria-expanded": "false"
-                    }
-                  },
-                  [
-                    _c("span", { staticClass: "caret" }, [
-                      _vm._v(_vm._s(_vm.user.prenom))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
-            ])
-          ]
-        )
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggler",
-        attrs: {
-          type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#navbarSupportedContent",
-          "aria-controls": "navbarSupportedContent",
-          "aria-expanded": "false",
-          "aria-label": "Toggle navigation"
-        }
-      },
-      [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "dropdown-menu",
-        attrs: { "aria-labelledby": "navbarDropdown" }
-      },
-      [
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
-          _vm._v("xxx")
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
-          _vm._v("xxx")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "dropdown-divider" }),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "dropdown-item",
-            attrs: {
-              href: "",
-              onclick:
-                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
-            }
-          },
-          [
-            _c("i", {
-              staticClass: "fa fa-power-off mr-2",
-              staticStyle: { color: "indianred" }
-            }),
-            _vm._v("Deconnexion\n                        ")
-          ]
-        ),
-        _vm._v(" "),
-        _c("form", {
-          staticStyle: { display: "none" },
-          attrs: { id: "logout-form", action: "", method: "POST" }
-        })
-      ]
-    )
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cd7fb372", module.exports)
-  }
-}
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(198)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(200)
-/* template */
-var __vue_template__ = __webpack_require__(201)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Work.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-47d276f0", Component.options)
-  } else {
-    hotAPI.reload("data-v-47d276f0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(199);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("5cd7306e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border: solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i {\n    cursor: pointer;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 200 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'work',
-    components: {
-        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
-    },
-    data: function data() {
-        return {
-            wLun: [],
-            wMar: [],
-            wMer: [],
-            wJe: [],
-            wVen: [],
-            work: [],
-            editable: true,
-            isDragging: false,
-            delayedDragging: false,
-            selectedElement: '',
-            replaceElement: 'add_in_new_column',
-            selectedColElement: '',
-            selectedNewIndexElement: '',
-            weekNumber: moment().week()
-        };
-    },
-
-    props: ['semaine'],
-    mounted: function mounted() {
-        var _this = this;
-
-        Event.$on('getWorks', function (data) {
-            _this.weekNumber = data;
-            _this.getWorksWeek();
-        });
-
-        this.getWorksWeek();
-    },
-
-    methods: {
-        getWorksWeek: function getWorksWeek() {
-            var _this2 = this;
-
-            axios.get('/team/get/work/' + this.semaine).then(function (response) {
-                _this2.work = response.data;
-
-                _this2.wLun = response.data[0];
-                _this2.wMar = response.data[1];
-                _this2.wMer = response.data[2];
-                _this2.wJe = response.data[3];
-                _this2.wVen = response.data[4];
-            });
-        },
-        onStart: function onStart(event, oEvent) {},
-
-        onEnd: function onEnd( /**Event*/evt) {
-            var itemEl = evt.item; // dragged HTMLElement
-            var colFrom = evt.from.getAttribute('id');
-            var colTo = evt.to.getAttribute('id');
-            console.log(colFrom);
-            console.log(colTo);
-            this.selectedColElement = colTo;
-            //console.log(itemEl);    // target list
-            //console.log(evt.to);    // target list
-            //console.log(evt.from);  // previous list
-            //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
-            this.selectedNewIndexElement = evt.newIndex + 1;
-
-            axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
-                console.log(response.data);
-            });
-        },
-        onAdd: function onAdd(event, oEvent) {
-            //console.log(event['to'].getAttribute('id'));
-        },
-        orderList: function orderList() {
-            this.list = this.list.sort(function (one, two) {
-                return one.order - two.order;
-            });
-        },
-        onMove: function onMove(event, oEvent) {
-
-            var relatedElement = event.relatedContext;
-            var draggedElement = event.draggedContext;
-
-            this.selectedElement = draggedElement.element.id;
-
-            this.replaceElement = 'add_in_new_column';
-
-            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.id;
-
-            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
-        }
-    },
-    computed: {
-        dragOptions: function dragOptions() {
-            return {
-                animation: 0,
-                group: 'description',
-                disabled: !this.editable,
-                ghostClass: 'ghost'
-            };
-        },
-        listString: function listString() {
-            return JSON.stringify(this.list, null, 2);
-        },
-        lunString: function lunString() {
-            return JSON.stringify(this.wLun, null, 2);
-        },
-        marString: function marString() {
-            return JSON.stringify(this.wMar, null, 2);
-        },
-        merString: function merString() {
-            return JSON.stringify(this.wMer, null, 2);
-        },
-        jeString: function jeString() {
-            return JSON.stringify(this.wJe, null, 2);
-        },
-        venString: function venString() {
-            return JSON.stringify(this.wVen, null, 2);
-        },
-        list2String: function list2String() {
-            return JSON.stringify(this.list2, null, 2);
-        }
-    },
-    watch: {
-        isDragging: function isDragging(newValue) {
-            var _this3 = this;
-
-            if (newValue) {
-                this.delayedDragging = true;
-                return;
-            }
-            this.$nextTick(function () {
-                _this3.delayedDragging = false;
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 201 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52267,6 +51887,12 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-auto border", staticStyle: { color: "black" } },
+        [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
+      ),
+      _vm._v(" "),
       _c(
         "div",
         { staticClass: "col border", staticStyle: { height: "400px" } },
@@ -52605,6 +52231,435 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-47d276f0", module.exports)
   }
 }
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(185)
+/* template */
+var __vue_template__ = __webpack_require__(186)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Navbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cd7fb372", Component.options)
+  } else {
+    hotAPI.reload("data-v-cd7fb372", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 185 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            user: window.organizer.user,
+            signed: window.organizer.signedIn,
+            csrf: window.organizer.csrfToken,
+            app: window.organizer.app,
+            weekNumber: moment().week(),
+            dt: '',
+            monthN: 0,
+            dayN: 0,
+            yearN: 0,
+            displayMonth: 0,
+            displayDate: ''
+        };
+    },
+
+    props: ['year', 'month', 'day'],
+    mounted: function mounted() {
+        var _this = this;
+
+        this.dayN = parseInt(this.day);
+        this.monthN = parseInt(this.month);
+        this.yearN = parseInt(this.year);
+
+        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
+        this.weekNumber = this.dt.week();
+        this.displayMonth = moment.months()[this.monthN - 1];
+        this.displayDate = this.dt.format('Y-MM-DD');
+
+        Event.$on('syncWeekNavbar', function (data) {
+            _this.weekNumber = data;
+        });
+
+        Event.$on('chooseDate', function (data) {
+
+            _this.dt = moment(data);
+            _this.weekNumber = _this.dt.week();
+            _this.monthN = parseInt(_this.dt.month());
+            _this.displayMonth = moment.months()[_this.monthN];
+            _this.displayDate = _this.dt.format('Y-MM-DD');
+        });
+    },
+
+    methods: {
+        addWeek: function addWeek() {
+            this.dt = this.dt.add(1, 'week');
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('addWeek', this.dt);
+        },
+        subWeek: function subWeek() {
+            this.dt = this.dt.subtract(1, 'week');
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('subWeek', this.dt);
+        },
+        resetWeek: function resetWeek() {
+            this.dt = moment();
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('resetWeek', moment());
+        }
+    },
+    filters: {
+        capitalize: function capitalize(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    }
+
+});
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
+    [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("a", { staticClass: "navbar-brand", attrs: { href: "" } }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse navbar-collapse",
+            attrs: { id: "navbarSupportedContent" }
+          },
+          [
+            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+              _c(
+                "a",
+                { staticClass: "navbar-brand mr-4", attrs: { href: "/" } },
+                [
+                  _c("img", {
+                    staticClass: "d-inline-block align-top",
+                    attrs: {
+                      src: "/images/light.png",
+                      width: "30",
+                      height: "30",
+                      alt: ""
+                    }
+                  }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.app) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-4 mr-4 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.resetWeek($event)
+                    }
+                  }
+                },
+                [_vm._v("\n                    Aujourd'hui\n                ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-4  mr-1 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.subWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-left" })]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-1 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.addWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-right" })]
+              ),
+              _vm._v(" "),
+              _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
+                _vm._v(
+                  "\n                   " +
+                    _vm._s(_vm._f("capitalize")(_vm.displayMonth)) +
+                    " " +
+                    _vm._s(_vm.year) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Login")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Register")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("li", { staticClass: "nav-item dropdown " }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: " mr-4 nav-link dropdown-toggle",
+                    attrs: {
+                      id: "navbarDropdown",
+                      href: "#",
+                      role: "button",
+                      "data-toggle": "dropdown",
+                      "aria-haspopup": "true",
+                      "aria-expanded": "false"
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "caret mr-4" }, [
+                      _vm._v(_vm._s(_vm.user.prenom))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarSupportedContent",
+          "aria-controls": "navbarSupportedContent",
+          "aria-expanded": "false",
+          "aria-label": "Toggle navigation"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "dropdown-menu",
+        attrs: { "aria-labelledby": "navbarDropdown" }
+      },
+      [
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-divider" }),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "dropdown-item",
+            attrs: {
+              href: "",
+              onclick:
+                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
+            }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-power-off mr-2",
+              staticStyle: { color: "indianred" }
+            }),
+            _vm._v("Deconnexion\n                        ")
+          ]
+        ),
+        _vm._v(" "),
+        _c("form", {
+          staticStyle: { display: "none" },
+          attrs: { id: "logout-form", action: "", method: "POST" }
+        })
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cd7fb372", module.exports)
+  }
+}
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

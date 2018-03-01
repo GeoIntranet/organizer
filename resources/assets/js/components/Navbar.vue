@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="">
 
             </a>
@@ -18,15 +18,17 @@
                     <a @click.prevent="resetWeek" class="ml-4 mr-4 navbar-brand" href="#">
                         Aujourd'hui
                     </a>
-                    <a class="ml-4 navbar-brand" href="#">
-                       Février 2018
-                    </a>
-                    <a class="navbar-brand" href="#" @click.prevent="subWeek">
+                    <a class="ml-4  mr-1 navbar-brand" href="#" @click.prevent="subWeek">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a class="navbar-brand" href="#" @click.prevent="addWeek">
+                    <a class="ml-1 navbar-brand" href="#" @click.prevent="addWeek">
                         <i class="fa fa-angle-right"></i>
                     </a>
+                    <a class="navbar-brand" href="#">
+                       {{displayMonth | capitalize}} {{year}}
+                    </a>
+
+
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -37,10 +39,10 @@
                     <li v-if="!signed"><a class="nav-link" href="">Register</a></li>
 
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown ">
 
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret">{{user.prenom}}</span>
+                        <a id="navbarDropdown" class=" mr-4 nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret mr-4">{{user.prenom}}</span>
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -73,25 +75,64 @@
                 csrf:window.organizer.csrfToken,
                 app:window.organizer.app,
                 weekNumber:moment().week(),
-                date:moment()
+                dt:'',
+                monthN : 0,
+                dayN : 0,
+                yearN : 0,
+                displayMonth : 0,
+                displayDate : '',
             }
         },
-        props:['week','date'],
+        props:['year','month','day'],
         mounted() {
-            Event.$on('syncWeek',(data)=>{
+            this.dayN = parseInt(this.day);
+            this.monthN = parseInt(this.month);
+            this.yearN = parseInt(this.year);
+
+            // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+            this.dt = moment([this.year,this.month,this.day]).subtract(1,'month');
+            this.weekNumber = this.dt.week()
+            this.displayMonth = moment.months()[this.monthN-1]
+            this.displayDate  =  this.dt.format('Y-MM-DD');
+
+            Event.$on('syncWeekNavbar',(data)=>{
                 this.weekNumber = data;
             })
+
+            Event.$on('chooseDate',(data)=>{
+
+                this.dt = moment(data);
+                this.weekNumber = this.dt.week()
+                this.monthN = parseInt(this.dt.month());
+                this.displayMonth = moment.months()[this.monthN]
+                this.displayDate  =  this.dt.format('Y-MM-DD');
+            })
+
         },
         methods:{
             addWeek(){
-                Event.$emit('addWeek', this.weekNumber )
+                this.dt = this.dt.add(1, 'week' )
+                this.displayMonth = moment.months()[this.dt.month()]
+                Event.$emit('addWeek', this.dt )
             },
             subWeek(){
-                Event.$emit('subWeek', this.weekNumber )
+                this.dt = this.dt.subtract(1, 'week' )
+                this.displayMonth = moment.months()[this.dt.month()]
+                Event.$emit('subWeek', this.dt )
             },
             resetWeek(){
-                Event.$emit('resetWeek')
+                this.dt = moment();
+                this.displayMonth = moment.months()[this.dt.month()]
+                Event.$emit('resetWeek', moment() )
             }
-        }
+        },
+        filters:{
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            },
+        },
+
     }
 </script>

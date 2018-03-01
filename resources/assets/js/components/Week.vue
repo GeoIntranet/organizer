@@ -1,6 +1,9 @@
 <template>
     <div>
         <div class="row" >
+            <div class="col-md-auto border">
+                {{weekNumber}}
+            </div>
             <div class="col border" v-for="(date,index) in cal">
                 {{date.dn | capitalize}}
                 <br>
@@ -8,24 +11,6 @@
             </div>
         </div>
 
-        <div class="row" style="display: none;">
-            <div class="col border" v-for="content in work">
-
-                <div class="row p-1 border" v-if="content !== 0 " v-for="cmd in content">
-                    <div class="col ">
-                        <div class="row">
-                            <div class="col text-left"><i class="fa fa-angle-left"> </i></div>
-                            <div class="col-md-auto"> {{cmd.id_cmd}}</div>
-                            <div class="col text_right"><i class="fa fa-angle-right"> </i></div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row" v-if="content === 0 ">
-                    <div class="col">Empty</div>
-                </div>
-            </div>
-        </div>
         <work :semaine="weekNumber"></work>
     </div>
 
@@ -52,38 +37,45 @@
                 weekNumber : moment().week(),
                 work : [],
                 cal : [] ,
+                dayN : [] ,
+                yearN: [] ,
+                monthN : [] ,
+                dt :moment(),
             }
         },
+        props:['year','day','month'],
         mounted() {
-
             Event.$on('addWeek',(data)=>{
-                this.weekNumber = data+1;
-                this.cal = this.getDayOfWeek();
-                Event.$emit('syncWeek', this.weekNumber )
-                Event.$emit('getWorks', this.weekNumber )
+                this.syncDate(data)
             })
 
             Event.$on('subWeek',(data)=>{
-                this.weekNumber = data-1;
-                this.cal = this.getDayOfWeek();
-                Event.$emit('syncWeek', this.weekNumber )
-                Event.$emit('getWorks', this.weekNumber )
-
+               this.syncDate(data)
             })
 
             Event.$on('resetWeek',(data)=>{
-                this.resetWeek();
-                this.cal = this.getDayOfWeek();
-                Event.$emit('syncWeek', this.weekNumber )
+                this.syncDate(data)
             })
+
+            Event.$on('chooseDate',(data)=>{
+                this.dt = moment(data);
+                this.syncDate( this.dt)
+            })
+
+            this.dayN = parseInt(this.day);
+            this.monthN = parseInt(this.month);
+            this.yearN = parseInt(this.year);
+
+            // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+            this.dt = moment([this.year,this.month,this.day]).subtract(1,'month');
+            this.weekNumber = this.dt.week()
 
             this.weeksShort.shift();
             this.weeksShort.pop();
-            this.weekNumber = this.week;
+
             this.cal = this.getDayOfWeek();
 
         },
-        props:['week'],
         filters:{
             capitalize: function (value) {
                 if (!value) return ''
@@ -107,6 +99,13 @@
             }
         },
         methods: {
+            syncDate(data){
+                this.dt = data
+                this.weekNumber = data.week();
+                this.cal = this.getDayOfWeek();
+                //Event.$emit('syncWeekNavbar', this.weekNumber )
+                Event.$emit('getWorks', this.weekNumber )
+            },
             getWorksWeek(){
                 axios.get('/team/get/work/'+this.weekNumber).then(
                     response => {
@@ -115,9 +114,9 @@
                 );
             },
             getDayOfWeek(){
-                //console.log(dayWeek);
-                let start_ = this.selectedDateSession.startOf('week');
-                let start = moment().startOf('year').add(this.weekNumber, 'weeks');
+
+                let start_ = this.dt.startOf('week');
+                let start = this.dt.startOf('week');
 
                 let i;
                 let calendar = [] ;

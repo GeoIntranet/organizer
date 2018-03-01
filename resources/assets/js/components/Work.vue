@@ -18,8 +18,11 @@
                 <pre>{{selectedNewIndexElement}}</pre>
             </div>
         </div>
-        <div class="row">
 
+        <div class="row">
+            <div class="col-md-auto border" style="color:black">
+                {{weekNumber}}
+            </div>
             <div class="col border" style="height: 400px;"
             >
                 <draggable
@@ -250,7 +253,7 @@
         },
         methods: {
             getWorksWeek(){
-                axios.get('/team/get/work/'+this.semaine).then(
+                axios.get('/team/get/work/'+this.weekNumber).then(
                     response => {
                         this.work =  response.data;
 

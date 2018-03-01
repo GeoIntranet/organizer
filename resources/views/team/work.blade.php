@@ -1,7 +1,11 @@
 @extends('layouts.template')
 
 @section('menu')
-    <navbar></navbar>
+    <navbar
+            :year="{{carbon('y')}}"
+            :month="{{carbon('m')}}"
+            :day="{{carbon('d')}}">
+    </navbar>
 @endsection
 
 
@@ -11,11 +15,16 @@
         <div class="row container-wrapper ">
 
             <div class="col-md-auto hidden-lg-up border">
-                <calendar :week="9"></calendar>
+                <calendar > </calendar>
             </div>
 
             <div class="col ">
-                <week :week="8"></week>
+                <week
+                    :year="{{carbon('y')}}"
+                    :month="{{carbon('m')}}"
+                    :day="{{carbon('d')}}">
+                >
+                </week>
             </div>
 
         </div>
