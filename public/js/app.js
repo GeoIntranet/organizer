@@ -48887,11 +48887,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
             var endDayWeek = moment(dateMutable).endOf('month').endOf('week');
             var endWeek = endDayWeek.week();
+            var diffWeek = startWeek - endWeek;
 
-            console.log(startDayWeek);
-            console.log(dateMutable.format('Y-MM-DD'));
-            console.log(startWeek);
-            console.log(endWeek);
+            console.log(startDayWeek.format('Y-MM-DD'));
+            console.log(diffWeek);
+            //console.log(dateMutable.format('Y-MM-DD'))
+            //console.log(startWeek)
+            //console.log(endWeek)
+
 
             /*
               *  problematique de confition jamais remplie
@@ -49534,6 +49537,7 @@ exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-tr
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
 //
 //
 //
@@ -51895,13 +51899,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col border", staticStyle: { height: "400px" } },
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
         [
           _c(
             "draggable",
             {
               staticClass: " row border",
-              staticStyle: { "min-height": "400px" },
+              staticStyle: { "min-height": "87vh" },
               attrs: {
                 list: _vm.wLun,
                 options: _vm.dragOptions,
@@ -51928,8 +51932,11 @@ var render = function() {
                     "div",
                     {
                       key: element.id,
-                      staticClass: "row border",
-                      staticStyle: { height: "60px" }
+                      staticClass: "row ",
+                      staticStyle: {
+                        height: "60px",
+                        "border-bottom": "solid 1px lightgray"
+                      }
                     },
                     [
                       _c("div", { staticClass: "col text-left " }, [
@@ -51956,13 +51963,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col border", staticStyle: { height: "400px" } },
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
         [
           _c(
             "draggable",
             {
               staticClass: " row ",
-              staticStyle: { "min-height": "400px" },
+              staticStyle: { "min-height": "87vh" },
               attrs: {
                 list: _vm.wMar,
                 options: _vm.dragOptions,
@@ -52017,13 +52024,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col border", staticStyle: { height: "400px" } },
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
         [
           _c(
             "draggable",
             {
               staticClass: " row ",
-              staticStyle: { "min-height": "400px" },
+              staticStyle: { "min-height": "87vh" },
               attrs: {
                 list: _vm.wMer,
                 options: _vm.dragOptions,
@@ -52078,13 +52085,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col border", staticStyle: { height: "400px" } },
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
         [
           _c(
             "draggable",
             {
               staticClass: " row ",
-              staticStyle: { "min-height": "400px" },
+              staticStyle: { "min-height": "87vh" },
               attrs: {
                 list: _vm.wJe,
                 options: _vm.dragOptions,
@@ -52139,13 +52146,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col border", staticStyle: { height: "400px" } },
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
         [
           _c(
             "draggable",
             {
               staticClass: " row ",
-              staticStyle: { "min-height": "400px" },
+              staticStyle: { "min-height": "87vh" },
               attrs: {
                 list: _vm.wVen,
                 options: _vm.dragOptions,

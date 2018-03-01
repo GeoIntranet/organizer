@@ -137,11 +137,13 @@
                 let startDayWeek = moment(dateMutable).startOf('month').startOf('week');
                 let endDayWeek = moment(dateMutable).endOf('month').endOf('week');
                 let endWeek = endDayWeek.week();
+                let diffWeek = startWeek-endWeek;
 
-                console.log(startDayWeek)
-                console.log(dateMutable.format('Y-MM-DD'))
-                console.log(startWeek)
-                console.log(endWeek)
+                console.log(startDayWeek.format('Y-MM-DD'))
+                console.log(diffWeek);
+                //console.log(dateMutable.format('Y-MM-DD'))
+                //console.log(startWeek)
+                //console.log(endWeek)
 
 
                 /*

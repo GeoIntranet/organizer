@@ -14,7 +14,7 @@
     <div class="container-fluid  ">
         <div class="row container-wrapper ">
 
-            <div class="col-md-auto hidden-lg-up border">
+            <div class="col-md-auto hidden-lg-up border" >
                 <calendar > </calendar>
             </div>
 
@@ -25,6 +25,9 @@
                     :day="{{carbon('d')}}">
                 >
                 </week>
+            </div>
+            <div class="border col-md-auto" >
+                <h4>INFORMATION</h4>
             </div>
 
         </div>

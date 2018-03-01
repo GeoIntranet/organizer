@@ -23,11 +23,11 @@
             <div class="col-md-auto border" style="color:black">
                 {{weekNumber}}
             </div>
-            <div class="col border" style="height: 400px;"
+            <div class="col border" style=" min-height: 87vh;"
             >
                 <draggable
                         :list="wLun"
-                        style="min-height: 400px;"
+                        style=" min-height: 87vh;"
                         v-model="wLun"
                         :options="dragOptions"
                         :move="onMove"
@@ -40,10 +40,10 @@
                     <transition-group type="transition" :name="'flip-list'" class="col " id="0">
 
                         <div
-                                class="row border"
+                                class="row "
                                 v-for="element in wLun"
                                 :key="element.id"
-                                style="height: 60px;"
+                                style="height: 60px;border-bottom:solid 1px lightgray"
                         >
                             <div class="col text-left ">
                                 <b> {{element.id}}</b>
@@ -56,11 +56,11 @@
                     </transition-group>
                 </draggable>
             </div>
-            <div class="col border" style="height: 400px;"
+            <div class="col border" style=" min-height: 87vh;"
             >
                 <draggable
                         :list="wMar"
-                        style="min-height: 400px;"
+                        style=" min-height: 87vh;"
                         v-model="wMar"
                         :options="dragOptions"
                         :move="onMove"
@@ -91,11 +91,11 @@
             </div>
 
 
-            <div class="col border" style="height: 400px;"
+            <div class="col border" style=" min-height: 87vh;"
             >
                 <draggable
                         :list="wMer"
-                        style="min-height: 400px;"
+                        style=" min-height: 87vh;"
                         v-model="wMer"
                         :options="dragOptions"
                         :move="onMove"
@@ -125,10 +125,11 @@
                 </draggable>
             </div>
 
-            <div class="col border" style="height: 400px;">
+            <div class="col border"  style=" min-height: 87vh;"
+            >
                 <draggable
                         :list="wJe"
-                        style="min-height: 400px;"
+                        style=" min-height: 87vh;"
                         v-model="wJe"
                         :options="dragOptions"
                         :move="onMove"
@@ -156,11 +157,11 @@
                     </transition-group>
                 </draggable>
             </div>
-            <div class="col border" style="height: 400px;"
+            <div class="col border"  style=" min-height: 87vh;"
             >
                 <draggable
                         :list="wVen"
-                        style="min-height: 400px;"
+                        style=" min-height: 87vh;"
                         v-model="wVen"
                         :options="dragOptions"
                         :move="onMove"
