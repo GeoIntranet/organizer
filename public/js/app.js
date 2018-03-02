@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 134);
+/******/ 	return __webpack_require__(__webpack_require__.s = 133);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4603,7 +4603,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(136)(module)))
 
 /***/ }),
 /* 1 */
@@ -4612,7 +4612,7 @@ return hooks;
 "use strict";
 
 
-var bind = __webpack_require__(128);
+var bind = __webpack_require__(127);
 var isBuffer = __webpack_require__(141);
 
 /*global toString:true*/
@@ -4919,33 +4919,6 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -5052,6 +5025,33 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5075,10 +5075,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(130);
+    adapter = __webpack_require__(129);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(130);
+    adapter = __webpack_require__(129);
   }
   return adapter;
 }
@@ -5153,7 +5153,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(129)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(128)))
 
 /***/ }),
 /* 5 */
@@ -5257,7 +5257,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(170)
+var listToStyles = __webpack_require__(169)
 
 /*
 type StyleObject = {
@@ -15838,34 +15838,6 @@ return jQuery;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15944,7 +15916,7 @@ return af;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16092,7 +16064,7 @@ return ar;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16157,7 +16129,7 @@ return arDz;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16222,7 +16194,7 @@ return arKw;
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16354,7 +16326,7 @@ return arLy;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16420,7 +16392,7 @@ return arMa;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16531,7 +16503,7 @@ return arSa;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16596,7 +16568,7 @@ return arTn;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16707,7 +16679,7 @@ return az;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16847,7 +16819,7 @@ return be;
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16943,7 +16915,7 @@ return bg;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17008,7 +16980,7 @@ return bm;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17133,7 +17105,7 @@ return bn;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17258,7 +17230,7 @@ return bo;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17372,7 +17344,7 @@ return br;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17530,7 +17502,7 @@ return bs;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17624,7 +17596,7 @@ return ca;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17809,7 +17781,7 @@ return cs;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17878,7 +17850,7 @@ return cv;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17965,7 +17937,7 @@ return cy;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18031,7 +18003,7 @@ return da;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18115,7 +18087,7 @@ return de;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18200,7 +18172,7 @@ return deAt;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18284,7 +18256,7 @@ return deCh;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18390,7 +18362,7 @@ return dv;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18496,7 +18468,7 @@ return el;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18569,7 +18541,7 @@ return enAu;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18638,7 +18610,7 @@ return enCa;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18711,7 +18683,7 @@ return enGb;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18784,7 +18756,7 @@ return enIe;
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18857,7 +18829,7 @@ return enNz;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18936,7 +18908,7 @@ return eo;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19034,7 +19006,7 @@ return es;
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19131,7 +19103,7 @@ return esDo;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19220,7 +19192,7 @@ return esUs;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19307,7 +19279,7 @@ return et;
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19379,7 +19351,7 @@ return eu;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19492,7 +19464,7 @@ return fa;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19607,7 +19579,7 @@ return fi;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19673,7 +19645,7 @@ return fo;
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19762,7 +19734,7 @@ return fr;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19842,7 +19814,7 @@ return frCa;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19926,7 +19898,7 @@ return frCh;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20007,7 +19979,7 @@ return fy;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20089,7 +20061,7 @@ return gd;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20172,7 +20144,7 @@ return gl;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20301,7 +20273,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20431,7 +20403,7 @@ return gu;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20536,7 +20508,7 @@ return he;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20666,7 +20638,7 @@ return hi;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20826,7 +20798,7 @@ return hr;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20942,7 +20914,7 @@ return hu;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21043,7 +21015,7 @@ return hyAm;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21132,7 +21104,7 @@ return id;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21270,7 +21242,7 @@ return is;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21346,7 +21318,7 @@ return it;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21432,7 +21404,7 @@ return ja;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21521,7 +21493,7 @@ return jv;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21616,7 +21588,7 @@ return ka;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21709,7 +21681,7 @@ return kk;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21773,7 +21745,7 @@ return km;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21905,7 +21877,7 @@ return kn;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21993,7 +21965,7 @@ return ko;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22087,7 +22059,7 @@ return ky;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22230,7 +22202,7 @@ return lb;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22306,7 +22278,7 @@ return lo;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22430,7 +22402,7 @@ return lt;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22534,7 +22506,7 @@ return lv;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22652,7 +22624,7 @@ return me;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22722,7 +22694,7 @@ return mi;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22818,7 +22790,7 @@ return mk;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22905,7 +22877,7 @@ return ml;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23072,7 +23044,7 @@ return mr;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23160,7 +23132,7 @@ return ms;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23249,7 +23221,7 @@ return msMy;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23315,7 +23287,7 @@ return mt;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23417,7 +23389,7 @@ return my;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23486,7 +23458,7 @@ return nb;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23615,7 +23587,7 @@ return ne;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23709,7 +23681,7 @@ return nl;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23803,7 +23775,7 @@ return nlBe;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23869,7 +23841,7 @@ return nn;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23999,7 +23971,7 @@ return paIn;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24131,7 +24103,7 @@ return pl;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24202,7 +24174,7 @@ return pt;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24269,7 +24241,7 @@ return ptBr;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24351,7 +24323,7 @@ return ro;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24541,7 +24513,7 @@ return ru;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24645,7 +24617,7 @@ return sd;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24712,7 +24684,7 @@ return se;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24789,7 +24761,7 @@ return si;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24952,7 +24924,7 @@ return sk;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25131,7 +25103,7 @@ return sl;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25207,7 +25179,7 @@ return sq;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25324,7 +25296,7 @@ return sr;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25441,7 +25413,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25536,7 +25508,7 @@ return ss;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25611,7 +25583,7 @@ return sv;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25676,7 +25648,7 @@ return sw;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25812,7 +25784,7 @@ return ta;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25907,7 +25879,7 @@ return te;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25981,7 +25953,7 @@ return tet;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26054,7 +26026,7 @@ return th;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26122,7 +26094,7 @@ return tlPh;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26250,7 +26222,7 @@ return tlh;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26346,7 +26318,7 @@ return tr;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26444,7 +26416,7 @@ return tzl;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26508,7 +26480,7 @@ return tzm;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26572,7 +26544,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26730,7 +26702,7 @@ return uk;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26835,7 +26807,7 @@ return ur;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26899,7 +26871,7 @@ return uz;
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26963,7 +26935,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27048,7 +27020,7 @@ return vi;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27122,7 +27094,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27188,7 +27160,7 @@ return yo;
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27305,7 +27277,7 @@ return zhCn;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27416,7 +27388,7 @@ return zhHk;
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27526,7 +27498,7 @@ return zhTw;
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27544,7 +27516,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -27734,7 +27706,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27745,7 +27717,7 @@ var settle = __webpack_require__(144);
 var buildURL = __webpack_require__(146);
 var parseHeaders = __webpack_require__(147);
 var isURLSameOrigin = __webpack_require__(148);
-var createError = __webpack_require__(131);
+var createError = __webpack_require__(130);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(149);
 
 module.exports = function xhrAdapter(config) {
@@ -27921,7 +27893,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27946,7 +27918,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27958,7 +27930,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27984,15 +27956,15 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(135);
-module.exports = __webpack_require__(188);
+__webpack_require__(134);
+module.exports = __webpack_require__(187);
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28001,7 +27973,7 @@ module.exports = __webpack_require__(188);
  * building robust, powerful web applications using Vue and Laravel.
  */
 window.$ = window.jQuery = __webpack_require__(7);
-window.Tether = __webpack_require__(136);
+window.Tether = __webpack_require__(135);
 
 window.moment = __webpack_require__(0);
 __webpack_require__(138);
@@ -28015,7 +27987,7 @@ window.Laravel = {
 };
 
 window.Vue = __webpack_require__(160);
-window._ = __webpack_require__(163);
+window._ = __webpack_require__(197);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28023,11 +27995,11 @@ window._ = __webpack_require__(163);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(164));
-Vue.component('calendar', __webpack_require__(167));
-Vue.component('week', __webpack_require__(173));
-Vue.component('work', __webpack_require__(178));
-Vue.component('navbar', __webpack_require__(185));
+Vue.component('example', __webpack_require__(163));
+Vue.component('calendar', __webpack_require__(166));
+Vue.component('week', __webpack_require__(172));
+Vue.component('work', __webpack_require__(177));
+Vue.component('navbar', __webpack_require__(184));
 
 window.Event = new Vue();
 
@@ -28040,7 +28012,7 @@ var app = new Vue({
 });
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4.3 */
@@ -29863,248 +29835,276 @@ return Tether;
 
 
 /***/ }),
+/* 136 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
 /* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 9,
-	"./af.js": 9,
-	"./ar": 10,
-	"./ar-dz": 11,
-	"./ar-dz.js": 11,
-	"./ar-kw": 12,
-	"./ar-kw.js": 12,
-	"./ar-ly": 13,
-	"./ar-ly.js": 13,
-	"./ar-ma": 14,
-	"./ar-ma.js": 14,
-	"./ar-sa": 15,
-	"./ar-sa.js": 15,
-	"./ar-tn": 16,
-	"./ar-tn.js": 16,
-	"./ar.js": 10,
-	"./az": 17,
-	"./az.js": 17,
-	"./be": 18,
-	"./be.js": 18,
-	"./bg": 19,
-	"./bg.js": 19,
-	"./bm": 20,
-	"./bm.js": 20,
-	"./bn": 21,
-	"./bn.js": 21,
-	"./bo": 22,
-	"./bo.js": 22,
-	"./br": 23,
-	"./br.js": 23,
-	"./bs": 24,
-	"./bs.js": 24,
-	"./ca": 25,
-	"./ca.js": 25,
-	"./cs": 26,
-	"./cs.js": 26,
-	"./cv": 27,
-	"./cv.js": 27,
-	"./cy": 28,
-	"./cy.js": 28,
-	"./da": 29,
-	"./da.js": 29,
-	"./de": 30,
-	"./de-at": 31,
-	"./de-at.js": 31,
-	"./de-ch": 32,
-	"./de-ch.js": 32,
-	"./de.js": 30,
-	"./dv": 33,
-	"./dv.js": 33,
-	"./el": 34,
-	"./el.js": 34,
-	"./en-au": 35,
-	"./en-au.js": 35,
-	"./en-ca": 36,
-	"./en-ca.js": 36,
-	"./en-gb": 37,
-	"./en-gb.js": 37,
-	"./en-ie": 38,
-	"./en-ie.js": 38,
-	"./en-nz": 39,
-	"./en-nz.js": 39,
-	"./eo": 40,
-	"./eo.js": 40,
-	"./es": 41,
-	"./es-do": 42,
-	"./es-do.js": 42,
-	"./es-us": 43,
-	"./es-us.js": 43,
-	"./es.js": 41,
-	"./et": 44,
-	"./et.js": 44,
-	"./eu": 45,
-	"./eu.js": 45,
-	"./fa": 46,
-	"./fa.js": 46,
-	"./fi": 47,
-	"./fi.js": 47,
-	"./fo": 48,
-	"./fo.js": 48,
-	"./fr": 49,
-	"./fr-ca": 50,
-	"./fr-ca.js": 50,
-	"./fr-ch": 51,
-	"./fr-ch.js": 51,
-	"./fr.js": 49,
-	"./fy": 52,
-	"./fy.js": 52,
-	"./gd": 53,
-	"./gd.js": 53,
-	"./gl": 54,
-	"./gl.js": 54,
-	"./gom-latn": 55,
-	"./gom-latn.js": 55,
-	"./gu": 56,
-	"./gu.js": 56,
-	"./he": 57,
-	"./he.js": 57,
-	"./hi": 58,
-	"./hi.js": 58,
-	"./hr": 59,
-	"./hr.js": 59,
-	"./hu": 60,
-	"./hu.js": 60,
-	"./hy-am": 61,
-	"./hy-am.js": 61,
-	"./id": 62,
-	"./id.js": 62,
-	"./is": 63,
-	"./is.js": 63,
-	"./it": 64,
-	"./it.js": 64,
-	"./ja": 65,
-	"./ja.js": 65,
-	"./jv": 66,
-	"./jv.js": 66,
-	"./ka": 67,
-	"./ka.js": 67,
-	"./kk": 68,
-	"./kk.js": 68,
-	"./km": 69,
-	"./km.js": 69,
-	"./kn": 70,
-	"./kn.js": 70,
-	"./ko": 71,
-	"./ko.js": 71,
-	"./ky": 72,
-	"./ky.js": 72,
-	"./lb": 73,
-	"./lb.js": 73,
-	"./lo": 74,
-	"./lo.js": 74,
-	"./lt": 75,
-	"./lt.js": 75,
-	"./lv": 76,
-	"./lv.js": 76,
-	"./me": 77,
-	"./me.js": 77,
-	"./mi": 78,
-	"./mi.js": 78,
-	"./mk": 79,
-	"./mk.js": 79,
-	"./ml": 80,
-	"./ml.js": 80,
-	"./mr": 81,
-	"./mr.js": 81,
-	"./ms": 82,
-	"./ms-my": 83,
-	"./ms-my.js": 83,
-	"./ms.js": 82,
-	"./mt": 84,
-	"./mt.js": 84,
-	"./my": 85,
-	"./my.js": 85,
-	"./nb": 86,
-	"./nb.js": 86,
-	"./ne": 87,
-	"./ne.js": 87,
-	"./nl": 88,
-	"./nl-be": 89,
-	"./nl-be.js": 89,
-	"./nl.js": 88,
-	"./nn": 90,
-	"./nn.js": 90,
-	"./pa-in": 91,
-	"./pa-in.js": 91,
-	"./pl": 92,
-	"./pl.js": 92,
-	"./pt": 93,
-	"./pt-br": 94,
-	"./pt-br.js": 94,
-	"./pt.js": 93,
-	"./ro": 95,
-	"./ro.js": 95,
-	"./ru": 96,
-	"./ru.js": 96,
-	"./sd": 97,
-	"./sd.js": 97,
-	"./se": 98,
-	"./se.js": 98,
-	"./si": 99,
-	"./si.js": 99,
-	"./sk": 100,
-	"./sk.js": 100,
-	"./sl": 101,
-	"./sl.js": 101,
-	"./sq": 102,
-	"./sq.js": 102,
-	"./sr": 103,
-	"./sr-cyrl": 104,
-	"./sr-cyrl.js": 104,
-	"./sr.js": 103,
-	"./ss": 105,
-	"./ss.js": 105,
-	"./sv": 106,
-	"./sv.js": 106,
-	"./sw": 107,
-	"./sw.js": 107,
-	"./ta": 108,
-	"./ta.js": 108,
-	"./te": 109,
-	"./te.js": 109,
-	"./tet": 110,
-	"./tet.js": 110,
-	"./th": 111,
-	"./th.js": 111,
-	"./tl-ph": 112,
-	"./tl-ph.js": 112,
-	"./tlh": 113,
-	"./tlh.js": 113,
-	"./tr": 114,
-	"./tr.js": 114,
-	"./tzl": 115,
-	"./tzl.js": 115,
-	"./tzm": 116,
-	"./tzm-latn": 117,
-	"./tzm-latn.js": 117,
-	"./tzm.js": 116,
-	"./uk": 118,
-	"./uk.js": 118,
-	"./ur": 119,
-	"./ur.js": 119,
-	"./uz": 120,
-	"./uz-latn": 121,
-	"./uz-latn.js": 121,
-	"./uz.js": 120,
-	"./vi": 122,
-	"./vi.js": 122,
-	"./x-pseudo": 123,
-	"./x-pseudo.js": 123,
-	"./yo": 124,
-	"./yo.js": 124,
-	"./zh-cn": 125,
-	"./zh-cn.js": 125,
-	"./zh-hk": 126,
-	"./zh-hk.js": 126,
-	"./zh-tw": 127,
-	"./zh-tw.js": 127
+	"./af": 8,
+	"./af.js": 8,
+	"./ar": 9,
+	"./ar-dz": 10,
+	"./ar-dz.js": 10,
+	"./ar-kw": 11,
+	"./ar-kw.js": 11,
+	"./ar-ly": 12,
+	"./ar-ly.js": 12,
+	"./ar-ma": 13,
+	"./ar-ma.js": 13,
+	"./ar-sa": 14,
+	"./ar-sa.js": 14,
+	"./ar-tn": 15,
+	"./ar-tn.js": 15,
+	"./ar.js": 9,
+	"./az": 16,
+	"./az.js": 16,
+	"./be": 17,
+	"./be.js": 17,
+	"./bg": 18,
+	"./bg.js": 18,
+	"./bm": 19,
+	"./bm.js": 19,
+	"./bn": 20,
+	"./bn.js": 20,
+	"./bo": 21,
+	"./bo.js": 21,
+	"./br": 22,
+	"./br.js": 22,
+	"./bs": 23,
+	"./bs.js": 23,
+	"./ca": 24,
+	"./ca.js": 24,
+	"./cs": 25,
+	"./cs.js": 25,
+	"./cv": 26,
+	"./cv.js": 26,
+	"./cy": 27,
+	"./cy.js": 27,
+	"./da": 28,
+	"./da.js": 28,
+	"./de": 29,
+	"./de-at": 30,
+	"./de-at.js": 30,
+	"./de-ch": 31,
+	"./de-ch.js": 31,
+	"./de.js": 29,
+	"./dv": 32,
+	"./dv.js": 32,
+	"./el": 33,
+	"./el.js": 33,
+	"./en-au": 34,
+	"./en-au.js": 34,
+	"./en-ca": 35,
+	"./en-ca.js": 35,
+	"./en-gb": 36,
+	"./en-gb.js": 36,
+	"./en-ie": 37,
+	"./en-ie.js": 37,
+	"./en-nz": 38,
+	"./en-nz.js": 38,
+	"./eo": 39,
+	"./eo.js": 39,
+	"./es": 40,
+	"./es-do": 41,
+	"./es-do.js": 41,
+	"./es-us": 42,
+	"./es-us.js": 42,
+	"./es.js": 40,
+	"./et": 43,
+	"./et.js": 43,
+	"./eu": 44,
+	"./eu.js": 44,
+	"./fa": 45,
+	"./fa.js": 45,
+	"./fi": 46,
+	"./fi.js": 46,
+	"./fo": 47,
+	"./fo.js": 47,
+	"./fr": 48,
+	"./fr-ca": 49,
+	"./fr-ca.js": 49,
+	"./fr-ch": 50,
+	"./fr-ch.js": 50,
+	"./fr.js": 48,
+	"./fy": 51,
+	"./fy.js": 51,
+	"./gd": 52,
+	"./gd.js": 52,
+	"./gl": 53,
+	"./gl.js": 53,
+	"./gom-latn": 54,
+	"./gom-latn.js": 54,
+	"./gu": 55,
+	"./gu.js": 55,
+	"./he": 56,
+	"./he.js": 56,
+	"./hi": 57,
+	"./hi.js": 57,
+	"./hr": 58,
+	"./hr.js": 58,
+	"./hu": 59,
+	"./hu.js": 59,
+	"./hy-am": 60,
+	"./hy-am.js": 60,
+	"./id": 61,
+	"./id.js": 61,
+	"./is": 62,
+	"./is.js": 62,
+	"./it": 63,
+	"./it.js": 63,
+	"./ja": 64,
+	"./ja.js": 64,
+	"./jv": 65,
+	"./jv.js": 65,
+	"./ka": 66,
+	"./ka.js": 66,
+	"./kk": 67,
+	"./kk.js": 67,
+	"./km": 68,
+	"./km.js": 68,
+	"./kn": 69,
+	"./kn.js": 69,
+	"./ko": 70,
+	"./ko.js": 70,
+	"./ky": 71,
+	"./ky.js": 71,
+	"./lb": 72,
+	"./lb.js": 72,
+	"./lo": 73,
+	"./lo.js": 73,
+	"./lt": 74,
+	"./lt.js": 74,
+	"./lv": 75,
+	"./lv.js": 75,
+	"./me": 76,
+	"./me.js": 76,
+	"./mi": 77,
+	"./mi.js": 77,
+	"./mk": 78,
+	"./mk.js": 78,
+	"./ml": 79,
+	"./ml.js": 79,
+	"./mr": 80,
+	"./mr.js": 80,
+	"./ms": 81,
+	"./ms-my": 82,
+	"./ms-my.js": 82,
+	"./ms.js": 81,
+	"./mt": 83,
+	"./mt.js": 83,
+	"./my": 84,
+	"./my.js": 84,
+	"./nb": 85,
+	"./nb.js": 85,
+	"./ne": 86,
+	"./ne.js": 86,
+	"./nl": 87,
+	"./nl-be": 88,
+	"./nl-be.js": 88,
+	"./nl.js": 87,
+	"./nn": 89,
+	"./nn.js": 89,
+	"./pa-in": 90,
+	"./pa-in.js": 90,
+	"./pl": 91,
+	"./pl.js": 91,
+	"./pt": 92,
+	"./pt-br": 93,
+	"./pt-br.js": 93,
+	"./pt.js": 92,
+	"./ro": 94,
+	"./ro.js": 94,
+	"./ru": 95,
+	"./ru.js": 95,
+	"./sd": 96,
+	"./sd.js": 96,
+	"./se": 97,
+	"./se.js": 97,
+	"./si": 98,
+	"./si.js": 98,
+	"./sk": 99,
+	"./sk.js": 99,
+	"./sl": 100,
+	"./sl.js": 100,
+	"./sq": 101,
+	"./sq.js": 101,
+	"./sr": 102,
+	"./sr-cyrl": 103,
+	"./sr-cyrl.js": 103,
+	"./sr.js": 102,
+	"./ss": 104,
+	"./ss.js": 104,
+	"./sv": 105,
+	"./sv.js": 105,
+	"./sw": 106,
+	"./sw.js": 106,
+	"./ta": 107,
+	"./ta.js": 107,
+	"./te": 108,
+	"./te.js": 108,
+	"./tet": 109,
+	"./tet.js": 109,
+	"./th": 110,
+	"./th.js": 110,
+	"./tl-ph": 111,
+	"./tl-ph.js": 111,
+	"./tlh": 112,
+	"./tlh.js": 112,
+	"./tr": 113,
+	"./tr.js": 113,
+	"./tzl": 114,
+	"./tzl.js": 114,
+	"./tzm": 115,
+	"./tzm-latn": 116,
+	"./tzm-latn.js": 116,
+	"./tzm.js": 115,
+	"./uk": 117,
+	"./uk.js": 117,
+	"./ur": 118,
+	"./ur.js": 118,
+	"./uz": 119,
+	"./uz-latn": 120,
+	"./uz-latn.js": 120,
+	"./uz.js": 119,
+	"./vi": 121,
+	"./vi.js": 121,
+	"./x-pseudo": 122,
+	"./x-pseudo.js": 122,
+	"./yo": 123,
+	"./yo.js": 123,
+	"./zh-cn": 124,
+	"./zh-cn.js": 124,
+	"./zh-hk": 125,
+	"./zh-hk.js": 125,
+	"./zh-tw": 126,
+	"./zh-tw.js": 126
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -30201,7 +30201,7 @@ module.exports = __webpack_require__(140);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(128);
+var bind = __webpack_require__(127);
 var Axios = __webpack_require__(142);
 var defaults = __webpack_require__(4);
 
@@ -30236,9 +30236,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(133);
+axios.Cancel = __webpack_require__(132);
 axios.CancelToken = __webpack_require__(156);
-axios.isCancel = __webpack_require__(132);
+axios.isCancel = __webpack_require__(131);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -30391,7 +30391,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(131);
+var createError = __webpack_require__(130);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -30824,7 +30824,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(153);
-var isCancel = __webpack_require__(132);
+var isCancel = __webpack_require__(131);
 var defaults = __webpack_require__(4);
 var isAbsoluteURL = __webpack_require__(154);
 var combineURLs = __webpack_require__(155);
@@ -30984,7 +30984,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(133);
+var Cancel = __webpack_require__(132);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -34983,7 +34983,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.13.0
+ * @version 1.12.9
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -37419,7 +37419,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
 /* 160 */
@@ -48236,7 +48236,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(161).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(161).setImmediate))
 
 /***/ }),
 /* 161 */
@@ -48303,7 +48303,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 162 */
@@ -48496,10 +48496,4128 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(129)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(128)))
 
 /***/ }),
 /* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(164)
+/* template */
+var __vue_template__ = __webpack_require__(165)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ExampleComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0ca92eac", Component.options)
+  } else {
+    hotAPI.reload("data-v-0ca92eac", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("Example Component")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v(
+                "\n                    I'm an example component.\n                "
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0ca92eac", module.exports)
+  }
+}
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(167)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(170)
+/* template */
+var __vue_template__ = __webpack_require__(171)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Calendar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-40b95a96", Component.options)
+  } else {
+    hotAPI.reload("data-v-40b95a96", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(168);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("90f003b6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 170 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            cal: [],
+            selectedDateSession: moment(),
+            selectedDate: '',
+            today: moment(),
+            weeks: moment.weekdays(),
+            weeksShort: moment.weekdaysShort()
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        var Sunday = [this.weeksShort.shift()];
+        this.weeksShort = this.weeksShort.concat(Sunday);
+
+        this.makeCalendar();
+
+        Event.$on('subWeek', function (data) {
+            _this.modifyDate(data);
+        });
+
+        Event.$on('addWeek', function (data) {
+            _this.modifyDate(data);
+        });
+
+        Event.$on('resetWeek', function (data) {
+            _this.modifyDate(data);
+        });
+    },
+
+    filters: {
+        formated: function formated(data) {
+            return data.toUpperCase().replace('.', '').substr(0, 1);
+        },
+        dateCalendar: function dateCalendar(data) {
+            var date = data.format('MMMM YYYY');
+
+            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
+        },
+        dayCalendar: function dayCalendar(data) {
+            return data.format('DD MMMM YYYY');
+        },
+        substrDay: function substrDay(data) {
+            return data.substr(-2);
+        }
+    },
+    methods: {
+        modifyDate: function modifyDate(data) {
+            this.selectedDateSession = data;
+            this.selectedDate = data.format('Y-MM-DD');
+            this.makeCalendar();
+        },
+        isEqualMonth: function isEqualMonth(date) {
+            return date.substr(5, 2) !== this.selectedDateSession.format('Y-MM-DD').substr(5, 2);
+        },
+        defineRefDate: function defineRefDate(year, start) {
+
+            if (start >= 0 && start <= 12) return moment().year(year).startOf('year').month(start - 1).startOf('month').startOf('week');
+
+            return moment().year(year).startOf('month').startOf('week');
+        },
+        makeCalendar: function makeCalendar() {
+            var _this2 = this;
+
+            // di = 0  /  lun = 1 / mar = 2  / mer = 3  / je = 4 / ven = 5 / sam = 6 .
+            //declaration de la date de reference
+
+            var dateMutable = this.selectedDateSession;
+            var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
+            var refDate = startDayWeek;
+
+            //refDate =   this.defineRefDate('2018',12);
+
+            this.cal = [];
+
+            var _loop = function _loop(w) {
+                _this2.cal.push({
+                    date: Array(7).fill(0).map(function (n, i) {
+
+                        if (i === 0 && w === 0) {
+                            return refDate.format('Y-MM-DD');
+                        } else {
+                            return refDate.add(1, 'day').format('Y-MM-DD');
+                        }
+                        return w;
+                    }, [w])
+                });
+            };
+
+            for (var w = 0; w <= 5; w++) {
+                _loop(w);
+            }
+            console.log(this.cal);
+        },
+        subMonth: function subMonth() {
+            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
+            this.makeCalendar();
+        },
+        addMonth: function addMonth() {
+            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
+            this.makeCalendar();
+        },
+        reset: function reset() {
+            this.selectedDateSession = moment();
+            this.makeCalendar();
+        },
+        chooseDate: function chooseDate(date) {
+            this.selectedDate = date;
+            console.log(date);
+            Event.$emit('chooseDate', date);
+        }
+    }
+});
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row calendar-wrapper" }, [
+    _c(
+      "div",
+      { staticClass: "col" },
+      [
+        _c("div", { staticClass: "row " }, [
+          _c("div", { staticClass: "col " }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-m-auto " }, [
+                _c("b", [
+                  _vm._v(
+                    _vm._s(_vm._f("dateCalendar")(_vm.selectedDateSession))
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col text-right" }, [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.subMonth($event)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-angle-left  mr-1 b" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.addMonth($event)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-angle-right b ml-1" })]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(_vm.weeksShort, function(jour, index) {
+                return _c(
+                  "div",
+                  { staticClass: "col  text-center size--date-day" },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm._f("formated")(jour)) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              })
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.cal, function(week) {
+          return _c(
+            "div",
+            { staticClass: "row bg-" },
+            _vm._l(week.date, function(date) {
+              return _c("div", { staticClass: "col size--date-number " }, [
+                date === _vm.today.format("Y-MM-DD")
+                  ? _c(
+                      "span",
+                      {
+                        staticClass: "rounded-circle ",
+                        staticStyle: {
+                          "background-color": "cornflowerblue",
+                          color: "white",
+                          "font-weight": "bold"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.chooseDate(date)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm._f("substrDay")(date)) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  : _c(
+                      "span",
+                      {
+                        staticClass: "rounded-circle",
+                        class: {
+                          "rounded-circle": true,
+                          "bg-warning": date === _vm.selectedDate,
+                          b: date === _vm.selectedDate,
+                          lightgrey: _vm.isEqualMonth(date)
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.chooseDate(date)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm._f("substrDay")(date)) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+              ])
+            })
+          )
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-40b95a96", module.exports)
+  }
+}
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(173)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(175)
+/* template */
+var __vue_template__ = __webpack_require__(176)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Week.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-962d182a", Component.options)
+  } else {
+    hotAPI.reload("data-v-962d182a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(174);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("059cd27a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-962d182a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Week.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-962d182a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Week.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.size--date{\n    font-size: 0.7em;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 175 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            selectedDateSession: moment(),
+            today: moment(),
+            yearLeap: false,
+            weeks: moment.weekdays(),
+            weeksShort: moment.weekdaysShort(),
+            weeksDay: [],
+            weekNumber: moment().week(),
+            work: [],
+            cal: [],
+            dayN: [],
+            yearN: [],
+            monthN: [],
+            dt: moment()
+        };
+    },
+
+    props: ['year', 'day', 'month'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('addWeek', function (data) {
+            _this.syncDate(data);
+        });
+
+        Event.$on('subWeek', function (data) {
+            _this.syncDate(data);
+        });
+
+        Event.$on('resetWeek', function (data) {
+            _this.syncDate(data);
+        });
+
+        Event.$on('chooseDate', function (data) {
+            _this.dt = moment(data);
+            _this.syncDate(_this.dt);
+        });
+
+        this.dayN = parseInt(this.day);
+        this.monthN = parseInt(this.month);
+        this.yearN = parseInt(this.year);
+
+        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
+        this.weekNumber = this.dt.week();
+
+        this.weeksShort.shift();
+        this.weeksShort.pop();
+
+        this.cal = this.getDayOfWeek();
+    },
+
+    filters: {
+        capitalize: function capitalize(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        },
+        formated: function formated(data) {
+            return data.toUpperCase().replace('.', '').substr(0, 1);
+        },
+        dateCalendar: function dateCalendar(data) {
+            var date = data.format('MMMM YYYY');
+
+            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
+        },
+        dayCalendar: function dayCalendar(data) {
+            return data.format('DD MMMM YYYY');
+        },
+        substrDay: function substrDay(data) {
+            return data.substr(-2);
+        }
+    },
+    methods: {
+        syncDate: function syncDate(data) {
+            this.dt = data;
+            this.weekNumber = data.week();
+            this.cal = this.getDayOfWeek();
+            //Event.$emit('syncWeekNavbar', this.weekNumber )
+            Event.$emit('getWorks', this.weekNumber);
+        },
+        getWorksWeek: function getWorksWeek() {
+            var _this2 = this;
+
+            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
+                _this2.work = response.data;
+            });
+        },
+        getDayOfWeek: function getDayOfWeek() {
+
+            var start_ = this.dt.startOf('week');
+            var start = this.dt.startOf('week');
+
+            var i = void 0;
+            var calendar = [];
+
+            for (i = 0; i < 5; i++) {
+                if (i > 0) {
+                    calendar[i] = {
+                        'dn': this.weeksShort[i],
+                        'dnu': start.add(1, 'day').format('Y-MM-DD')
+                    };
+                } else {
+                    calendar[i] = {
+                        'dn': this.weeksShort[i],
+                        'dnu': start.format('Y-MM-DD')
+                    };
+                }
+            }
+            return calendar;
+        },
+        isLEap: function isLEap() {
+            var date_y = this.selectedDateSession.format('Y');
+            return date_y % 4 === 0 && date_y % 100 !== 0 || date_y % 400 === 0;
+        },
+        subWeek: function subWeek() {},
+        addWeek: function addWeek() {},
+        resetWeek: function resetWeek() {
+            this.weekNumber = this.today.week();
+        }
+    }
+});
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        { staticClass: "row" },
+        [
+          _c("div", { staticClass: "col-md-auto border" }, [
+            _vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.cal, function(date, index) {
+            return _c("div", { staticClass: "col border" }, [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm._f("capitalize")(date.dn)) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
+            ])
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("work", { attrs: { semaine: _vm.weekNumber } })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-962d182a", module.exports)
+  }
+}
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(178)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(180)
+/* template */
+var __vue_template__ = __webpack_require__(183)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Work.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-47d276f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-47d276f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(179);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("5cd7306e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border: solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i {\n    cursor: pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'work',
+    components: {
+        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
+    },
+    data: function data() {
+        return {
+            wLun: [],
+            wMar: [],
+            wMer: [],
+            wJe: [],
+            wVen: [],
+            work: [],
+            editable: true,
+            isDragging: false,
+            delayedDragging: false,
+            selectedElement: '',
+            replaceElement: 'add_in_new_column',
+            selectedColElement: '',
+            selectedNewIndexElement: '',
+            weekNumber: moment().week()
+        };
+    },
+
+    props: ['semaine'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('getWorks', function (data) {
+            _this.weekNumber = data;
+            _this.getWorksWeek();
+        });
+
+        this.getWorksWeek();
+    },
+
+    methods: {
+        getWorksWeek: function getWorksWeek() {
+            var _this2 = this;
+
+            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
+                _this2.work = response.data;
+
+                _this2.wLun = response.data[0];
+                _this2.wMar = response.data[1];
+                _this2.wMer = response.data[2];
+                _this2.wJe = response.data[3];
+                _this2.wVen = response.data[4];
+            });
+        },
+        onStart: function onStart(event, oEvent) {},
+
+        onEnd: function onEnd( /**Event*/evt) {
+            var itemEl = evt.item; // dragged HTMLElement
+            var colFrom = evt.from.getAttribute('id');
+            var colTo = evt.to.getAttribute('id');
+            console.log(colFrom);
+            console.log(colTo);
+            this.selectedColElement = colTo;
+            //console.log(itemEl);    // target list
+            //console.log(evt.to);    // target list
+            //console.log(evt.from);  // previous list
+            //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
+            this.selectedNewIndexElement = evt.newIndex + 1;
+
+            axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
+                console.log(response.data);
+            });
+        },
+        onAdd: function onAdd(event, oEvent) {
+            //console.log(event['to'].getAttribute('id'));
+        },
+        orderList: function orderList() {
+            this.list = this.list.sort(function (one, two) {
+                return one.order - two.order;
+            });
+        },
+        onMove: function onMove(event, oEvent) {
+
+            var relatedElement = event.relatedContext;
+            var draggedElement = event.draggedContext;
+
+            this.selectedElement = draggedElement.element.id;
+
+            this.replaceElement = 'add_in_new_column';
+
+            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.id;
+
+            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
+        }
+    },
+    computed: {
+        dragOptions: function dragOptions() {
+            return {
+                animation: 0,
+                group: 'description',
+                disabled: !this.editable,
+                ghostClass: 'ghost'
+            };
+        },
+        listString: function listString() {
+            return JSON.stringify(this.list, null, 2);
+        },
+        lunString: function lunString() {
+            return JSON.stringify(this.wLun, null, 2);
+        },
+        marString: function marString() {
+            return JSON.stringify(this.wMar, null, 2);
+        },
+        merString: function merString() {
+            return JSON.stringify(this.wMer, null, 2);
+        },
+        jeString: function jeString() {
+            return JSON.stringify(this.wJe, null, 2);
+        },
+        venString: function venString() {
+            return JSON.stringify(this.wVen, null, 2);
+        },
+        list2String: function list2String() {
+            return JSON.stringify(this.list2, null, 2);
+        }
+    },
+    watch: {
+        isDragging: function isDragging(newValue) {
+            var _this3 = this;
+
+            if (newValue) {
+                this.delayedDragging = true;
+                return;
+            }
+            this.$nextTick(function () {
+                _this3.delayedDragging = false;
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+(function () {
+  "use strict";
+
+  if (!Array.from) {
+    Array.from = function (object) {
+      return [].slice.call(object);
+    };
+  }
+
+  function buildAttribute(object, propName, value) {
+    if (value == undefined) {
+      return object;
+    }
+    object = object == null ? {} : object;
+    object[propName] = value;
+    return object;
+  }
+
+  function buildDraggable(Sortable) {
+    function removeNode(node) {
+      node.parentElement.removeChild(node);
+    }
+
+    function insertNodeAt(fatherNode, node, position) {
+      var refNode = position === 0 ? fatherNode.children[0] : fatherNode.children[position - 1].nextSibling;
+      fatherNode.insertBefore(node, refNode);
+    }
+
+    function computeVmIndex(vnodes, element) {
+      return vnodes.map(function (elt) {
+        return elt.elm;
+      }).indexOf(element);
+    }
+
+    function _computeIndexes(slots, children, isTransition) {
+      if (!slots) {
+        return [];
+      }
+
+      var elmFromNodes = slots.map(function (elt) {
+        return elt.elm;
+      });
+      var rawIndexes = [].concat(_toConsumableArray(children)).map(function (elt) {
+        return elmFromNodes.indexOf(elt);
+      });
+      return isTransition ? rawIndexes.filter(function (ind) {
+        return ind !== -1;
+      }) : rawIndexes;
+    }
+
+    function emit(evtName, evtData) {
+      var _this = this;
+
+      this.$nextTick(function () {
+        return _this.$emit(evtName.toLowerCase(), evtData);
+      });
+    }
+
+    function delegateAndEmit(evtName) {
+      var _this2 = this;
+
+      return function (evtData) {
+        if (_this2.realList !== null) {
+          _this2['onDrag' + evtName](evtData);
+        }
+        emit.call(_this2, evtName, evtData);
+      };
+    }
+
+    var eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End'];
+    var eventsToEmit = ['Choose', 'Sort', 'Filter', 'Clone'];
+    var readonlyProperties = ['Move'].concat(eventsListened, eventsToEmit).map(function (evt) {
+      return 'on' + evt;
+    });
+    var draggingElement = null;
+
+    var props = {
+      options: Object,
+      list: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      value: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      noTransitionOnDrag: {
+        type: Boolean,
+        default: false
+      },
+      clone: {
+        type: Function,
+        default: function _default(original) {
+          return original;
+        }
+      },
+      element: {
+        type: String,
+        default: 'div'
+      },
+      move: {
+        type: Function,
+        default: null
+      },
+      componentData: {
+        type: Object,
+        required: false,
+        default: null
+      }
+    };
+
+    var draggableComponent = {
+      name: 'draggable',
+
+      props: props,
+
+      data: function data() {
+        return {
+          transitionMode: false,
+          noneFunctionalComponentMode: false,
+          init: false
+        };
+      },
+      render: function render(h) {
+        var slots = this.$slots.default;
+        if (slots && slots.length === 1) {
+          var child = slots[0];
+          if (child.componentOptions && child.componentOptions.tag === "transition-group") {
+            this.transitionMode = true;
+          }
+        }
+        var children = slots;
+        var footer = this.$slots.footer;
+
+        if (footer) {
+          children = slots ? [].concat(_toConsumableArray(slots), _toConsumableArray(footer)) : [].concat(_toConsumableArray(footer));
+        }
+        var attributes = null;
+        var update = function update(name, value) {
+          attributes = buildAttribute(attributes, name, value);
+        };
+        update('attrs', this.$attrs);
+        if (this.componentData) {
+          var _componentData = this.componentData,
+              on = _componentData.on,
+              _props = _componentData.props;
+
+          update('on', on);
+          update('props', _props);
+        }
+        return h(this.element, attributes, children);
+      },
+      mounted: function mounted() {
+        var _this3 = this;
+
+        this.noneFunctionalComponentMode = this.element.toLowerCase() !== this.$el.nodeName.toLowerCase();
+        if (this.noneFunctionalComponentMode && this.transitionMode) {
+          throw new Error('Transition-group inside component is not supported. Please alter element value or remove transition-group. Current element value: ' + this.element);
+        }
+        var optionsAdded = {};
+        eventsListened.forEach(function (elt) {
+          optionsAdded['on' + elt] = delegateAndEmit.call(_this3, elt);
+        });
+
+        eventsToEmit.forEach(function (elt) {
+          optionsAdded['on' + elt] = emit.bind(_this3, elt);
+        });
+
+        var options = _extends({}, this.options, optionsAdded, { onMove: function onMove(evt, originalEvent) {
+            return _this3.onDragMove(evt, originalEvent);
+          } });
+        !('draggable' in options) && (options.draggable = '>*');
+        this._sortable = new Sortable(this.rootContainer, options);
+        this.computeIndexes();
+      },
+      beforeDestroy: function beforeDestroy() {
+        this._sortable.destroy();
+      },
+
+
+      computed: {
+        rootContainer: function rootContainer() {
+          return this.transitionMode ? this.$el.children[0] : this.$el;
+        },
+        isCloning: function isCloning() {
+          return !!this.options && !!this.options.group && this.options.group.pull === 'clone';
+        },
+        realList: function realList() {
+          return !!this.list ? this.list : this.value;
+        }
+      },
+
+      watch: {
+        options: {
+          handler: function handler(newOptionValue) {
+            for (var property in newOptionValue) {
+              if (readonlyProperties.indexOf(property) == -1) {
+                this._sortable.option(property, newOptionValue[property]);
+              }
+            }
+          },
+
+          deep: true
+        },
+
+        realList: function realList() {
+          this.computeIndexes();
+        }
+      },
+
+      methods: {
+        getChildrenNodes: function getChildrenNodes() {
+          if (!this.init) {
+            this.noneFunctionalComponentMode = this.noneFunctionalComponentMode && this.$children.length == 1;
+            this.init = true;
+          }
+
+          if (this.noneFunctionalComponentMode) {
+            return this.$children[0].$slots.default;
+          }
+          var rawNodes = this.$slots.default;
+          return this.transitionMode ? rawNodes[0].child.$slots.default : rawNodes;
+        },
+        computeIndexes: function computeIndexes() {
+          var _this4 = this;
+
+          this.$nextTick(function () {
+            _this4.visibleIndexes = _computeIndexes(_this4.getChildrenNodes(), _this4.rootContainer.children, _this4.transitionMode);
+          });
+        },
+        getUnderlyingVm: function getUnderlyingVm(htmlElt) {
+          var index = computeVmIndex(this.getChildrenNodes() || [], htmlElt);
+          if (index === -1) {
+            //Edge case during move callback: related element might be
+            //an element different from collection
+            return null;
+          }
+          var element = this.realList[index];
+          return { index: index, element: element };
+        },
+        getUnderlyingPotencialDraggableComponent: function getUnderlyingPotencialDraggableComponent(_ref) {
+          var __vue__ = _ref.__vue__;
+
+          if (!__vue__ || !__vue__.$options || __vue__.$options._componentTag !== "transition-group") {
+            return __vue__;
+          }
+          return __vue__.$parent;
+        },
+        emitChanges: function emitChanges(evt) {
+          var _this5 = this;
+
+          this.$nextTick(function () {
+            _this5.$emit('change', evt);
+          });
+        },
+        alterList: function alterList(onList) {
+          if (!!this.list) {
+            onList(this.list);
+          } else {
+            var newList = [].concat(_toConsumableArray(this.value));
+            onList(newList);
+            this.$emit('input', newList);
+          }
+        },
+        spliceList: function spliceList() {
+          var _arguments = arguments;
+
+          var spliceList = function spliceList(list) {
+            return list.splice.apply(list, _arguments);
+          };
+          this.alterList(spliceList);
+        },
+        updatePosition: function updatePosition(oldIndex, newIndex) {
+          var updatePosition = function updatePosition(list) {
+            return list.splice(newIndex, 0, list.splice(oldIndex, 1)[0]);
+          };
+          this.alterList(updatePosition);
+        },
+        getRelatedContextFromMoveEvent: function getRelatedContextFromMoveEvent(_ref2) {
+          var to = _ref2.to,
+              related = _ref2.related;
+
+          var component = this.getUnderlyingPotencialDraggableComponent(to);
+          if (!component) {
+            return { component: component };
+          }
+          var list = component.realList;
+          var context = { list: list, component: component };
+          if (to !== related && list && component.getUnderlyingVm) {
+            var destination = component.getUnderlyingVm(related);
+            if (destination) {
+              return _extends(destination, context);
+            }
+          }
+
+          return context;
+        },
+        getVmIndex: function getVmIndex(domIndex) {
+          var indexes = this.visibleIndexes;
+          var numberIndexes = indexes.length;
+          return domIndex > numberIndexes - 1 ? numberIndexes : indexes[domIndex];
+        },
+        getComponent: function getComponent() {
+          return this.$slots.default[0].componentInstance;
+        },
+        resetTransitionData: function resetTransitionData(index) {
+          if (!this.noTransitionOnDrag || !this.transitionMode) {
+            return;
+          }
+          var nodes = this.getChildrenNodes();
+          nodes[index].data = null;
+          var transitionContainer = this.getComponent();
+          transitionContainer.children = [];
+          transitionContainer.kept = undefined;
+        },
+        onDragStart: function onDragStart(evt) {
+          this.context = this.getUnderlyingVm(evt.item);
+          evt.item._underlying_vm_ = this.clone(this.context.element);
+          draggingElement = evt.item;
+        },
+        onDragAdd: function onDragAdd(evt) {
+          var element = evt.item._underlying_vm_;
+          if (element === undefined) {
+            return;
+          }
+          removeNode(evt.item);
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.spliceList(newIndex, 0, element);
+          this.computeIndexes();
+          var added = { element: element, newIndex: newIndex };
+          this.emitChanges({ added: added });
+        },
+        onDragRemove: function onDragRemove(evt) {
+          insertNodeAt(this.rootContainer, evt.item, evt.oldIndex);
+          if (this.isCloning) {
+            removeNode(evt.clone);
+            return;
+          }
+          var oldIndex = this.context.index;
+          this.spliceList(oldIndex, 1);
+          var removed = { element: this.context.element, oldIndex: oldIndex };
+          this.resetTransitionData(oldIndex);
+          this.emitChanges({ removed: removed });
+        },
+        onDragUpdate: function onDragUpdate(evt) {
+          removeNode(evt.item);
+          insertNodeAt(evt.from, evt.item, evt.oldIndex);
+          var oldIndex = this.context.index;
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.updatePosition(oldIndex, newIndex);
+          var moved = { element: this.context.element, oldIndex: oldIndex, newIndex: newIndex };
+          this.emitChanges({ moved: moved });
+        },
+        computeFutureIndex: function computeFutureIndex(relatedContext, evt) {
+          if (!relatedContext.element) {
+            return 0;
+          }
+          var domChildren = [].concat(_toConsumableArray(evt.to.children)).filter(function (el) {
+            return el.style['display'] !== 'none';
+          });
+          var currentDOMIndex = domChildren.indexOf(evt.related);
+          var currentIndex = relatedContext.component.getVmIndex(currentDOMIndex);
+          var draggedInList = domChildren.indexOf(draggingElement) != -1;
+          return draggedInList || !evt.willInsertAfter ? currentIndex : currentIndex + 1;
+        },
+        onDragMove: function onDragMove(evt, originalEvent) {
+          var onMove = this.move;
+          if (!onMove || !this.realList) {
+            return true;
+          }
+
+          var relatedContext = this.getRelatedContextFromMoveEvent(evt);
+          var draggedContext = this.context;
+          var futureIndex = this.computeFutureIndex(relatedContext, evt);
+          _extends(draggedContext, { futureIndex: futureIndex });
+          _extends(evt, { relatedContext: relatedContext, draggedContext: draggedContext });
+          return onMove(evt, originalEvent);
+        },
+        onDragEnd: function onDragEnd(evt) {
+          this.computeIndexes();
+          draggingElement = null;
+        }
+      }
+    };
+    return draggableComponent;
+  }
+
+  if (true) {
+    var Sortable = __webpack_require__(182);
+    module.exports = buildDraggable(Sortable);
+  } else if (typeof define == "function" && define.amd) {
+    define(['sortablejs'], function (Sortable) {
+      return buildDraggable(Sortable);
+    });
+  } else if (window && window.Vue && window.Sortable) {
+    var draggable = buildDraggable(window.Sortable);
+    Vue.component('draggable', draggable);
+  }
+})();
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
+ * Sortable
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @license MIT
+ */
+
+(function sortableModule(factory) {
+	"use strict";
+
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	}
+	else {
+		/* jshint sub:true */
+		window["Sortable"] = factory();
+	}
+})(function sortableFactory() {
+	"use strict";
+
+	if (typeof window === "undefined" || !window.document) {
+		return function sortableError() {
+			throw new Error("Sortable.js requires a window with a document");
+		};
+	}
+
+	var dragEl,
+		parentEl,
+		ghostEl,
+		cloneEl,
+		rootEl,
+		nextEl,
+		lastDownEl,
+
+		scrollEl,
+		scrollParentEl,
+		scrollCustomFn,
+
+		lastEl,
+		lastCSS,
+		lastParentCSS,
+
+		oldIndex,
+		newIndex,
+
+		activeGroup,
+		putSortable,
+
+		autoScroll = {},
+
+		tapEvt,
+		touchEvt,
+
+		moved,
+
+		/** @const */
+		R_SPACE = /\s+/g,
+		R_FLOAT = /left|right|inline/,
+
+		expando = 'Sortable' + (new Date).getTime(),
+
+		win = window,
+		document = win.document,
+		parseInt = win.parseInt,
+		setTimeout = win.setTimeout,
+
+		$ = win.jQuery || win.Zepto,
+		Polymer = win.Polymer,
+
+		captureMode = false,
+		passiveMode = false,
+
+		supportDraggable = ('draggable' in document.createElement('div')),
+		supportCssPointerEvents = (function (el) {
+			// false when IE11
+			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+				return false;
+			}
+			el = document.createElement('x');
+			el.style.cssText = 'pointer-events:auto';
+			return el.style.pointerEvents === 'auto';
+		})(),
+
+		_silent = false,
+
+		abs = Math.abs,
+		min = Math.min,
+
+		savedInputChecked = [],
+		touchDragOverListeners = [],
+
+		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+			if (rootEl && options.scroll) {
+				var _this = rootEl[expando],
+					el,
+					rect,
+					sens = options.scrollSensitivity,
+					speed = options.scrollSpeed,
+
+					x = evt.clientX,
+					y = evt.clientY,
+
+					winWidth = window.innerWidth,
+					winHeight = window.innerHeight,
+
+					vx,
+					vy,
+
+					scrollOffsetX,
+					scrollOffsetY
+				;
+
+				// Delect scrollEl
+				if (scrollParentEl !== rootEl) {
+					scrollEl = options.scroll;
+					scrollParentEl = rootEl;
+					scrollCustomFn = options.scrollFn;
+
+					if (scrollEl === true) {
+						scrollEl = rootEl;
+
+						do {
+							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
+								(scrollEl.offsetHeight < scrollEl.scrollHeight)
+							) {
+								break;
+							}
+							/* jshint boss:true */
+						} while (scrollEl = scrollEl.parentNode);
+					}
+				}
+
+				if (scrollEl) {
+					el = scrollEl;
+					rect = scrollEl.getBoundingClientRect();
+					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
+					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
+				}
+
+
+				if (!(vx || vy)) {
+					vx = (winWidth - x <= sens) - (x <= sens);
+					vy = (winHeight - y <= sens) - (y <= sens);
+
+					/* jshint expr:true */
+					(vx || vy) && (el = win);
+				}
+
+
+				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
+					autoScroll.el = el;
+					autoScroll.vx = vx;
+					autoScroll.vy = vy;
+
+					clearInterval(autoScroll.pid);
+
+					if (el) {
+						autoScroll.pid = setInterval(function () {
+							scrollOffsetY = vy ? vy * speed : 0;
+							scrollOffsetX = vx ? vx * speed : 0;
+
+							if ('function' === typeof(scrollCustomFn)) {
+								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
+							}
+
+							if (el === win) {
+								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
+							} else {
+								el.scrollTop += scrollOffsetY;
+								el.scrollLeft += scrollOffsetX;
+							}
+						}, 24);
+					}
+				}
+			}
+		}, 30),
+
+		_prepareGroup = function (options) {
+			function toFn(value, pull) {
+				if (value === void 0 || value === true) {
+					value = group.name;
+				}
+
+				if (typeof value === 'function') {
+					return value;
+				} else {
+					return function (to, from) {
+						var fromGroup = from.options.group.name;
+
+						return pull
+							? value
+							: value && (value.join
+								? value.indexOf(fromGroup) > -1
+								: (fromGroup == value)
+							);
+					};
+				}
+			}
+
+			var group = {};
+			var originalGroup = options.group;
+
+			if (!originalGroup || typeof originalGroup != 'object') {
+				originalGroup = {name: originalGroup};
+			}
+
+			group.name = originalGroup.name;
+			group.checkPull = toFn(originalGroup.pull, true);
+			group.checkPut = toFn(originalGroup.put);
+			group.revertClone = originalGroup.revertClone;
+
+			options.group = group;
+		}
+	;
+
+	// Detect support a passive mode
+	try {
+		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+			get: function () {
+				// `false`, because everything starts to work incorrectly and instead of d'n'd,
+				// begins the page has scrolled.
+				passiveMode = false;
+				captureMode = {
+					capture: false,
+					passive: passiveMode
+				};
+			}
+		}));
+	} catch (err) {}
+
+	/**
+	 * @class  Sortable
+	 * @param  {HTMLElement}  el
+	 * @param  {Object}       [options]
+	 */
+	function Sortable(el, options) {
+		if (!(el && el.nodeType && el.nodeType === 1)) {
+			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+		}
+
+		this.el = el; // root element
+		this.options = options = _extend({}, options);
+
+
+		// Export instance
+		el[expando] = this;
+
+		// Default options
+		var defaults = {
+			group: Math.random(),
+			sort: true,
+			disabled: false,
+			store: null,
+			handle: null,
+			scroll: true,
+			scrollSensitivity: 30,
+			scrollSpeed: 10,
+			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+			ghostClass: 'sortable-ghost',
+			chosenClass: 'sortable-chosen',
+			dragClass: 'sortable-drag',
+			ignore: 'a, img',
+			filter: null,
+			preventOnFilter: true,
+			animation: 0,
+			setData: function (dataTransfer, dragEl) {
+				dataTransfer.setData('Text', dragEl.textContent);
+			},
+			dropBubble: false,
+			dragoverBubble: false,
+			dataIdAttr: 'data-id',
+			delay: 0,
+			forceFallback: false,
+			fallbackClass: 'sortable-fallback',
+			fallbackOnBody: false,
+			fallbackTolerance: 0,
+			fallbackOffset: {x: 0, y: 0},
+			supportPointer: Sortable.supportPointer !== false
+		};
+
+
+		// Set default options
+		for (var name in defaults) {
+			!(name in options) && (options[name] = defaults[name]);
+		}
+
+		_prepareGroup(options);
+
+		// Bind all private methods
+		for (var fn in this) {
+			if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+				this[fn] = this[fn].bind(this);
+			}
+		}
+
+		// Setup drag mode
+		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+
+		// Bind events
+		_on(el, 'mousedown', this._onTapStart);
+		_on(el, 'touchstart', this._onTapStart);
+		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+
+		if (this.nativeDraggable) {
+			_on(el, 'dragover', this);
+			_on(el, 'dragenter', this);
+		}
+
+		touchDragOverListeners.push(this._onDragOver);
+
+		// Restore sorting
+		options.store && this.sort(options.store.get(this));
+	}
+
+
+	Sortable.prototype = /** @lends Sortable.prototype */ {
+		constructor: Sortable,
+
+		_onTapStart: function (/** Event|TouchEvent */evt) {
+			var _this = this,
+				el = this.el,
+				options = this.options,
+				preventOnFilter = options.preventOnFilter,
+				type = evt.type,
+				touch = evt.touches && evt.touches[0],
+				target = (touch || evt).target,
+				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				filter = options.filter,
+				startIndex;
+
+			_saveInputCheckedState(el);
+
+
+			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
+			if (dragEl) {
+				return;
+			}
+
+			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+				return; // only left button or enabled
+			}
+
+			// cancel dnd if original target is content editable
+			if (originalTarget.isContentEditable) {
+				return;
+			}
+
+			target = _closest(target, options.draggable, el);
+
+			if (!target) {
+				return;
+			}
+
+			if (lastDownEl === target) {
+				// Ignoring duplicate `down`
+				return;
+			}
+
+			// Get the index of the dragged element within its parent
+			startIndex = _index(target, options.draggable);
+
+			// Check filter
+			if (typeof filter === 'function') {
+				if (filter.call(this, evt, target, this)) {
+					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+			else if (filter) {
+				filter = filter.split(',').some(function (criteria) {
+					criteria = _closest(originalTarget, criteria.trim(), el);
+
+					if (criteria) {
+						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
+						return true;
+					}
+				});
+
+				if (filter) {
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+
+			if (options.handle && !_closest(originalTarget, options.handle, el)) {
+				return;
+			}
+
+			// Prepare `dragstart`
+			this._prepareDragStart(evt, touch, target, startIndex);
+		},
+
+		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
+			var _this = this,
+				el = _this.el,
+				options = _this.options,
+				ownerDocument = el.ownerDocument,
+				dragStartFn;
+
+			if (target && !dragEl && (target.parentNode === el)) {
+				tapEvt = evt;
+
+				rootEl = el;
+				dragEl = target;
+				parentEl = dragEl.parentNode;
+				nextEl = dragEl.nextSibling;
+				lastDownEl = target;
+				activeGroup = options.group;
+				oldIndex = startIndex;
+
+				this._lastX = (touch || evt).clientX;
+				this._lastY = (touch || evt).clientY;
+
+				dragEl.style['will-change'] = 'all';
+
+				dragStartFn = function () {
+					// Delayed drag has been triggered
+					// we can re-enable the events: touchmove/mousemove
+					_this._disableDelayedDrag();
+
+					// Make the element draggable
+					dragEl.draggable = _this.nativeDraggable;
+
+					// Chosen item
+					_toggleClass(dragEl, options.chosenClass, true);
+
+					// Bind the events: dragstart/dragend
+					_this._triggerDragStart(evt, touch);
+
+					// Drag start event
+					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+				};
+
+				// Disable "draggable"
+				options.ignore.split(',').forEach(function (criteria) {
+					_find(dragEl, criteria.trim(), _disableDraggable);
+				});
+
+				_on(ownerDocument, 'mouseup', _this._onDrop);
+				_on(ownerDocument, 'touchend', _this._onDrop);
+				_on(ownerDocument, 'touchcancel', _this._onDrop);
+				_on(ownerDocument, 'selectstart', _this);
+				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
+
+				if (options.delay) {
+					// If the user moves the pointer or let go the click or touch
+					// before the delay has been reached:
+					// disable the delayed drag
+					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
+					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+
+					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+				} else {
+					dragStartFn();
+				}
+
+
+			}
+		},
+
+		_disableDelayedDrag: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			clearTimeout(this._dragStartTimer);
+			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
+			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
+		},
+
+		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
+			touch = touch || (evt.pointerType == 'touch' ? evt : null);
+
+			if (touch) {
+				// Touch device support
+				tapEvt = {
+					target: dragEl,
+					clientX: touch.clientX,
+					clientY: touch.clientY
+				};
+
+				this._onDragStart(tapEvt, 'touch');
+			}
+			else if (!this.nativeDraggable) {
+				this._onDragStart(tapEvt, true);
+			}
+			else {
+				_on(dragEl, 'dragend', this);
+				_on(rootEl, 'dragstart', this._onDragStart);
+			}
+
+			try {
+				if (document.selection) {
+					// Timeout neccessary for IE9
+					_nextTick(function () {
+						document.selection.empty();
+					});
+				} else {
+					window.getSelection().removeAllRanges();
+				}
+			} catch (err) {
+			}
+		},
+
+		_dragStarted: function () {
+			if (rootEl && dragEl) {
+				var options = this.options;
+
+				// Apply effect
+				_toggleClass(dragEl, options.ghostClass, true);
+				_toggleClass(dragEl, options.dragClass, false);
+
+				Sortable.active = this;
+
+				// Drag start event
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+			} else {
+				this._nulling();
+			}
+		},
+
+		_emulateDragOver: function () {
+			if (touchEvt) {
+				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+					return;
+				}
+
+				this._lastX = touchEvt.clientX;
+				this._lastY = touchEvt.clientY;
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', 'none');
+				}
+
+				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+				var parent = target;
+				var i = touchDragOverListeners.length;
+
+				if (target && target.shadowRoot) {
+					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+					parent = target;
+				}
+
+				if (parent) {
+					do {
+						if (parent[expando]) {
+							while (i--) {
+								touchDragOverListeners[i]({
+									clientX: touchEvt.clientX,
+									clientY: touchEvt.clientY,
+									target: target,
+									rootEl: parent
+								});
+							}
+
+							break;
+						}
+
+						target = parent; // store last element
+					}
+					/* jshint boss:true */
+					while (parent = parent.parentNode);
+				}
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', '');
+				}
+			}
+		},
+
+
+		_onTouchMove: function (/**TouchEvent*/evt) {
+			if (tapEvt) {
+				var	options = this.options,
+					fallbackTolerance = options.fallbackTolerance,
+					fallbackOffset = options.fallbackOffset,
+					touch = evt.touches ? evt.touches[0] : evt,
+					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
+					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
+					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
+
+				// only set the status to dragging, when we are actually dragging
+				if (!Sortable.active) {
+					if (fallbackTolerance &&
+						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
+					) {
+						return;
+					}
+
+					this._dragStarted();
+				}
+
+				// as well as creating the ghost element on the document body
+				this._appendGhost();
+
+				moved = true;
+				touchEvt = touch;
+
+				_css(ghostEl, 'webkitTransform', translate3d);
+				_css(ghostEl, 'mozTransform', translate3d);
+				_css(ghostEl, 'msTransform', translate3d);
+				_css(ghostEl, 'transform', translate3d);
+
+				evt.preventDefault();
+			}
+		},
+
+		_appendGhost: function () {
+			if (!ghostEl) {
+				var rect = dragEl.getBoundingClientRect(),
+					css = _css(dragEl),
+					options = this.options,
+					ghostRect;
+
+				ghostEl = dragEl.cloneNode(true);
+
+				_toggleClass(ghostEl, options.ghostClass, false);
+				_toggleClass(ghostEl, options.fallbackClass, true);
+				_toggleClass(ghostEl, options.dragClass, true);
+
+				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
+				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+				_css(ghostEl, 'width', rect.width);
+				_css(ghostEl, 'height', rect.height);
+				_css(ghostEl, 'opacity', '0.8');
+				_css(ghostEl, 'position', 'fixed');
+				_css(ghostEl, 'zIndex', '100000');
+				_css(ghostEl, 'pointerEvents', 'none');
+
+				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
+
+				// Fixing dimensions.
+				ghostRect = ghostEl.getBoundingClientRect();
+				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
+				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+			}
+		},
+
+		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+			var _this = this;
+			var dataTransfer = evt.dataTransfer;
+			var options = _this.options;
+
+			_this._offUpEvents();
+
+			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
+				cloneEl = _clone(dragEl);
+
+				cloneEl.draggable = false;
+				cloneEl.style['will-change'] = '';
+
+				_css(cloneEl, 'display', 'none');
+				_toggleClass(cloneEl, _this.options.chosenClass, false);
+
+				// #1143: IFrame support workaround
+				_this._cloneId = _nextTick(function () {
+					rootEl.insertBefore(cloneEl, dragEl);
+					_dispatchEvent(_this, rootEl, 'clone', dragEl);
+				});
+			}
+
+			_toggleClass(dragEl, options.dragClass, true);
+
+			if (useFallback) {
+				if (useFallback === 'touch') {
+					// Bind touch events
+					_on(document, 'touchmove', _this._onTouchMove);
+					_on(document, 'touchend', _this._onDrop);
+					_on(document, 'touchcancel', _this._onDrop);
+
+					if (options.supportPointer) {
+						_on(document, 'pointermove', _this._onTouchMove);
+						_on(document, 'pointerup', _this._onDrop);
+					}
+				} else {
+					// Old brwoser
+					_on(document, 'mousemove', _this._onTouchMove);
+					_on(document, 'mouseup', _this._onDrop);
+				}
+
+				_this._loopId = setInterval(_this._emulateDragOver, 50);
+			}
+			else {
+				if (dataTransfer) {
+					dataTransfer.effectAllowed = 'move';
+					options.setData && options.setData.call(_this, dataTransfer, dragEl);
+				}
+
+				_on(document, 'drop', _this);
+
+				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
+				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
+				// Breaking Chrome 62+
+				// _on(document, 'mouseover', _this);
+
+				_this._dragStartId = _nextTick(_this._dragStarted);
+			}
+		},
+
+		_onDragOver: function (/**Event*/evt) {
+			var el = this.el,
+				target,
+				dragRect,
+				targetRect,
+				revert,
+				options = this.options,
+				group = options.group,
+				activeSortable = Sortable.active,
+				isOwner = (activeGroup === group),
+				isMovingBetweenSortable = false,
+				canSort = options.sort;
+
+			if (evt.preventDefault !== void 0) {
+				evt.preventDefault();
+				!options.dragoverBubble && evt.stopPropagation();
+			}
+
+			if (dragEl.animated) {
+				return;
+			}
+
+			moved = true;
+
+			if (activeSortable && !options.disabled &&
+				(isOwner
+					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+					: (
+						putSortable === this ||
+						(
+							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+							group.checkPut(this, activeSortable, dragEl, evt)
+						)
+					)
+				) &&
+				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+			) {
+				// Smart auto-scrolling
+				_autoScroll(evt, options, this.el);
+
+				if (_silent) {
+					return;
+				}
+
+				target = _closest(evt.target, options.draggable, el);
+				dragRect = dragEl.getBoundingClientRect();
+
+				if (putSortable !== this) {
+					putSortable = this;
+					isMovingBetweenSortable = true;
+				}
+
+				if (revert) {
+					_cloneHide(activeSortable, true);
+					parentEl = rootEl; // actualization
+
+					if (cloneEl || nextEl) {
+						rootEl.insertBefore(dragEl, cloneEl || nextEl);
+					}
+					else if (!canSort) {
+						rootEl.appendChild(dragEl);
+					}
+
+					return;
+				}
+
+
+				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
+					(el === evt.target) && (_ghostIsLast(el, evt))
+				) {
+					//assign target only if condition is true
+					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
+						target = el.lastElementChild;
+					}
+
+					if (target) {
+						if (target.animated) {
+							return;
+						}
+
+						targetRect = target.getBoundingClientRect();
+					}
+
+					_cloneHide(activeSortable, isOwner);
+
+					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
+						if (!dragEl.contains(el)) {
+							el.appendChild(dragEl);
+							parentEl = el; // actualization
+						}
+
+						this._animate(dragRect, dragEl);
+						target && this._animate(targetRect, target);
+					}
+				}
+				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
+					if (lastEl !== target) {
+						lastEl = target;
+						lastCSS = _css(target);
+						lastParentCSS = _css(target.parentNode);
+					}
+
+					targetRect = target.getBoundingClientRect();
+
+					var width = targetRect.right - targetRect.left,
+						height = targetRect.bottom - targetRect.top,
+						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
+							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
+						isWide = (target.offsetWidth > dragEl.offsetWidth),
+						isLong = (target.offsetHeight > dragEl.offsetHeight),
+						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
+						nextSibling = target.nextElementSibling,
+						after = false
+					;
+
+					if (floating) {
+						var elTop = dragEl.offsetTop,
+							tgTop = target.offsetTop;
+
+						if (elTop === tgTop) {
+							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+						}
+						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
+							after = (evt.clientY - targetRect.top) / height > 0.5;
+						} else {
+							after = tgTop > elTop;
+						}
+						} else if (!isMovingBetweenSortable) {
+						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+					}
+
+					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+
+					if (moveVector !== false) {
+						if (moveVector === 1 || moveVector === -1) {
+							after = (moveVector === 1);
+						}
+
+						_silent = true;
+						setTimeout(_unsilent, 30);
+
+						_cloneHide(activeSortable, isOwner);
+
+						if (!dragEl.contains(el)) {
+							if (after && !nextSibling) {
+								el.appendChild(dragEl);
+							} else {
+								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+							}
+						}
+
+						parentEl = dragEl.parentNode; // actualization
+
+						this._animate(dragRect, dragEl);
+						this._animate(targetRect, target);
+					}
+				}
+			}
+		},
+
+		_animate: function (prevRect, target) {
+			var ms = this.options.animation;
+
+			if (ms) {
+				var currentRect = target.getBoundingClientRect();
+
+				if (prevRect.nodeType === 1) {
+					prevRect = prevRect.getBoundingClientRect();
+				}
+
+				_css(target, 'transition', 'none');
+				_css(target, 'transform', 'translate3d('
+					+ (prevRect.left - currentRect.left) + 'px,'
+					+ (prevRect.top - currentRect.top) + 'px,0)'
+				);
+
+				target.offsetWidth; // repaint
+
+				_css(target, 'transition', 'all ' + ms + 'ms');
+				_css(target, 'transform', 'translate3d(0,0,0)');
+
+				clearTimeout(target.animated);
+				target.animated = setTimeout(function () {
+					_css(target, 'transition', '');
+					_css(target, 'transform', '');
+					target.animated = false;
+				}, ms);
+			}
+		},
+
+		_offUpEvents: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			_off(document, 'touchmove', this._onTouchMove);
+			_off(document, 'pointermove', this._onTouchMove);
+			_off(ownerDocument, 'mouseup', this._onDrop);
+			_off(ownerDocument, 'touchend', this._onDrop);
+			_off(ownerDocument, 'pointerup', this._onDrop);
+			_off(ownerDocument, 'touchcancel', this._onDrop);
+			_off(ownerDocument, 'pointercancel', this._onDrop);
+			_off(ownerDocument, 'selectstart', this);
+		},
+
+		_onDrop: function (/**Event*/evt) {
+			var el = this.el,
+				options = this.options;
+
+			clearInterval(this._loopId);
+			clearInterval(autoScroll.pid);
+			clearTimeout(this._dragStartTimer);
+
+			_cancelNextTick(this._cloneId);
+			_cancelNextTick(this._dragStartId);
+
+			// Unbind events
+			_off(document, 'mouseover', this);
+			_off(document, 'mousemove', this._onTouchMove);
+
+			if (this.nativeDraggable) {
+				_off(document, 'drop', this);
+				_off(el, 'dragstart', this._onDragStart);
+			}
+
+			this._offUpEvents();
+
+			if (evt) {
+				if (moved) {
+					evt.preventDefault();
+					!options.dropBubble && evt.stopPropagation();
+				}
+
+				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+
+				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
+					// Remove clone
+					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+				}
+
+				if (dragEl) {
+					if (this.nativeDraggable) {
+						_off(dragEl, 'dragend', this);
+					}
+
+					_disableDraggable(dragEl);
+					dragEl.style['will-change'] = '';
+
+					// Remove class's
+					_toggleClass(dragEl, this.options.ghostClass, false);
+					_toggleClass(dragEl, this.options.chosenClass, false);
+
+					// Drag stop event
+					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
+
+					if (rootEl !== parentEl) {
+						newIndex = _index(dragEl, options.draggable);
+
+						if (newIndex >= 0) {
+							// Add event
+							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// Remove event
+							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// drag from one list and drop into another
+							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						}
+					}
+					else {
+						if (dragEl.nextSibling !== nextEl) {
+							// Get the index of the dragged element within its parent
+							newIndex = _index(dragEl, options.draggable);
+
+							if (newIndex >= 0) {
+								// drag & drop within the same list
+								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							}
+						}
+					}
+
+					if (Sortable.active) {
+						/* jshint eqnull:true */
+						if (newIndex == null || newIndex === -1) {
+							newIndex = oldIndex;
+						}
+
+						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+						// Save sorting
+						this.save();
+					}
+				}
+
+			}
+
+			this._nulling();
+		},
+
+		_nulling: function() {
+			rootEl =
+			dragEl =
+			parentEl =
+			ghostEl =
+			nextEl =
+			cloneEl =
+			lastDownEl =
+
+			scrollEl =
+			scrollParentEl =
+
+			tapEvt =
+			touchEvt =
+
+			moved =
+			newIndex =
+
+			lastEl =
+			lastCSS =
+
+			putSortable =
+			activeGroup =
+			Sortable.active = null;
+
+			savedInputChecked.forEach(function (el) {
+				el.checked = true;
+			});
+			savedInputChecked.length = 0;
+		},
+
+		handleEvent: function (/**Event*/evt) {
+			switch (evt.type) {
+				case 'drop':
+				case 'dragend':
+					this._onDrop(evt);
+					break;
+
+				case 'dragover':
+				case 'dragenter':
+					if (dragEl) {
+						this._onDragOver(evt);
+						_globalDragOver(evt);
+					}
+					break;
+
+				case 'mouseover':
+					this._onDrop(evt);
+					break;
+
+				case 'selectstart':
+					evt.preventDefault();
+					break;
+			}
+		},
+
+
+		/**
+		 * Serializes the item into an array of string.
+		 * @returns {String[]}
+		 */
+		toArray: function () {
+			var order = [],
+				el,
+				children = this.el.children,
+				i = 0,
+				n = children.length,
+				options = this.options;
+
+			for (; i < n; i++) {
+				el = children[i];
+				if (_closest(el, options.draggable, this.el)) {
+					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+				}
+			}
+
+			return order;
+		},
+
+
+		/**
+		 * Sorts the elements according to the array.
+		 * @param  {String[]}  order  order of the items
+		 */
+		sort: function (order) {
+			var items = {}, rootEl = this.el;
+
+			this.toArray().forEach(function (id, i) {
+				var el = rootEl.children[i];
+
+				if (_closest(el, this.options.draggable, rootEl)) {
+					items[id] = el;
+				}
+			}, this);
+
+			order.forEach(function (id) {
+				if (items[id]) {
+					rootEl.removeChild(items[id]);
+					rootEl.appendChild(items[id]);
+				}
+			});
+		},
+
+
+		/**
+		 * Save the current sorting
+		 */
+		save: function () {
+			var store = this.options.store;
+			store && store.set(this);
+		},
+
+
+		/**
+		 * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+		 * @param   {HTMLElement}  el
+		 * @param   {String}       [selector]  default: `options.draggable`
+		 * @returns {HTMLElement|null}
+		 */
+		closest: function (el, selector) {
+			return _closest(el, selector || this.options.draggable, this.el);
+		},
+
+
+		/**
+		 * Set/get option
+		 * @param   {string} name
+		 * @param   {*}      [value]
+		 * @returns {*}
+		 */
+		option: function (name, value) {
+			var options = this.options;
+
+			if (value === void 0) {
+				return options[name];
+			} else {
+				options[name] = value;
+
+				if (name === 'group') {
+					_prepareGroup(options);
+				}
+			}
+		},
+
+
+		/**
+		 * Destroy
+		 */
+		destroy: function () {
+			var el = this.el;
+
+			el[expando] = null;
+
+			_off(el, 'mousedown', this._onTapStart);
+			_off(el, 'touchstart', this._onTapStart);
+			_off(el, 'pointerdown', this._onTapStart);
+
+			if (this.nativeDraggable) {
+				_off(el, 'dragover', this);
+				_off(el, 'dragenter', this);
+			}
+
+			// Remove draggable attributes
+			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
+				el.removeAttribute('draggable');
+			});
+
+			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
+
+			this._onDrop();
+
+			this.el = el = null;
+		}
+	};
+
+
+	function _cloneHide(sortable, state) {
+		if (sortable.lastPullMode !== 'clone') {
+			state = true;
+		}
+
+		if (cloneEl && (cloneEl.state !== state)) {
+			_css(cloneEl, 'display', state ? 'none' : '');
+
+			if (!state) {
+				if (cloneEl.state) {
+					if (sortable.options.group.revertClone) {
+						rootEl.insertBefore(cloneEl, nextEl);
+						sortable._animate(dragEl, cloneEl);
+					} else {
+						rootEl.insertBefore(cloneEl, dragEl);
+					}
+				}
+			}
+
+			cloneEl.state = state;
+		}
+	}
+
+
+	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+		if (el) {
+			ctx = ctx || document;
+
+			do {
+				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
+					return el;
+				}
+				/* jshint boss:true */
+			} while (el = _getParentOrHost(el));
+		}
+
+		return null;
+	}
+
+
+	function _getParentOrHost(el) {
+		var parent = el.host;
+
+		return (parent && parent.nodeType) ? parent : el.parentNode;
+	}
+
+
+	function _globalDragOver(/**Event*/evt) {
+		if (evt.dataTransfer) {
+			evt.dataTransfer.dropEffect = 'move';
+		}
+		evt.preventDefault();
+	}
+
+
+	function _on(el, event, fn) {
+		el.addEventListener(event, fn, captureMode);
+	}
+
+
+	function _off(el, event, fn) {
+		el.removeEventListener(event, fn, captureMode);
+	}
+
+
+	function _toggleClass(el, name, state) {
+		if (el) {
+			if (el.classList) {
+				el.classList[state ? 'add' : 'remove'](name);
+			}
+			else {
+				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+			}
+		}
+	}
+
+
+	function _css(el, prop, val) {
+		var style = el && el.style;
+
+		if (style) {
+			if (val === void 0) {
+				if (document.defaultView && document.defaultView.getComputedStyle) {
+					val = document.defaultView.getComputedStyle(el, '');
+				}
+				else if (el.currentStyle) {
+					val = el.currentStyle;
+				}
+
+				return prop === void 0 ? val : val[prop];
+			}
+			else {
+				if (!(prop in style)) {
+					prop = '-webkit-' + prop;
+				}
+
+				style[prop] = val + (typeof val === 'string' ? '' : 'px');
+			}
+		}
+	}
+
+
+	function _find(ctx, tagName, iterator) {
+		if (ctx) {
+			var list = ctx.getElementsByTagName(tagName), i = 0, n = list.length;
+
+			if (iterator) {
+				for (; i < n; i++) {
+					iterator(list[i], i);
+				}
+			}
+
+			return list;
+		}
+
+		return [];
+	}
+
+
+
+	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+		sortable = (sortable || rootEl[expando]);
+
+		var evt = document.createEvent('Event'),
+			options = sortable.options,
+			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
+
+		evt.initEvent(name, true, true);
+
+		evt.to = toEl || rootEl;
+		evt.from = fromEl || rootEl;
+		evt.item = targetEl || rootEl;
+		evt.clone = cloneEl;
+
+		evt.oldIndex = startIndex;
+		evt.newIndex = newIndex;
+
+		rootEl.dispatchEvent(evt);
+
+		if (options[onName]) {
+			options[onName].call(sortable, evt);
+		}
+	}
+
+
+	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt, willInsertAfter) {
+		var evt,
+			sortable = fromEl[expando],
+			onMoveFn = sortable.options.onMove,
+			retVal;
+
+		evt = document.createEvent('Event');
+		evt.initEvent('move', true, true);
+
+		evt.to = toEl;
+		evt.from = fromEl;
+		evt.dragged = dragEl;
+		evt.draggedRect = dragRect;
+		evt.related = targetEl || toEl;
+		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+		evt.willInsertAfter = willInsertAfter;
+
+		fromEl.dispatchEvent(evt);
+
+		if (onMoveFn) {
+			retVal = onMoveFn.call(sortable, evt, originalEvt);
+		}
+
+		return retVal;
+	}
+
+
+	function _disableDraggable(el) {
+		el.draggable = false;
+	}
+
+
+	function _unsilent() {
+		_silent = false;
+	}
+
+
+	/** @returns {HTMLElement|false} */
+	function _ghostIsLast(el, evt) {
+		var lastEl = el.lastElementChild,
+			rect = lastEl.getBoundingClientRect();
+
+		// 5 — min delta
+		// abs — нельзя добавлять, а то глюки при наведении сверху
+		return (evt.clientY - (rect.top + rect.height) > 5) ||
+			(evt.clientX - (rect.left + rect.width) > 5);
+	}
+
+
+	/**
+	 * Generate id
+	 * @param   {HTMLElement} el
+	 * @returns {String}
+	 * @private
+	 */
+	function _generateId(el) {
+		var str = el.tagName + el.className + el.src + el.href + el.textContent,
+			i = str.length,
+			sum = 0;
+
+		while (i--) {
+			sum += str.charCodeAt(i);
+		}
+
+		return sum.toString(36);
+	}
+
+	/**
+	 * Returns the index of an element within its parent for a selected set of
+	 * elements
+	 * @param  {HTMLElement} el
+	 * @param  {selector} selector
+	 * @return {number}
+	 */
+	function _index(el, selector) {
+		var index = 0;
+
+		if (!el || !el.parentNode) {
+			return -1;
+		}
+
+		while (el && (el = el.previousElementSibling)) {
+			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
+				index++;
+			}
+		}
+
+		return index;
+	}
+
+	function _matches(/**HTMLElement*/el, /**String*/selector) {
+		if (el) {
+			selector = selector.split('.');
+
+			var tag = selector.shift().toUpperCase(),
+				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
+
+			return (
+				(tag === '' || el.nodeName.toUpperCase() == tag) &&
+				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
+			);
+		}
+
+		return false;
+	}
+
+	function _throttle(callback, ms) {
+		var args, _this;
+
+		return function () {
+			if (args === void 0) {
+				args = arguments;
+				_this = this;
+
+				setTimeout(function () {
+					if (args.length === 1) {
+						callback.call(_this, args[0]);
+					} else {
+						callback.apply(_this, args);
+					}
+
+					args = void 0;
+				}, ms);
+			}
+		};
+	}
+
+	function _extend(dst, src) {
+		if (dst && src) {
+			for (var key in src) {
+				if (src.hasOwnProperty(key)) {
+					dst[key] = src[key];
+				}
+			}
+		}
+
+		return dst;
+	}
+
+	function _clone(el) {
+		if (Polymer && Polymer.dom) {
+			return Polymer.dom(el).cloneNode(true);
+		}
+		else if ($) {
+			return $(el).clone(true)[0];
+		}
+		else {
+			return el.cloneNode(true);
+		}
+	}
+
+	function _saveInputCheckedState(root) {
+		var inputs = root.getElementsByTagName('input');
+		var idx = inputs.length;
+
+		while (idx--) {
+			var el = inputs[idx];
+			el.checked && savedInputChecked.push(el);
+		}
+	}
+
+	function _nextTick(fn) {
+		return setTimeout(fn, 0);
+	}
+
+	function _cancelNextTick(id) {
+		return clearTimeout(id);
+	}
+
+	// Fixed #973:
+	_on(document, 'touchmove', function (evt) {
+		if (Sortable.active) {
+			evt.preventDefault();
+		}
+	});
+
+	// Export utils
+	Sortable.utils = {
+		on: _on,
+		off: _off,
+		css: _css,
+		find: _find,
+		is: function (el, selector) {
+			return !!_closest(el, selector, el);
+		},
+		extend: _extend,
+		throttle: _throttle,
+		closest: _closest,
+		toggleClass: _toggleClass,
+		clone: _clone,
+		index: _index,
+		nextTick: _nextTick,
+		cancelNextTick: _cancelNextTick
+	};
+
+
+	/**
+	 * Create sortable instance
+	 * @param {HTMLElement}  el
+	 * @param {Object}      [options]
+	 */
+	Sortable.create = function (el, options) {
+		return new Sortable(el, options);
+	};
+
+
+	// Export
+	Sortable.version = '1.7.0';
+	return Sortable;
+});
+
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Element draggé :\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Element remplacé:\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.replaceElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            Colonne déposé\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedColElement))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-auto" }, [
+        _vm._v("\n            INDEX element deposer\n            "),
+        _c("pre", [_vm._v(_vm._s(_vm.selectedNewIndexElement))])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-auto border", staticStyle: { color: "black" } },
+        [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
+        [
+          _c(
+            "draggable",
+            {
+              staticClass: " row border",
+              staticStyle: { "min-height": "87vh" },
+              attrs: {
+                list: _vm.wLun,
+                options: _vm.dragOptions,
+                move: _vm.onMove
+              },
+              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
+              model: {
+                value: _vm.wLun,
+                callback: function($$v) {
+                  _vm.wLun = $$v
+                },
+                expression: "wLun"
+              }
+            },
+            [
+              _c(
+                "transition-group",
+                {
+                  staticClass: "col ",
+                  attrs: { type: "transition", name: "flip-list", id: "0" }
+                },
+                _vm._l(_vm.wLun, function(element) {
+                  return _c(
+                    "div",
+                    {
+                      key: element.id,
+                      staticClass: "row ",
+                      staticStyle: {
+                        height: "60px",
+                        "border-bottom": "solid 1px lightgray"
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "col text-left " }, [
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
+        [
+          _c(
+            "draggable",
+            {
+              staticClass: " row ",
+              staticStyle: { "min-height": "87vh" },
+              attrs: {
+                list: _vm.wMar,
+                options: _vm.dragOptions,
+                move: _vm.onMove
+              },
+              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
+              model: {
+                value: _vm.wMar,
+                callback: function($$v) {
+                  _vm.wMar = $$v
+                },
+                expression: "wMar"
+              }
+            },
+            [
+              _c(
+                "transition-group",
+                {
+                  staticClass: "col",
+                  attrs: { type: "transition", name: "flip-list", id: "1" }
+                },
+                _vm._l(_vm.wMar, function(element) {
+                  return _c(
+                    "div",
+                    {
+                      key: element.id,
+                      staticClass: "row border",
+                      staticStyle: { height: "60px" }
+                    },
+                    [
+                      _c("div", { staticClass: "col text-left " }, [
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
+        [
+          _c(
+            "draggable",
+            {
+              staticClass: " row ",
+              staticStyle: { "min-height": "87vh" },
+              attrs: {
+                list: _vm.wMer,
+                options: _vm.dragOptions,
+                move: _vm.onMove
+              },
+              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
+              model: {
+                value: _vm.wMer,
+                callback: function($$v) {
+                  _vm.wMer = $$v
+                },
+                expression: "wMer"
+              }
+            },
+            [
+              _c(
+                "transition-group",
+                {
+                  staticClass: "col",
+                  attrs: { type: "transition", name: "flip-list", id: "2" }
+                },
+                _vm._l(_vm.wMer, function(element) {
+                  return _c(
+                    "div",
+                    {
+                      key: element.id,
+                      staticClass: "row border",
+                      staticStyle: { height: "60px" }
+                    },
+                    [
+                      _c("div", { staticClass: "col text-left " }, [
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
+        [
+          _c(
+            "draggable",
+            {
+              staticClass: " row ",
+              staticStyle: { "min-height": "87vh" },
+              attrs: {
+                list: _vm.wJe,
+                options: _vm.dragOptions,
+                move: _vm.onMove
+              },
+              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
+              model: {
+                value: _vm.wJe,
+                callback: function($$v) {
+                  _vm.wJe = $$v
+                },
+                expression: "wJe"
+              }
+            },
+            [
+              _c(
+                "transition-group",
+                {
+                  staticClass: "col ",
+                  attrs: { type: "transition", name: "flip-list", id: "3" }
+                },
+                _vm._l(_vm.wJe, function(element) {
+                  return _c(
+                    "div",
+                    {
+                      key: element.id,
+                      staticClass: "row border",
+                      staticStyle: { height: "60px" }
+                    },
+                    [
+                      _c("div", { staticClass: "col text-left " }, [
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
+        [
+          _c(
+            "draggable",
+            {
+              staticClass: " row ",
+              staticStyle: { "min-height": "87vh" },
+              attrs: {
+                list: _vm.wVen,
+                options: _vm.dragOptions,
+                move: _vm.onMove
+              },
+              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
+              model: {
+                value: _vm.wVen,
+                callback: function($$v) {
+                  _vm.wVen = $$v
+                },
+                expression: "wVen"
+              }
+            },
+            [
+              _c(
+                "transition-group",
+                {
+                  staticClass: "col ",
+                  attrs: { type: "transition", name: "flip-list", id: "4" }
+                },
+                _vm._l(_vm.wVen, function(element) {
+                  return _c(
+                    "div",
+                    {
+                      key: element.id,
+                      staticClass: "row border",
+                      staticStyle: { height: "60px", cursor: "pointer" }
+                    },
+                    [
+                      _c("div", { staticClass: "col text-left " }, [
+                        _c("b", [_vm._v(" " + _vm._s(element.id))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(element.id_cmd) +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
+      _c("div", { staticClass: "col" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.lunString))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.marString))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.merString))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.jeString))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.venString))])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-47d276f0", module.exports)
+  }
+}
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(185)
+/* template */
+var __vue_template__ = __webpack_require__(186)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Navbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cd7fb372", Component.options)
+  } else {
+    hotAPI.reload("data-v-cd7fb372", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 185 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            user: window.organizer.user,
+            signed: window.organizer.signedIn,
+            csrf: window.organizer.csrfToken,
+            app: window.organizer.app,
+            weekNumber: moment().week(),
+            dt: '',
+            monthN: 0,
+            dayN: 0,
+            yearN: 0,
+            displayMonth: 0,
+            displayDate: ''
+        };
+    },
+
+    props: ['year', 'month', 'day'],
+    mounted: function mounted() {
+        var _this = this;
+
+        this.dayN = parseInt(this.day);
+        this.monthN = parseInt(this.month);
+        this.yearN = parseInt(this.year);
+
+        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
+        this.weekNumber = this.dt.week();
+        this.displayMonth = moment.months()[this.monthN - 1];
+        this.displayDate = this.dt.format('Y-MM-DD');
+
+        Event.$on('syncWeekNavbar', function (data) {
+            _this.weekNumber = data;
+        });
+
+        Event.$on('chooseDate', function (data) {
+
+            _this.dt = moment(data);
+            _this.weekNumber = _this.dt.week();
+            _this.monthN = parseInt(_this.dt.month());
+            _this.displayMonth = moment.months()[_this.monthN];
+            _this.displayDate = _this.dt.format('Y-MM-DD');
+        });
+    },
+
+    methods: {
+        addWeek: function addWeek() {
+            this.dt = this.dt.add(1, 'week');
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('addWeek', this.dt);
+        },
+        subWeek: function subWeek() {
+            this.dt = this.dt.subtract(1, 'week');
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('subWeek', this.dt);
+        },
+        resetWeek: function resetWeek() {
+            this.dt = moment();
+            this.displayMonth = moment.months()[this.dt.month()];
+            Event.$emit('resetWeek', moment());
+        }
+    },
+    filters: {
+        capitalize: function capitalize(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    }
+
+});
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
+    [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("a", { staticClass: "navbar-brand", attrs: { href: "" } }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse navbar-collapse",
+            attrs: { id: "navbarSupportedContent" }
+          },
+          [
+            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+              _c(
+                "a",
+                { staticClass: "navbar-brand mr-4", attrs: { href: "/" } },
+                [
+                  _c("img", {
+                    staticClass: "d-inline-block align-top",
+                    attrs: {
+                      src: "/images/light.png",
+                      width: "30",
+                      height: "30",
+                      alt: ""
+                    }
+                  }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.app) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-4 mr-4 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.resetWeek($event)
+                    }
+                  }
+                },
+                [_vm._v("\n                    Aujourd'hui\n                ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-4  mr-1 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.subWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-left" })]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "ml-1 navbar-brand",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.addWeek($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-angle-right" })]
+              ),
+              _vm._v(" "),
+              _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
+                _vm._v(
+                  "\n                   " +
+                    _vm._s(_vm._f("capitalize")(_vm.displayMonth)) +
+                    " " +
+                    _vm._s(_vm.year) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Login")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.signed
+                ? _c("li", [
+                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
+                      _vm._v("Register")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("li", { staticClass: "nav-item dropdown " }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: " mr-4 nav-link dropdown-toggle",
+                    attrs: {
+                      id: "navbarDropdown",
+                      href: "#",
+                      role: "button",
+                      "data-toggle": "dropdown",
+                      "aria-haspopup": "true",
+                      "aria-expanded": "false"
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "caret mr-4" }, [
+                      _vm._v(_vm._s(_vm.user.prenom))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarSupportedContent",
+          "aria-controls": "navbarSupportedContent",
+          "aria-expanded": "false",
+          "aria-label": "Toggle navigation"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "dropdown-menu",
+        attrs: { "aria-labelledby": "navbarDropdown" }
+      },
+      [
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
+          _vm._v("xxx")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-divider" }),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "dropdown-item",
+            attrs: {
+              href: "",
+              onclick:
+                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
+            }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-power-off mr-2",
+              staticStyle: { color: "indianred" }
+            }),
+            _vm._v("Deconnexion\n                        ")
+          ]
+        ),
+        _vm._v(" "),
+        _c("form", {
+          staticStyle: { display: "none" },
+          attrs: { id: "logout-form", action: "", method: "POST" }
+        })
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cd7fb372", module.exports)
+  }
+}
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -65601,4116 +69719,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(8)(module)))
-
-/***/ }),
-/* 164 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(165)
-/* template */
-var __vue_template__ = __webpack_require__(166)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\ExampleComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0ca92eac", Component.options)
-  } else {
-    hotAPI.reload("data-v-0ca92eac", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 165 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0ca92eac", module.exports)
-  }
-}
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(168)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(171)
-/* template */
-var __vue_template__ = __webpack_require__(172)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Calendar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-40b95a96", Component.options)
-  } else {
-    hotAPI.reload("data-v-40b95a96", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(169);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("90f003b6", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-40b95a96\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Calendar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 171 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            cal: [],
-            selectedDateSession: moment(),
-            selectedDate: '',
-            today: moment(),
-            weeks: moment.weekdays(),
-            weeksShort: moment.weekdaysShort()
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        var Sunday = [this.weeksShort.shift()];
-        this.weeksShort = this.weeksShort.concat(Sunday);
-
-        this.makeCalendar();
-
-        Event.$on('subWeek', function (data) {
-            _this.modifyDate(data);
-        });
-
-        Event.$on('addWeek', function (data) {
-            _this.modifyDate(data);
-        });
-
-        Event.$on('resetWeek', function (data) {
-            _this.modifyDate(data);
-        });
-    },
-
-    filters: {
-        formated: function formated(data) {
-            return data.toUpperCase().replace('.', '').substr(0, 1);
-        },
-        dateCalendar: function dateCalendar(data) {
-            var date = data.format('MMMM YYYY');
-
-            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
-        },
-        dayCalendar: function dayCalendar(data) {
-            return data.format('DD MMMM YYYY');
-        },
-        substrDay: function substrDay(data) {
-            return data.substr(-2);
-        }
-    },
-    methods: {
-        modifyDate: function modifyDate(data) {
-            this.selectedDateSession = data;
-            this.selectedDate = data.format('Y-MM-DD');
-            this.makeCalendar();
-        },
-        isEqualMonth: function isEqualMonth(date) {
-            return date.substr(5, 2) !== this.selectedDateSession.format('Y-MM-DD').substr(5, 2);
-        },
-        defineRefDate: function defineRefDate(year, start) {
-
-            if (start >= 0 && start <= 12) return moment().year(year).startOf('year').month(start - 1).startOf('month').startOf('week');
-
-            return moment().year(year).startOf('month').startOf('week');
-        },
-        makeCalendar: function makeCalendar() {
-            var _this2 = this;
-
-            // di = 0  /  lun = 1 / mar = 2  / mer = 3  / je = 4 / ven = 5 / sam = 6 .
-            //declaration de la date de reference
-
-            var dateMutable = this.selectedDateSession;
-            var startDayWeek = moment(dateMutable).startOf('month').startOf('week');
-            var refDate = startDayWeek;
-
-            //refDate =   this.defineRefDate('2018',12);
-
-            this.cal = [];
-
-            var _loop = function _loop(w) {
-                _this2.cal.push({
-                    date: Array(7).fill(0).map(function (n, i) {
-
-                        if (i === 0 && w === 0) {
-                            return refDate.format('Y-MM-DD');
-                        } else {
-                            return refDate.add(1, 'day').format('Y-MM-DD');
-                        }
-                        return w;
-                    }, [w])
-                });
-            };
-
-            for (var w = 0; w <= 5; w++) {
-                _loop(w);
-            }
-            console.log(this.cal);
-        },
-        subMonth: function subMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().subtract(1, 'months');
-            this.makeCalendar();
-        },
-        addMonth: function addMonth() {
-            this.selectedDateSession = this.selectedDateSession.clone().add(1, 'months');
-            this.makeCalendar();
-        },
-        reset: function reset() {
-            this.selectedDateSession = moment();
-            this.makeCalendar();
-        },
-        chooseDate: function chooseDate(date) {
-            this.selectedDate = date;
-            console.log(date);
-            Event.$emit('chooseDate', date);
-        }
-    }
-});
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row calendar-wrapper" }, [
-    _c(
-      "div",
-      { staticClass: "col" },
-      [
-        _c("div", { staticClass: "row " }, [
-          _c("div", { staticClass: "col " }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-m-auto " }, [
-                _c("b", [
-                  _vm._v(
-                    _vm._s(_vm._f("dateCalendar")(_vm.selectedDateSession))
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col text-right" }, [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.subMonth($event)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fa fa-angle-left  mr-1 b" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.addMonth($event)
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fa fa-angle-right b ml-1" })]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.weeksShort, function(jour, index) {
-                return _c(
-                  "div",
-                  { staticClass: "col  text-center size--date-day" },
-                  [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm._f("formated")(jour)) +
-                        "\n                    "
-                    )
-                  ]
-                )
-              })
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._l(_vm.cal, function(week) {
-          return _c(
-            "div",
-            { staticClass: "row bg-" },
-            _vm._l(week.date, function(date) {
-              return _c("div", { staticClass: "col size--date-number " }, [
-                date === _vm.today.format("Y-MM-DD")
-                  ? _c(
-                      "span",
-                      {
-                        staticClass: "rounded-circle ",
-                        staticStyle: {
-                          "background-color": "cornflowerblue",
-                          color: "white",
-                          "font-weight": "bold"
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            _vm.chooseDate(date)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm._f("substrDay")(date)) +
-                            "\n                    "
-                        )
-                      ]
-                    )
-                  : _c(
-                      "span",
-                      {
-                        staticClass: "rounded-circle",
-                        class: {
-                          "rounded-circle": true,
-                          "bg-warning": date === _vm.selectedDate,
-                          b: date === _vm.selectedDate,
-                          lightgrey: _vm.isEqualMonth(date)
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            _vm.chooseDate(date)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm._f("substrDay")(date)) +
-                            "\n                    "
-                        )
-                      ]
-                    )
-              ])
-            })
-          )
-        })
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-40b95a96", module.exports)
-  }
-}
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(174)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(176)
-/* template */
-var __vue_template__ = __webpack_require__(177)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Week.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-962d182a", Component.options)
-  } else {
-    hotAPI.reload("data-v-962d182a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(175);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("059cd27a", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-962d182a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Week.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-962d182a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Week.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.size--date{\n    font-size: 0.7em;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 176 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            selectedDateSession: moment(),
-            today: moment(),
-            yearLeap: false,
-            weeks: moment.weekdays(),
-            weeksShort: moment.weekdaysShort(),
-            weeksDay: [],
-            weekNumber: moment().week(),
-            work: [],
-            cal: [],
-            dayN: [],
-            yearN: [],
-            monthN: [],
-            dt: moment()
-        };
-    },
-
-    props: ['year', 'day', 'month'],
-    mounted: function mounted() {
-        var _this = this;
-
-        Event.$on('addWeek', function (data) {
-            _this.syncDate(data);
-        });
-
-        Event.$on('subWeek', function (data) {
-            _this.syncDate(data);
-        });
-
-        Event.$on('resetWeek', function (data) {
-            _this.syncDate(data);
-        });
-
-        Event.$on('chooseDate', function (data) {
-            _this.dt = moment(data);
-            _this.syncDate(_this.dt);
-        });
-
-        this.dayN = parseInt(this.day);
-        this.monthN = parseInt(this.month);
-        this.yearN = parseInt(this.year);
-
-        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
-        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
-        this.weekNumber = this.dt.week();
-
-        this.weeksShort.shift();
-        this.weeksShort.pop();
-
-        this.cal = this.getDayOfWeek();
-    },
-
-    filters: {
-        capitalize: function capitalize(value) {
-            if (!value) return '';
-            value = value.toString();
-            return value.charAt(0).toUpperCase() + value.slice(1);
-        },
-        formated: function formated(data) {
-            return data.toUpperCase().replace('.', '').substr(0, 1);
-        },
-        dateCalendar: function dateCalendar(data) {
-            var date = data.format('MMMM YYYY');
-
-            return date.substring(0, 1).toUpperCase() + date.substring(1, date.length);
-        },
-        dayCalendar: function dayCalendar(data) {
-            return data.format('DD MMMM YYYY');
-        },
-        substrDay: function substrDay(data) {
-            return data.substr(-2);
-        }
-    },
-    methods: {
-        syncDate: function syncDate(data) {
-            this.dt = data;
-            this.weekNumber = data.week();
-            this.cal = this.getDayOfWeek();
-            //Event.$emit('syncWeekNavbar', this.weekNumber )
-            Event.$emit('getWorks', this.weekNumber);
-        },
-        getWorksWeek: function getWorksWeek() {
-            var _this2 = this;
-
-            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
-                _this2.work = response.data;
-            });
-        },
-        getDayOfWeek: function getDayOfWeek() {
-
-            var start_ = this.dt.startOf('week');
-            var start = this.dt.startOf('week');
-
-            var i = void 0;
-            var calendar = [];
-
-            for (i = 0; i < 5; i++) {
-                if (i > 0) {
-                    calendar[i] = {
-                        'dn': this.weeksShort[i],
-                        'dnu': start.add(1, 'day').format('Y-MM-DD')
-                    };
-                } else {
-                    calendar[i] = {
-                        'dn': this.weeksShort[i],
-                        'dnu': start.format('Y-MM-DD')
-                    };
-                }
-            }
-            return calendar;
-        },
-        isLEap: function isLEap() {
-            var date_y = this.selectedDateSession.format('Y');
-            return date_y % 4 === 0 && date_y % 100 !== 0 || date_y % 400 === 0;
-        },
-        subWeek: function subWeek() {},
-        addWeek: function addWeek() {},
-        resetWeek: function resetWeek() {
-            this.weekNumber = this.today.week();
-        }
-    }
-});
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _c("div", { staticClass: "col-md-auto border" }, [
-            _vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.cal, function(date, index) {
-            return _c("div", { staticClass: "col border" }, [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm._f("capitalize")(date.dn)) +
-                  "\n            "
-              ),
-              _c("br"),
-              _vm._v(" "),
-              _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
-            ])
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c("work", { attrs: { semaine: _vm.weekNumber } })
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-962d182a", module.exports)
-  }
-}
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(179)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(181)
-/* template */
-var __vue_template__ = __webpack_require__(184)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Work.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-47d276f0", Component.options)
-  } else {
-    hotAPI.reload("data-v-47d276f0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(180);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("5cd7306e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-47d276f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Work.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.flip-list-move {\n    -webkit-transition: -webkit-transform 0.5s;\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move {\n    -webkit-transition: -webkit-transform 0s;\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost {\n    opacity: .5;\n    background: #C8EBFB;\n}\n.list-group {\n    min-height: 20px;\n    border: solid 1px red;\n}\n.list-group-item {\n    cursor: pointer;\n}\n.list-group-item i {\n    cursor: pointer;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 181 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'work',
-    components: {
-        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
-    },
-    data: function data() {
-        return {
-            wLun: [],
-            wMar: [],
-            wMer: [],
-            wJe: [],
-            wVen: [],
-            work: [],
-            editable: true,
-            isDragging: false,
-            delayedDragging: false,
-            selectedElement: '',
-            replaceElement: 'add_in_new_column',
-            selectedColElement: '',
-            selectedNewIndexElement: '',
-            weekNumber: moment().week()
-        };
-    },
-
-    props: ['semaine'],
-    mounted: function mounted() {
-        var _this = this;
-
-        Event.$on('getWorks', function (data) {
-            _this.weekNumber = data;
-            _this.getWorksWeek();
-        });
-
-        this.getWorksWeek();
-    },
-
-    methods: {
-        getWorksWeek: function getWorksWeek() {
-            var _this2 = this;
-
-            axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
-                _this2.work = response.data;
-
-                _this2.wLun = response.data[0];
-                _this2.wMar = response.data[1];
-                _this2.wMer = response.data[2];
-                _this2.wJe = response.data[3];
-                _this2.wVen = response.data[4];
-            });
-        },
-        onStart: function onStart(event, oEvent) {},
-
-        onEnd: function onEnd( /**Event*/evt) {
-            var itemEl = evt.item; // dragged HTMLElement
-            var colFrom = evt.from.getAttribute('id');
-            var colTo = evt.to.getAttribute('id');
-            console.log(colFrom);
-            console.log(colTo);
-            this.selectedColElement = colTo;
-            //console.log(itemEl);    // target list
-            //console.log(evt.to);    // target list
-            //console.log(evt.from);  // previous list
-            //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
-            this.selectedNewIndexElement = evt.newIndex + 1;
-
-            axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
-                console.log(response.data);
-            });
-        },
-        onAdd: function onAdd(event, oEvent) {
-            //console.log(event['to'].getAttribute('id'));
-        },
-        orderList: function orderList() {
-            this.list = this.list.sort(function (one, two) {
-                return one.order - two.order;
-            });
-        },
-        onMove: function onMove(event, oEvent) {
-
-            var relatedElement = event.relatedContext;
-            var draggedElement = event.draggedContext;
-
-            this.selectedElement = draggedElement.element.id;
-
-            this.replaceElement = 'add_in_new_column';
-
-            if (typeof event.relatedContext.element !== 'undefined') this.replaceElement = event.relatedContext.element.id;
-
-            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed;
-        }
-    },
-    computed: {
-        dragOptions: function dragOptions() {
-            return {
-                animation: 0,
-                group: 'description',
-                disabled: !this.editable,
-                ghostClass: 'ghost'
-            };
-        },
-        listString: function listString() {
-            return JSON.stringify(this.list, null, 2);
-        },
-        lunString: function lunString() {
-            return JSON.stringify(this.wLun, null, 2);
-        },
-        marString: function marString() {
-            return JSON.stringify(this.wMar, null, 2);
-        },
-        merString: function merString() {
-            return JSON.stringify(this.wMer, null, 2);
-        },
-        jeString: function jeString() {
-            return JSON.stringify(this.wJe, null, 2);
-        },
-        venString: function venString() {
-            return JSON.stringify(this.wVen, null, 2);
-        },
-        list2String: function list2String() {
-            return JSON.stringify(this.list2, null, 2);
-        }
-    },
-    watch: {
-        isDragging: function isDragging(newValue) {
-            var _this3 = this;
-
-            if (newValue) {
-                this.delayedDragging = true;
-                return;
-            }
-            this.$nextTick(function () {
-                _this3.delayedDragging = false;
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 182 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-(function () {
-  "use strict";
-
-  if (!Array.from) {
-    Array.from = function (object) {
-      return [].slice.call(object);
-    };
-  }
-
-  function buildAttribute(object, propName, value) {
-    if (value == undefined) {
-      return object;
-    }
-    object = object == null ? {} : object;
-    object[propName] = value;
-    return object;
-  }
-
-  function buildDraggable(Sortable) {
-    function removeNode(node) {
-      node.parentElement.removeChild(node);
-    }
-
-    function insertNodeAt(fatherNode, node, position) {
-      var refNode = position === 0 ? fatherNode.children[0] : fatherNode.children[position - 1].nextSibling;
-      fatherNode.insertBefore(node, refNode);
-    }
-
-    function computeVmIndex(vnodes, element) {
-      return vnodes.map(function (elt) {
-        return elt.elm;
-      }).indexOf(element);
-    }
-
-    function _computeIndexes(slots, children, isTransition) {
-      if (!slots) {
-        return [];
-      }
-
-      var elmFromNodes = slots.map(function (elt) {
-        return elt.elm;
-      });
-      var rawIndexes = [].concat(_toConsumableArray(children)).map(function (elt) {
-        return elmFromNodes.indexOf(elt);
-      });
-      return isTransition ? rawIndexes.filter(function (ind) {
-        return ind !== -1;
-      }) : rawIndexes;
-    }
-
-    function emit(evtName, evtData) {
-      var _this = this;
-
-      this.$nextTick(function () {
-        return _this.$emit(evtName.toLowerCase(), evtData);
-      });
-    }
-
-    function delegateAndEmit(evtName) {
-      var _this2 = this;
-
-      return function (evtData) {
-        if (_this2.realList !== null) {
-          _this2['onDrag' + evtName](evtData);
-        }
-        emit.call(_this2, evtName, evtData);
-      };
-    }
-
-    var eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End'];
-    var eventsToEmit = ['Choose', 'Sort', 'Filter', 'Clone'];
-    var readonlyProperties = ['Move'].concat(eventsListened, eventsToEmit).map(function (evt) {
-      return 'on' + evt;
-    });
-    var draggingElement = null;
-
-    var props = {
-      options: Object,
-      list: {
-        type: Array,
-        required: false,
-        default: null
-      },
-      value: {
-        type: Array,
-        required: false,
-        default: null
-      },
-      noTransitionOnDrag: {
-        type: Boolean,
-        default: false
-      },
-      clone: {
-        type: Function,
-        default: function _default(original) {
-          return original;
-        }
-      },
-      element: {
-        type: String,
-        default: 'div'
-      },
-      move: {
-        type: Function,
-        default: null
-      },
-      componentData: {
-        type: Object,
-        required: false,
-        default: null
-      }
-    };
-
-    var draggableComponent = {
-      name: 'draggable',
-
-      props: props,
-
-      data: function data() {
-        return {
-          transitionMode: false,
-          noneFunctionalComponentMode: false,
-          init: false
-        };
-      },
-      render: function render(h) {
-        var slots = this.$slots.default;
-        if (slots && slots.length === 1) {
-          var child = slots[0];
-          if (child.componentOptions && child.componentOptions.tag === "transition-group") {
-            this.transitionMode = true;
-          }
-        }
-        var children = slots;
-        var footer = this.$slots.footer;
-
-        if (footer) {
-          children = slots ? [].concat(_toConsumableArray(slots), _toConsumableArray(footer)) : [].concat(_toConsumableArray(footer));
-        }
-        var attributes = null;
-        var update = function update(name, value) {
-          attributes = buildAttribute(attributes, name, value);
-        };
-        update('attrs', this.$attrs);
-        if (this.componentData) {
-          var _componentData = this.componentData,
-              on = _componentData.on,
-              _props = _componentData.props;
-
-          update('on', on);
-          update('props', _props);
-        }
-        return h(this.element, attributes, children);
-      },
-      mounted: function mounted() {
-        var _this3 = this;
-
-        this.noneFunctionalComponentMode = this.element.toLowerCase() !== this.$el.nodeName.toLowerCase();
-        if (this.noneFunctionalComponentMode && this.transitionMode) {
-          throw new Error('Transition-group inside component is not supported. Please alter element value or remove transition-group. Current element value: ' + this.element);
-        }
-        var optionsAdded = {};
-        eventsListened.forEach(function (elt) {
-          optionsAdded['on' + elt] = delegateAndEmit.call(_this3, elt);
-        });
-
-        eventsToEmit.forEach(function (elt) {
-          optionsAdded['on' + elt] = emit.bind(_this3, elt);
-        });
-
-        var options = _extends({}, this.options, optionsAdded, { onMove: function onMove(evt, originalEvent) {
-            return _this3.onDragMove(evt, originalEvent);
-          } });
-        !('draggable' in options) && (options.draggable = '>*');
-        this._sortable = new Sortable(this.rootContainer, options);
-        this.computeIndexes();
-      },
-      beforeDestroy: function beforeDestroy() {
-        this._sortable.destroy();
-      },
-
-
-      computed: {
-        rootContainer: function rootContainer() {
-          return this.transitionMode ? this.$el.children[0] : this.$el;
-        },
-        isCloning: function isCloning() {
-          return !!this.options && !!this.options.group && this.options.group.pull === 'clone';
-        },
-        realList: function realList() {
-          return !!this.list ? this.list : this.value;
-        }
-      },
-
-      watch: {
-        options: {
-          handler: function handler(newOptionValue) {
-            for (var property in newOptionValue) {
-              if (readonlyProperties.indexOf(property) == -1) {
-                this._sortable.option(property, newOptionValue[property]);
-              }
-            }
-          },
-
-          deep: true
-        },
-
-        realList: function realList() {
-          this.computeIndexes();
-        }
-      },
-
-      methods: {
-        getChildrenNodes: function getChildrenNodes() {
-          if (!this.init) {
-            this.noneFunctionalComponentMode = this.noneFunctionalComponentMode && this.$children.length == 1;
-            this.init = true;
-          }
-
-          if (this.noneFunctionalComponentMode) {
-            return this.$children[0].$slots.default;
-          }
-          var rawNodes = this.$slots.default;
-          return this.transitionMode ? rawNodes[0].child.$slots.default : rawNodes;
-        },
-        computeIndexes: function computeIndexes() {
-          var _this4 = this;
-
-          this.$nextTick(function () {
-            _this4.visibleIndexes = _computeIndexes(_this4.getChildrenNodes(), _this4.rootContainer.children, _this4.transitionMode);
-          });
-        },
-        getUnderlyingVm: function getUnderlyingVm(htmlElt) {
-          var index = computeVmIndex(this.getChildrenNodes() || [], htmlElt);
-          if (index === -1) {
-            //Edge case during move callback: related element might be
-            //an element different from collection
-            return null;
-          }
-          var element = this.realList[index];
-          return { index: index, element: element };
-        },
-        getUnderlyingPotencialDraggableComponent: function getUnderlyingPotencialDraggableComponent(_ref) {
-          var __vue__ = _ref.__vue__;
-
-          if (!__vue__ || !__vue__.$options || __vue__.$options._componentTag !== "transition-group") {
-            return __vue__;
-          }
-          return __vue__.$parent;
-        },
-        emitChanges: function emitChanges(evt) {
-          var _this5 = this;
-
-          this.$nextTick(function () {
-            _this5.$emit('change', evt);
-          });
-        },
-        alterList: function alterList(onList) {
-          if (!!this.list) {
-            onList(this.list);
-          } else {
-            var newList = [].concat(_toConsumableArray(this.value));
-            onList(newList);
-            this.$emit('input', newList);
-          }
-        },
-        spliceList: function spliceList() {
-          var _arguments = arguments;
-
-          var spliceList = function spliceList(list) {
-            return list.splice.apply(list, _arguments);
-          };
-          this.alterList(spliceList);
-        },
-        updatePosition: function updatePosition(oldIndex, newIndex) {
-          var updatePosition = function updatePosition(list) {
-            return list.splice(newIndex, 0, list.splice(oldIndex, 1)[0]);
-          };
-          this.alterList(updatePosition);
-        },
-        getRelatedContextFromMoveEvent: function getRelatedContextFromMoveEvent(_ref2) {
-          var to = _ref2.to,
-              related = _ref2.related;
-
-          var component = this.getUnderlyingPotencialDraggableComponent(to);
-          if (!component) {
-            return { component: component };
-          }
-          var list = component.realList;
-          var context = { list: list, component: component };
-          if (to !== related && list && component.getUnderlyingVm) {
-            var destination = component.getUnderlyingVm(related);
-            if (destination) {
-              return _extends(destination, context);
-            }
-          }
-
-          return context;
-        },
-        getVmIndex: function getVmIndex(domIndex) {
-          var indexes = this.visibleIndexes;
-          var numberIndexes = indexes.length;
-          return domIndex > numberIndexes - 1 ? numberIndexes : indexes[domIndex];
-        },
-        getComponent: function getComponent() {
-          return this.$slots.default[0].componentInstance;
-        },
-        resetTransitionData: function resetTransitionData(index) {
-          if (!this.noTransitionOnDrag || !this.transitionMode) {
-            return;
-          }
-          var nodes = this.getChildrenNodes();
-          nodes[index].data = null;
-          var transitionContainer = this.getComponent();
-          transitionContainer.children = [];
-          transitionContainer.kept = undefined;
-        },
-        onDragStart: function onDragStart(evt) {
-          this.context = this.getUnderlyingVm(evt.item);
-          evt.item._underlying_vm_ = this.clone(this.context.element);
-          draggingElement = evt.item;
-        },
-        onDragAdd: function onDragAdd(evt) {
-          var element = evt.item._underlying_vm_;
-          if (element === undefined) {
-            return;
-          }
-          removeNode(evt.item);
-          var newIndex = this.getVmIndex(evt.newIndex);
-          this.spliceList(newIndex, 0, element);
-          this.computeIndexes();
-          var added = { element: element, newIndex: newIndex };
-          this.emitChanges({ added: added });
-        },
-        onDragRemove: function onDragRemove(evt) {
-          insertNodeAt(this.rootContainer, evt.item, evt.oldIndex);
-          if (this.isCloning) {
-            removeNode(evt.clone);
-            return;
-          }
-          var oldIndex = this.context.index;
-          this.spliceList(oldIndex, 1);
-          var removed = { element: this.context.element, oldIndex: oldIndex };
-          this.resetTransitionData(oldIndex);
-          this.emitChanges({ removed: removed });
-        },
-        onDragUpdate: function onDragUpdate(evt) {
-          removeNode(evt.item);
-          insertNodeAt(evt.from, evt.item, evt.oldIndex);
-          var oldIndex = this.context.index;
-          var newIndex = this.getVmIndex(evt.newIndex);
-          this.updatePosition(oldIndex, newIndex);
-          var moved = { element: this.context.element, oldIndex: oldIndex, newIndex: newIndex };
-          this.emitChanges({ moved: moved });
-        },
-        computeFutureIndex: function computeFutureIndex(relatedContext, evt) {
-          if (!relatedContext.element) {
-            return 0;
-          }
-          var domChildren = [].concat(_toConsumableArray(evt.to.children)).filter(function (el) {
-            return el.style['display'] !== 'none';
-          });
-          var currentDOMIndex = domChildren.indexOf(evt.related);
-          var currentIndex = relatedContext.component.getVmIndex(currentDOMIndex);
-          var draggedInList = domChildren.indexOf(draggingElement) != -1;
-          return draggedInList || !evt.willInsertAfter ? currentIndex : currentIndex + 1;
-        },
-        onDragMove: function onDragMove(evt, originalEvent) {
-          var onMove = this.move;
-          if (!onMove || !this.realList) {
-            return true;
-          }
-
-          var relatedContext = this.getRelatedContextFromMoveEvent(evt);
-          var draggedContext = this.context;
-          var futureIndex = this.computeFutureIndex(relatedContext, evt);
-          _extends(draggedContext, { futureIndex: futureIndex });
-          _extends(evt, { relatedContext: relatedContext, draggedContext: draggedContext });
-          return onMove(evt, originalEvent);
-        },
-        onDragEnd: function onDragEnd(evt) {
-          this.computeIndexes();
-          draggingElement = null;
-        }
-      }
-    };
-    return draggableComponent;
-  }
-
-  if (true) {
-    var Sortable = __webpack_require__(183);
-    module.exports = buildDraggable(Sortable);
-  } else if (typeof define == "function" && define.amd) {
-    define(['sortablejs'], function (Sortable) {
-      return buildDraggable(Sortable);
-    });
-  } else if (window && window.Vue && window.Sortable) {
-    var draggable = buildDraggable(window.Sortable);
-    Vue.component('draggable', draggable);
-  }
-})();
-
-/***/ }),
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
- * Sortable
- * @author	RubaXa   <trash@rubaxa.org>
- * @license MIT
- */
-
-(function sortableModule(factory) {
-	"use strict";
-
-	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}
-	else if (typeof module != "undefined" && typeof module.exports != "undefined") {
-		module.exports = factory();
-	}
-	else {
-		/* jshint sub:true */
-		window["Sortable"] = factory();
-	}
-})(function sortableFactory() {
-	"use strict";
-
-	if (typeof window === "undefined" || !window.document) {
-		return function sortableError() {
-			throw new Error("Sortable.js requires a window with a document");
-		};
-	}
-
-	var dragEl,
-		parentEl,
-		ghostEl,
-		cloneEl,
-		rootEl,
-		nextEl,
-		lastDownEl,
-
-		scrollEl,
-		scrollParentEl,
-		scrollCustomFn,
-
-		lastEl,
-		lastCSS,
-		lastParentCSS,
-
-		oldIndex,
-		newIndex,
-
-		activeGroup,
-		putSortable,
-
-		autoScroll = {},
-
-		tapEvt,
-		touchEvt,
-
-		moved,
-
-		/** @const */
-		R_SPACE = /\s+/g,
-		R_FLOAT = /left|right|inline/,
-
-		expando = 'Sortable' + (new Date).getTime(),
-
-		win = window,
-		document = win.document,
-		parseInt = win.parseInt,
-		setTimeout = win.setTimeout,
-
-		$ = win.jQuery || win.Zepto,
-		Polymer = win.Polymer,
-
-		captureMode = false,
-		passiveMode = false,
-
-		supportDraggable = ('draggable' in document.createElement('div')),
-		supportCssPointerEvents = (function (el) {
-			// false when IE11
-			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
-				return false;
-			}
-			el = document.createElement('x');
-			el.style.cssText = 'pointer-events:auto';
-			return el.style.pointerEvents === 'auto';
-		})(),
-
-		_silent = false,
-
-		abs = Math.abs,
-		min = Math.min,
-
-		savedInputChecked = [],
-		touchDragOverListeners = [],
-
-		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
-			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
-			if (rootEl && options.scroll) {
-				var _this = rootEl[expando],
-					el,
-					rect,
-					sens = options.scrollSensitivity,
-					speed = options.scrollSpeed,
-
-					x = evt.clientX,
-					y = evt.clientY,
-
-					winWidth = window.innerWidth,
-					winHeight = window.innerHeight,
-
-					vx,
-					vy,
-
-					scrollOffsetX,
-					scrollOffsetY
-				;
-
-				// Delect scrollEl
-				if (scrollParentEl !== rootEl) {
-					scrollEl = options.scroll;
-					scrollParentEl = rootEl;
-					scrollCustomFn = options.scrollFn;
-
-					if (scrollEl === true) {
-						scrollEl = rootEl;
-
-						do {
-							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
-								(scrollEl.offsetHeight < scrollEl.scrollHeight)
-							) {
-								break;
-							}
-							/* jshint boss:true */
-						} while (scrollEl = scrollEl.parentNode);
-					}
-				}
-
-				if (scrollEl) {
-					el = scrollEl;
-					rect = scrollEl.getBoundingClientRect();
-					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
-					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
-				}
-
-
-				if (!(vx || vy)) {
-					vx = (winWidth - x <= sens) - (x <= sens);
-					vy = (winHeight - y <= sens) - (y <= sens);
-
-					/* jshint expr:true */
-					(vx || vy) && (el = win);
-				}
-
-
-				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
-					autoScroll.el = el;
-					autoScroll.vx = vx;
-					autoScroll.vy = vy;
-
-					clearInterval(autoScroll.pid);
-
-					if (el) {
-						autoScroll.pid = setInterval(function () {
-							scrollOffsetY = vy ? vy * speed : 0;
-							scrollOffsetX = vx ? vx * speed : 0;
-
-							if ('function' === typeof(scrollCustomFn)) {
-								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
-							}
-
-							if (el === win) {
-								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
-							} else {
-								el.scrollTop += scrollOffsetY;
-								el.scrollLeft += scrollOffsetX;
-							}
-						}, 24);
-					}
-				}
-			}
-		}, 30),
-
-		_prepareGroup = function (options) {
-			function toFn(value, pull) {
-				if (value === void 0 || value === true) {
-					value = group.name;
-				}
-
-				if (typeof value === 'function') {
-					return value;
-				} else {
-					return function (to, from) {
-						var fromGroup = from.options.group.name;
-
-						return pull
-							? value
-							: value && (value.join
-								? value.indexOf(fromGroup) > -1
-								: (fromGroup == value)
-							);
-					};
-				}
-			}
-
-			var group = {};
-			var originalGroup = options.group;
-
-			if (!originalGroup || typeof originalGroup != 'object') {
-				originalGroup = {name: originalGroup};
-			}
-
-			group.name = originalGroup.name;
-			group.checkPull = toFn(originalGroup.pull, true);
-			group.checkPut = toFn(originalGroup.put);
-			group.revertClone = originalGroup.revertClone;
-
-			options.group = group;
-		}
-	;
-
-	// Detect support a passive mode
-	try {
-		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
-			get: function () {
-				// `false`, because everything starts to work incorrectly and instead of d'n'd,
-				// begins the page has scrolled.
-				passiveMode = false;
-				captureMode = {
-					capture: false,
-					passive: passiveMode
-				};
-			}
-		}));
-	} catch (err) {}
-
-	/**
-	 * @class  Sortable
-	 * @param  {HTMLElement}  el
-	 * @param  {Object}       [options]
-	 */
-	function Sortable(el, options) {
-		if (!(el && el.nodeType && el.nodeType === 1)) {
-			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
-		}
-
-		this.el = el; // root element
-		this.options = options = _extend({}, options);
-
-
-		// Export instance
-		el[expando] = this;
-
-		// Default options
-		var defaults = {
-			group: Math.random(),
-			sort: true,
-			disabled: false,
-			store: null,
-			handle: null,
-			scroll: true,
-			scrollSensitivity: 30,
-			scrollSpeed: 10,
-			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
-			ghostClass: 'sortable-ghost',
-			chosenClass: 'sortable-chosen',
-			dragClass: 'sortable-drag',
-			ignore: 'a, img',
-			filter: null,
-			preventOnFilter: true,
-			animation: 0,
-			setData: function (dataTransfer, dragEl) {
-				dataTransfer.setData('Text', dragEl.textContent);
-			},
-			dropBubble: false,
-			dragoverBubble: false,
-			dataIdAttr: 'data-id',
-			delay: 0,
-			forceFallback: false,
-			fallbackClass: 'sortable-fallback',
-			fallbackOnBody: false,
-			fallbackTolerance: 0,
-			fallbackOffset: {x: 0, y: 0},
-			supportPointer: Sortable.supportPointer !== false
-		};
-
-
-		// Set default options
-		for (var name in defaults) {
-			!(name in options) && (options[name] = defaults[name]);
-		}
-
-		_prepareGroup(options);
-
-		// Bind all private methods
-		for (var fn in this) {
-			if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-				this[fn] = this[fn].bind(this);
-			}
-		}
-
-		// Setup drag mode
-		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
-
-		// Bind events
-		_on(el, 'mousedown', this._onTapStart);
-		_on(el, 'touchstart', this._onTapStart);
-		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
-
-		if (this.nativeDraggable) {
-			_on(el, 'dragover', this);
-			_on(el, 'dragenter', this);
-		}
-
-		touchDragOverListeners.push(this._onDragOver);
-
-		// Restore sorting
-		options.store && this.sort(options.store.get(this));
-	}
-
-
-	Sortable.prototype = /** @lends Sortable.prototype */ {
-		constructor: Sortable,
-
-		_onTapStart: function (/** Event|TouchEvent */evt) {
-			var _this = this,
-				el = this.el,
-				options = this.options,
-				preventOnFilter = options.preventOnFilter,
-				type = evt.type,
-				touch = evt.touches && evt.touches[0],
-				target = (touch || evt).target,
-				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
-				filter = options.filter,
-				startIndex;
-
-			_saveInputCheckedState(el);
-
-
-			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
-			if (dragEl) {
-				return;
-			}
-
-			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
-				return; // only left button or enabled
-			}
-
-			// cancel dnd if original target is content editable
-			if (originalTarget.isContentEditable) {
-				return;
-			}
-
-			target = _closest(target, options.draggable, el);
-
-			if (!target) {
-				return;
-			}
-
-			if (lastDownEl === target) {
-				// Ignoring duplicate `down`
-				return;
-			}
-
-			// Get the index of the dragged element within its parent
-			startIndex = _index(target, options.draggable);
-
-			// Check filter
-			if (typeof filter === 'function') {
-				if (filter.call(this, evt, target, this)) {
-					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
-					preventOnFilter && evt.preventDefault();
-					return; // cancel dnd
-				}
-			}
-			else if (filter) {
-				filter = filter.split(',').some(function (criteria) {
-					criteria = _closest(originalTarget, criteria.trim(), el);
-
-					if (criteria) {
-						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
-						return true;
-					}
-				});
-
-				if (filter) {
-					preventOnFilter && evt.preventDefault();
-					return; // cancel dnd
-				}
-			}
-
-			if (options.handle && !_closest(originalTarget, options.handle, el)) {
-				return;
-			}
-
-			// Prepare `dragstart`
-			this._prepareDragStart(evt, touch, target, startIndex);
-		},
-
-		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
-			var _this = this,
-				el = _this.el,
-				options = _this.options,
-				ownerDocument = el.ownerDocument,
-				dragStartFn;
-
-			if (target && !dragEl && (target.parentNode === el)) {
-				tapEvt = evt;
-
-				rootEl = el;
-				dragEl = target;
-				parentEl = dragEl.parentNode;
-				nextEl = dragEl.nextSibling;
-				lastDownEl = target;
-				activeGroup = options.group;
-				oldIndex = startIndex;
-
-				this._lastX = (touch || evt).clientX;
-				this._lastY = (touch || evt).clientY;
-
-				dragEl.style['will-change'] = 'all';
-
-				dragStartFn = function () {
-					// Delayed drag has been triggered
-					// we can re-enable the events: touchmove/mousemove
-					_this._disableDelayedDrag();
-
-					// Make the element draggable
-					dragEl.draggable = _this.nativeDraggable;
-
-					// Chosen item
-					_toggleClass(dragEl, options.chosenClass, true);
-
-					// Bind the events: dragstart/dragend
-					_this._triggerDragStart(evt, touch);
-
-					// Drag start event
-					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
-				};
-
-				// Disable "draggable"
-				options.ignore.split(',').forEach(function (criteria) {
-					_find(dragEl, criteria.trim(), _disableDraggable);
-				});
-
-				_on(ownerDocument, 'mouseup', _this._onDrop);
-				_on(ownerDocument, 'touchend', _this._onDrop);
-				_on(ownerDocument, 'touchcancel', _this._onDrop);
-				_on(ownerDocument, 'selectstart', _this);
-				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
-
-				if (options.delay) {
-					// If the user moves the pointer or let go the click or touch
-					// before the delay has been reached:
-					// disable the delayed drag
-					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
-					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
-					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
-					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
-					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
-					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
-
-					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
-				} else {
-					dragStartFn();
-				}
-
-
-			}
-		},
-
-		_disableDelayedDrag: function () {
-			var ownerDocument = this.el.ownerDocument;
-
-			clearTimeout(this._dragStartTimer);
-			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
-			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
-			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
-			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
-			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
-			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
-		},
-
-		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
-			touch = touch || (evt.pointerType == 'touch' ? evt : null);
-
-			if (touch) {
-				// Touch device support
-				tapEvt = {
-					target: dragEl,
-					clientX: touch.clientX,
-					clientY: touch.clientY
-				};
-
-				this._onDragStart(tapEvt, 'touch');
-			}
-			else if (!this.nativeDraggable) {
-				this._onDragStart(tapEvt, true);
-			}
-			else {
-				_on(dragEl, 'dragend', this);
-				_on(rootEl, 'dragstart', this._onDragStart);
-			}
-
-			try {
-				if (document.selection) {
-					// Timeout neccessary for IE9
-					_nextTick(function () {
-						document.selection.empty();
-					});
-				} else {
-					window.getSelection().removeAllRanges();
-				}
-			} catch (err) {
-			}
-		},
-
-		_dragStarted: function () {
-			if (rootEl && dragEl) {
-				var options = this.options;
-
-				// Apply effect
-				_toggleClass(dragEl, options.ghostClass, true);
-				_toggleClass(dragEl, options.dragClass, false);
-
-				Sortable.active = this;
-
-				// Drag start event
-				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
-			} else {
-				this._nulling();
-			}
-		},
-
-		_emulateDragOver: function () {
-			if (touchEvt) {
-				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
-					return;
-				}
-
-				this._lastX = touchEvt.clientX;
-				this._lastY = touchEvt.clientY;
-
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', 'none');
-				}
-
-				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-				var parent = target;
-				var i = touchDragOverListeners.length;
-
-				if (target && target.shadowRoot) {
-					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-					parent = target;
-				}
-
-				if (parent) {
-					do {
-						if (parent[expando]) {
-							while (i--) {
-								touchDragOverListeners[i]({
-									clientX: touchEvt.clientX,
-									clientY: touchEvt.clientY,
-									target: target,
-									rootEl: parent
-								});
-							}
-
-							break;
-						}
-
-						target = parent; // store last element
-					}
-					/* jshint boss:true */
-					while (parent = parent.parentNode);
-				}
-
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', '');
-				}
-			}
-		},
-
-
-		_onTouchMove: function (/**TouchEvent*/evt) {
-			if (tapEvt) {
-				var	options = this.options,
-					fallbackTolerance = options.fallbackTolerance,
-					fallbackOffset = options.fallbackOffset,
-					touch = evt.touches ? evt.touches[0] : evt,
-					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
-					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
-					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
-
-				// only set the status to dragging, when we are actually dragging
-				if (!Sortable.active) {
-					if (fallbackTolerance &&
-						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
-					) {
-						return;
-					}
-
-					this._dragStarted();
-				}
-
-				// as well as creating the ghost element on the document body
-				this._appendGhost();
-
-				moved = true;
-				touchEvt = touch;
-
-				_css(ghostEl, 'webkitTransform', translate3d);
-				_css(ghostEl, 'mozTransform', translate3d);
-				_css(ghostEl, 'msTransform', translate3d);
-				_css(ghostEl, 'transform', translate3d);
-
-				evt.preventDefault();
-			}
-		},
-
-		_appendGhost: function () {
-			if (!ghostEl) {
-				var rect = dragEl.getBoundingClientRect(),
-					css = _css(dragEl),
-					options = this.options,
-					ghostRect;
-
-				ghostEl = dragEl.cloneNode(true);
-
-				_toggleClass(ghostEl, options.ghostClass, false);
-				_toggleClass(ghostEl, options.fallbackClass, true);
-				_toggleClass(ghostEl, options.dragClass, true);
-
-				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
-				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
-				_css(ghostEl, 'width', rect.width);
-				_css(ghostEl, 'height', rect.height);
-				_css(ghostEl, 'opacity', '0.8');
-				_css(ghostEl, 'position', 'fixed');
-				_css(ghostEl, 'zIndex', '100000');
-				_css(ghostEl, 'pointerEvents', 'none');
-
-				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
-
-				// Fixing dimensions.
-				ghostRect = ghostEl.getBoundingClientRect();
-				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
-				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
-			}
-		},
-
-		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
-			var _this = this;
-			var dataTransfer = evt.dataTransfer;
-			var options = _this.options;
-
-			_this._offUpEvents();
-
-			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
-				cloneEl = _clone(dragEl);
-
-				cloneEl.draggable = false;
-				cloneEl.style['will-change'] = '';
-
-				_css(cloneEl, 'display', 'none');
-				_toggleClass(cloneEl, _this.options.chosenClass, false);
-
-				// #1143: IFrame support workaround
-				_this._cloneId = _nextTick(function () {
-					rootEl.insertBefore(cloneEl, dragEl);
-					_dispatchEvent(_this, rootEl, 'clone', dragEl);
-				});
-			}
-
-			_toggleClass(dragEl, options.dragClass, true);
-
-			if (useFallback) {
-				if (useFallback === 'touch') {
-					// Bind touch events
-					_on(document, 'touchmove', _this._onTouchMove);
-					_on(document, 'touchend', _this._onDrop);
-					_on(document, 'touchcancel', _this._onDrop);
-
-					if (options.supportPointer) {
-						_on(document, 'pointermove', _this._onTouchMove);
-						_on(document, 'pointerup', _this._onDrop);
-					}
-				} else {
-					// Old brwoser
-					_on(document, 'mousemove', _this._onTouchMove);
-					_on(document, 'mouseup', _this._onDrop);
-				}
-
-				_this._loopId = setInterval(_this._emulateDragOver, 50);
-			}
-			else {
-				if (dataTransfer) {
-					dataTransfer.effectAllowed = 'move';
-					options.setData && options.setData.call(_this, dataTransfer, dragEl);
-				}
-
-				_on(document, 'drop', _this);
-
-				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
-				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
-				// Breaking Chrome 62+
-				// _on(document, 'mouseover', _this);
-
-				_this._dragStartId = _nextTick(_this._dragStarted);
-			}
-		},
-
-		_onDragOver: function (/**Event*/evt) {
-			var el = this.el,
-				target,
-				dragRect,
-				targetRect,
-				revert,
-				options = this.options,
-				group = options.group,
-				activeSortable = Sortable.active,
-				isOwner = (activeGroup === group),
-				isMovingBetweenSortable = false,
-				canSort = options.sort;
-
-			if (evt.preventDefault !== void 0) {
-				evt.preventDefault();
-				!options.dragoverBubble && evt.stopPropagation();
-			}
-
-			if (dragEl.animated) {
-				return;
-			}
-
-			moved = true;
-
-			if (activeSortable && !options.disabled &&
-				(isOwner
-					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
-					: (
-						putSortable === this ||
-						(
-							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
-							group.checkPut(this, activeSortable, dragEl, evt)
-						)
-					)
-				) &&
-				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
-			) {
-				// Smart auto-scrolling
-				_autoScroll(evt, options, this.el);
-
-				if (_silent) {
-					return;
-				}
-
-				target = _closest(evt.target, options.draggable, el);
-				dragRect = dragEl.getBoundingClientRect();
-
-				if (putSortable !== this) {
-					putSortable = this;
-					isMovingBetweenSortable = true;
-				}
-
-				if (revert) {
-					_cloneHide(activeSortable, true);
-					parentEl = rootEl; // actualization
-
-					if (cloneEl || nextEl) {
-						rootEl.insertBefore(dragEl, cloneEl || nextEl);
-					}
-					else if (!canSort) {
-						rootEl.appendChild(dragEl);
-					}
-
-					return;
-				}
-
-
-				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
-					(el === evt.target) && (_ghostIsLast(el, evt))
-				) {
-					//assign target only if condition is true
-					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
-						target = el.lastElementChild;
-					}
-
-					if (target) {
-						if (target.animated) {
-							return;
-						}
-
-						targetRect = target.getBoundingClientRect();
-					}
-
-					_cloneHide(activeSortable, isOwner);
-
-					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
-						if (!dragEl.contains(el)) {
-							el.appendChild(dragEl);
-							parentEl = el; // actualization
-						}
-
-						this._animate(dragRect, dragEl);
-						target && this._animate(targetRect, target);
-					}
-				}
-				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
-					if (lastEl !== target) {
-						lastEl = target;
-						lastCSS = _css(target);
-						lastParentCSS = _css(target.parentNode);
-					}
-
-					targetRect = target.getBoundingClientRect();
-
-					var width = targetRect.right - targetRect.left,
-						height = targetRect.bottom - targetRect.top,
-						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
-							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
-						isWide = (target.offsetWidth > dragEl.offsetWidth),
-						isLong = (target.offsetHeight > dragEl.offsetHeight),
-						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
-						nextSibling = target.nextElementSibling,
-						after = false
-					;
-
-					if (floating) {
-						var elTop = dragEl.offsetTop,
-							tgTop = target.offsetTop;
-
-						if (elTop === tgTop) {
-							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
-						}
-						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
-							after = (evt.clientY - targetRect.top) / height > 0.5;
-						} else {
-							after = tgTop > elTop;
-						}
-						} else if (!isMovingBetweenSortable) {
-						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
-					}
-
-					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
-
-					if (moveVector !== false) {
-						if (moveVector === 1 || moveVector === -1) {
-							after = (moveVector === 1);
-						}
-
-						_silent = true;
-						setTimeout(_unsilent, 30);
-
-						_cloneHide(activeSortable, isOwner);
-
-						if (!dragEl.contains(el)) {
-							if (after && !nextSibling) {
-								el.appendChild(dragEl);
-							} else {
-								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
-							}
-						}
-
-						parentEl = dragEl.parentNode; // actualization
-
-						this._animate(dragRect, dragEl);
-						this._animate(targetRect, target);
-					}
-				}
-			}
-		},
-
-		_animate: function (prevRect, target) {
-			var ms = this.options.animation;
-
-			if (ms) {
-				var currentRect = target.getBoundingClientRect();
-
-				if (prevRect.nodeType === 1) {
-					prevRect = prevRect.getBoundingClientRect();
-				}
-
-				_css(target, 'transition', 'none');
-				_css(target, 'transform', 'translate3d('
-					+ (prevRect.left - currentRect.left) + 'px,'
-					+ (prevRect.top - currentRect.top) + 'px,0)'
-				);
-
-				target.offsetWidth; // repaint
-
-				_css(target, 'transition', 'all ' + ms + 'ms');
-				_css(target, 'transform', 'translate3d(0,0,0)');
-
-				clearTimeout(target.animated);
-				target.animated = setTimeout(function () {
-					_css(target, 'transition', '');
-					_css(target, 'transform', '');
-					target.animated = false;
-				}, ms);
-			}
-		},
-
-		_offUpEvents: function () {
-			var ownerDocument = this.el.ownerDocument;
-
-			_off(document, 'touchmove', this._onTouchMove);
-			_off(document, 'pointermove', this._onTouchMove);
-			_off(ownerDocument, 'mouseup', this._onDrop);
-			_off(ownerDocument, 'touchend', this._onDrop);
-			_off(ownerDocument, 'pointerup', this._onDrop);
-			_off(ownerDocument, 'touchcancel', this._onDrop);
-			_off(ownerDocument, 'pointercancel', this._onDrop);
-			_off(ownerDocument, 'selectstart', this);
-		},
-
-		_onDrop: function (/**Event*/evt) {
-			var el = this.el,
-				options = this.options;
-
-			clearInterval(this._loopId);
-			clearInterval(autoScroll.pid);
-			clearTimeout(this._dragStartTimer);
-
-			_cancelNextTick(this._cloneId);
-			_cancelNextTick(this._dragStartId);
-
-			// Unbind events
-			_off(document, 'mouseover', this);
-			_off(document, 'mousemove', this._onTouchMove);
-
-			if (this.nativeDraggable) {
-				_off(document, 'drop', this);
-				_off(el, 'dragstart', this._onDragStart);
-			}
-
-			this._offUpEvents();
-
-			if (evt) {
-				if (moved) {
-					evt.preventDefault();
-					!options.dropBubble && evt.stopPropagation();
-				}
-
-				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
-
-				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
-					// Remove clone
-					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
-				}
-
-				if (dragEl) {
-					if (this.nativeDraggable) {
-						_off(dragEl, 'dragend', this);
-					}
-
-					_disableDraggable(dragEl);
-					dragEl.style['will-change'] = '';
-
-					// Remove class's
-					_toggleClass(dragEl, this.options.ghostClass, false);
-					_toggleClass(dragEl, this.options.chosenClass, false);
-
-					// Drag stop event
-					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
-
-					if (rootEl !== parentEl) {
-						newIndex = _index(dragEl, options.draggable);
-
-						if (newIndex >= 0) {
-							// Add event
-							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
-
-							// Remove event
-							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
-
-							// drag from one list and drop into another
-							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-						}
-					}
-					else {
-						if (dragEl.nextSibling !== nextEl) {
-							// Get the index of the dragged element within its parent
-							newIndex = _index(dragEl, options.draggable);
-
-							if (newIndex >= 0) {
-								// drag & drop within the same list
-								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
-								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-							}
-						}
-					}
-
-					if (Sortable.active) {
-						/* jshint eqnull:true */
-						if (newIndex == null || newIndex === -1) {
-							newIndex = oldIndex;
-						}
-
-						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
-
-						// Save sorting
-						this.save();
-					}
-				}
-
-			}
-
-			this._nulling();
-		},
-
-		_nulling: function() {
-			rootEl =
-			dragEl =
-			parentEl =
-			ghostEl =
-			nextEl =
-			cloneEl =
-			lastDownEl =
-
-			scrollEl =
-			scrollParentEl =
-
-			tapEvt =
-			touchEvt =
-
-			moved =
-			newIndex =
-
-			lastEl =
-			lastCSS =
-
-			putSortable =
-			activeGroup =
-			Sortable.active = null;
-
-			savedInputChecked.forEach(function (el) {
-				el.checked = true;
-			});
-			savedInputChecked.length = 0;
-		},
-
-		handleEvent: function (/**Event*/evt) {
-			switch (evt.type) {
-				case 'drop':
-				case 'dragend':
-					this._onDrop(evt);
-					break;
-
-				case 'dragover':
-				case 'dragenter':
-					if (dragEl) {
-						this._onDragOver(evt);
-						_globalDragOver(evt);
-					}
-					break;
-
-				case 'mouseover':
-					this._onDrop(evt);
-					break;
-
-				case 'selectstart':
-					evt.preventDefault();
-					break;
-			}
-		},
-
-
-		/**
-		 * Serializes the item into an array of string.
-		 * @returns {String[]}
-		 */
-		toArray: function () {
-			var order = [],
-				el,
-				children = this.el.children,
-				i = 0,
-				n = children.length,
-				options = this.options;
-
-			for (; i < n; i++) {
-				el = children[i];
-				if (_closest(el, options.draggable, this.el)) {
-					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
-				}
-			}
-
-			return order;
-		},
-
-
-		/**
-		 * Sorts the elements according to the array.
-		 * @param  {String[]}  order  order of the items
-		 */
-		sort: function (order) {
-			var items = {}, rootEl = this.el;
-
-			this.toArray().forEach(function (id, i) {
-				var el = rootEl.children[i];
-
-				if (_closest(el, this.options.draggable, rootEl)) {
-					items[id] = el;
-				}
-			}, this);
-
-			order.forEach(function (id) {
-				if (items[id]) {
-					rootEl.removeChild(items[id]);
-					rootEl.appendChild(items[id]);
-				}
-			});
-		},
-
-
-		/**
-		 * Save the current sorting
-		 */
-		save: function () {
-			var store = this.options.store;
-			store && store.set(this);
-		},
-
-
-		/**
-		 * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
-		 * @param   {HTMLElement}  el
-		 * @param   {String}       [selector]  default: `options.draggable`
-		 * @returns {HTMLElement|null}
-		 */
-		closest: function (el, selector) {
-			return _closest(el, selector || this.options.draggable, this.el);
-		},
-
-
-		/**
-		 * Set/get option
-		 * @param   {string} name
-		 * @param   {*}      [value]
-		 * @returns {*}
-		 */
-		option: function (name, value) {
-			var options = this.options;
-
-			if (value === void 0) {
-				return options[name];
-			} else {
-				options[name] = value;
-
-				if (name === 'group') {
-					_prepareGroup(options);
-				}
-			}
-		},
-
-
-		/**
-		 * Destroy
-		 */
-		destroy: function () {
-			var el = this.el;
-
-			el[expando] = null;
-
-			_off(el, 'mousedown', this._onTapStart);
-			_off(el, 'touchstart', this._onTapStart);
-			_off(el, 'pointerdown', this._onTapStart);
-
-			if (this.nativeDraggable) {
-				_off(el, 'dragover', this);
-				_off(el, 'dragenter', this);
-			}
-
-			// Remove draggable attributes
-			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
-				el.removeAttribute('draggable');
-			});
-
-			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
-
-			this._onDrop();
-
-			this.el = el = null;
-		}
-	};
-
-
-	function _cloneHide(sortable, state) {
-		if (sortable.lastPullMode !== 'clone') {
-			state = true;
-		}
-
-		if (cloneEl && (cloneEl.state !== state)) {
-			_css(cloneEl, 'display', state ? 'none' : '');
-
-			if (!state) {
-				if (cloneEl.state) {
-					if (sortable.options.group.revertClone) {
-						rootEl.insertBefore(cloneEl, nextEl);
-						sortable._animate(dragEl, cloneEl);
-					} else {
-						rootEl.insertBefore(cloneEl, dragEl);
-					}
-				}
-			}
-
-			cloneEl.state = state;
-		}
-	}
-
-
-	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
-		if (el) {
-			ctx = ctx || document;
-
-			do {
-				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
-					return el;
-				}
-				/* jshint boss:true */
-			} while (el = _getParentOrHost(el));
-		}
-
-		return null;
-	}
-
-
-	function _getParentOrHost(el) {
-		var parent = el.host;
-
-		return (parent && parent.nodeType) ? parent : el.parentNode;
-	}
-
-
-	function _globalDragOver(/**Event*/evt) {
-		if (evt.dataTransfer) {
-			evt.dataTransfer.dropEffect = 'move';
-		}
-		evt.preventDefault();
-	}
-
-
-	function _on(el, event, fn) {
-		el.addEventListener(event, fn, captureMode);
-	}
-
-
-	function _off(el, event, fn) {
-		el.removeEventListener(event, fn, captureMode);
-	}
-
-
-	function _toggleClass(el, name, state) {
-		if (el) {
-			if (el.classList) {
-				el.classList[state ? 'add' : 'remove'](name);
-			}
-			else {
-				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
-				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
-			}
-		}
-	}
-
-
-	function _css(el, prop, val) {
-		var style = el && el.style;
-
-		if (style) {
-			if (val === void 0) {
-				if (document.defaultView && document.defaultView.getComputedStyle) {
-					val = document.defaultView.getComputedStyle(el, '');
-				}
-				else if (el.currentStyle) {
-					val = el.currentStyle;
-				}
-
-				return prop === void 0 ? val : val[prop];
-			}
-			else {
-				if (!(prop in style)) {
-					prop = '-webkit-' + prop;
-				}
-
-				style[prop] = val + (typeof val === 'string' ? '' : 'px');
-			}
-		}
-	}
-
-
-	function _find(ctx, tagName, iterator) {
-		if (ctx) {
-			var list = ctx.getElementsByTagName(tagName), i = 0, n = list.length;
-
-			if (iterator) {
-				for (; i < n; i++) {
-					iterator(list[i], i);
-				}
-			}
-
-			return list;
-		}
-
-		return [];
-	}
-
-
-
-	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
-		sortable = (sortable || rootEl[expando]);
-
-		var evt = document.createEvent('Event'),
-			options = sortable.options,
-			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
-
-		evt.initEvent(name, true, true);
-
-		evt.to = toEl || rootEl;
-		evt.from = fromEl || rootEl;
-		evt.item = targetEl || rootEl;
-		evt.clone = cloneEl;
-
-		evt.oldIndex = startIndex;
-		evt.newIndex = newIndex;
-
-		rootEl.dispatchEvent(evt);
-
-		if (options[onName]) {
-			options[onName].call(sortable, evt);
-		}
-	}
-
-
-	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt, willInsertAfter) {
-		var evt,
-			sortable = fromEl[expando],
-			onMoveFn = sortable.options.onMove,
-			retVal;
-
-		evt = document.createEvent('Event');
-		evt.initEvent('move', true, true);
-
-		evt.to = toEl;
-		evt.from = fromEl;
-		evt.dragged = dragEl;
-		evt.draggedRect = dragRect;
-		evt.related = targetEl || toEl;
-		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
-		evt.willInsertAfter = willInsertAfter;
-
-		fromEl.dispatchEvent(evt);
-
-		if (onMoveFn) {
-			retVal = onMoveFn.call(sortable, evt, originalEvt);
-		}
-
-		return retVal;
-	}
-
-
-	function _disableDraggable(el) {
-		el.draggable = false;
-	}
-
-
-	function _unsilent() {
-		_silent = false;
-	}
-
-
-	/** @returns {HTMLElement|false} */
-	function _ghostIsLast(el, evt) {
-		var lastEl = el.lastElementChild,
-			rect = lastEl.getBoundingClientRect();
-
-		// 5 — min delta
-		// abs — нельзя добавлять, а то глюки при наведении сверху
-		return (evt.clientY - (rect.top + rect.height) > 5) ||
-			(evt.clientX - (rect.left + rect.width) > 5);
-	}
-
-
-	/**
-	 * Generate id
-	 * @param   {HTMLElement} el
-	 * @returns {String}
-	 * @private
-	 */
-	function _generateId(el) {
-		var str = el.tagName + el.className + el.src + el.href + el.textContent,
-			i = str.length,
-			sum = 0;
-
-		while (i--) {
-			sum += str.charCodeAt(i);
-		}
-
-		return sum.toString(36);
-	}
-
-	/**
-	 * Returns the index of an element within its parent for a selected set of
-	 * elements
-	 * @param  {HTMLElement} el
-	 * @param  {selector} selector
-	 * @return {number}
-	 */
-	function _index(el, selector) {
-		var index = 0;
-
-		if (!el || !el.parentNode) {
-			return -1;
-		}
-
-		while (el && (el = el.previousElementSibling)) {
-			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
-				index++;
-			}
-		}
-
-		return index;
-	}
-
-	function _matches(/**HTMLElement*/el, /**String*/selector) {
-		if (el) {
-			selector = selector.split('.');
-
-			var tag = selector.shift().toUpperCase(),
-				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
-
-			return (
-				(tag === '' || el.nodeName.toUpperCase() == tag) &&
-				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
-			);
-		}
-
-		return false;
-	}
-
-	function _throttle(callback, ms) {
-		var args, _this;
-
-		return function () {
-			if (args === void 0) {
-				args = arguments;
-				_this = this;
-
-				setTimeout(function () {
-					if (args.length === 1) {
-						callback.call(_this, args[0]);
-					} else {
-						callback.apply(_this, args);
-					}
-
-					args = void 0;
-				}, ms);
-			}
-		};
-	}
-
-	function _extend(dst, src) {
-		if (dst && src) {
-			for (var key in src) {
-				if (src.hasOwnProperty(key)) {
-					dst[key] = src[key];
-				}
-			}
-		}
-
-		return dst;
-	}
-
-	function _clone(el) {
-		if (Polymer && Polymer.dom) {
-			return Polymer.dom(el).cloneNode(true);
-		}
-		else if ($) {
-			return $(el).clone(true)[0];
-		}
-		else {
-			return el.cloneNode(true);
-		}
-	}
-
-	function _saveInputCheckedState(root) {
-		var inputs = root.getElementsByTagName('input');
-		var idx = inputs.length;
-
-		while (idx--) {
-			var el = inputs[idx];
-			el.checked && savedInputChecked.push(el);
-		}
-	}
-
-	function _nextTick(fn) {
-		return setTimeout(fn, 0);
-	}
-
-	function _cancelNextTick(id) {
-		return clearTimeout(id);
-	}
-
-	// Fixed #973:
-	_on(document, 'touchmove', function (evt) {
-		if (Sortable.active) {
-			evt.preventDefault();
-		}
-	});
-
-	// Export utils
-	Sortable.utils = {
-		on: _on,
-		off: _off,
-		css: _css,
-		find: _find,
-		is: function (el, selector) {
-			return !!_closest(el, selector, el);
-		},
-		extend: _extend,
-		throttle: _throttle,
-		closest: _closest,
-		toggleClass: _toggleClass,
-		clone: _clone,
-		index: _index,
-		nextTick: _nextTick,
-		cancelNextTick: _cancelNextTick
-	};
-
-
-	/**
-	 * Create sortable instance
-	 * @param {HTMLElement}  el
-	 * @param {Object}      [options]
-	 */
-	Sortable.create = function (el, options) {
-		return new Sortable(el, options);
-	};
-
-
-	// Export
-	Sortable.version = '1.7.0';
-	return Sortable;
-});
-
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
-      _c("div", { staticClass: "col-md-auto" }, [
-        _vm._v("\n            Element draggé :\n            "),
-        _c("pre", [_vm._v(_vm._s(_vm.selectedElement))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-auto" }, [
-        _vm._v("\n            Element remplacé:\n            "),
-        _c("pre", [_vm._v(_vm._s(_vm.replaceElement))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-auto" }, [
-        _vm._v("\n            Colonne déposé\n            "),
-        _c("pre", [_vm._v(_vm._s(_vm.selectedColElement))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-auto" }, [
-        _vm._v("\n            INDEX element deposer\n            "),
-        _c("pre", [_vm._v(_vm._s(_vm.selectedNewIndexElement))])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-md-auto border", staticStyle: { color: "black" } },
-        [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
-        [
-          _c(
-            "draggable",
-            {
-              staticClass: " row border",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wLun,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wLun,
-                callback: function($$v) {
-                  _vm.wLun = $$v
-                },
-                expression: "wLun"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col ",
-                  attrs: { type: "transition", name: "flip-list", id: "0" }
-                },
-                _vm._l(_vm.wLun, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row ",
-                      staticStyle: {
-                        height: "60px",
-                        "border-bottom": "solid 1px lightgray"
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
-        [
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wMar,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wMar,
-                callback: function($$v) {
-                  _vm.wMar = $$v
-                },
-                expression: "wMar"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col",
-                  attrs: { type: "transition", name: "flip-list", id: "1" }
-                },
-                _vm._l(_vm.wMar, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row border",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
-        [
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wMer,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wMer,
-                callback: function($$v) {
-                  _vm.wMer = $$v
-                },
-                expression: "wMer"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col",
-                  attrs: { type: "transition", name: "flip-list", id: "2" }
-                },
-                _vm._l(_vm.wMer, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row border",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
-        [
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wJe,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wJe,
-                callback: function($$v) {
-                  _vm.wJe = $$v
-                },
-                expression: "wJe"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col ",
-                  attrs: { type: "transition", name: "flip-list", id: "3" }
-                },
-                _vm._l(_vm.wJe, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row border",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col border", staticStyle: { "min-height": "87vh" } },
-        [
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wVen,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wVen,
-                callback: function($$v) {
-                  _vm.wVen = $$v
-                },
-                expression: "wVen"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col ",
-                  attrs: { type: "transition", name: "flip-list", id: "4" }
-                },
-                _vm._l(_vm.wVen, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row border",
-                      staticStyle: { height: "60px", cursor: "pointer" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.lunString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.marString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.merString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.jeString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.venString))])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-47d276f0", module.exports)
-  }
-}
-
-/***/ }),
-/* 185 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(186)
-/* template */
-var __vue_template__ = __webpack_require__(187)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Navbar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cd7fb372", Component.options)
-  } else {
-    hotAPI.reload("data-v-cd7fb372", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 186 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            user: window.organizer.user,
-            signed: window.organizer.signedIn,
-            csrf: window.organizer.csrfToken,
-            app: window.organizer.app,
-            weekNumber: moment().week(),
-            dt: '',
-            monthN: 0,
-            dayN: 0,
-            yearN: 0,
-            displayMonth: 0,
-            displayDate: ''
-        };
-    },
-
-    props: ['year', 'month', 'day'],
-    mounted: function mounted() {
-        var _this = this;
-
-        this.dayN = parseInt(this.day);
-        this.monthN = parseInt(this.month);
-        this.yearN = parseInt(this.year);
-
-        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
-        this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
-        this.weekNumber = this.dt.week();
-        this.displayMonth = moment.months()[this.monthN - 1];
-        this.displayDate = this.dt.format('Y-MM-DD');
-
-        Event.$on('syncWeekNavbar', function (data) {
-            _this.weekNumber = data;
-        });
-
-        Event.$on('chooseDate', function (data) {
-
-            _this.dt = moment(data);
-            _this.weekNumber = _this.dt.week();
-            _this.monthN = parseInt(_this.dt.month());
-            _this.displayMonth = moment.months()[_this.monthN];
-            _this.displayDate = _this.dt.format('Y-MM-DD');
-        });
-    },
-
-    methods: {
-        addWeek: function addWeek() {
-            this.dt = this.dt.add(1, 'week');
-            this.displayMonth = moment.months()[this.dt.month()];
-            Event.$emit('addWeek', this.dt);
-        },
-        subWeek: function subWeek() {
-            this.dt = this.dt.subtract(1, 'week');
-            this.displayMonth = moment.months()[this.dt.month()];
-            Event.$emit('subWeek', this.dt);
-        },
-        resetWeek: function resetWeek() {
-            this.dt = moment();
-            this.displayMonth = moment.months()[this.dt.month()];
-            Event.$emit('resetWeek', moment());
-        }
-    },
-    filters: {
-        capitalize: function capitalize(value) {
-            if (!value) return '';
-            value = value.toString();
-            return value.charAt(0).toUpperCase() + value.slice(1);
-        }
-    }
-
-});
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "nav",
-    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
-    [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: "" } }),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-              _c(
-                "a",
-                { staticClass: "navbar-brand mr-4", attrs: { href: "/" } },
-                [
-                  _c("img", {
-                    staticClass: "d-inline-block align-top",
-                    attrs: {
-                      src: "/images/light.png",
-                      width: "30",
-                      height: "30",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.app) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "ml-4 mr-4 navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.resetWeek($event)
-                    }
-                  }
-                },
-                [_vm._v("\n                    Aujourd'hui\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "ml-4  mr-1 navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.subWeek($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-left" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "ml-1 navbar-brand",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.addWeek($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-angle-right" })]
-              ),
-              _vm._v(" "),
-              _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-                _vm._v(
-                  "\n                   " +
-                    _vm._s(_vm._f("capitalize")(_vm.displayMonth)) +
-                    " " +
-                    _vm._s(_vm.year) +
-                    "\n                "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-              !_vm.signed
-                ? _c("li", [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
-                      _vm._v("Login")
-                    ])
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              !_vm.signed
-                ? _c("li", [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "" } }, [
-                      _vm._v("Register")
-                    ])
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item dropdown " }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: " mr-4 nav-link dropdown-toggle",
-                    attrs: {
-                      id: "navbarDropdown",
-                      href: "#",
-                      role: "button",
-                      "data-toggle": "dropdown",
-                      "aria-haspopup": "true",
-                      "aria-expanded": "false"
-                    }
-                  },
-                  [
-                    _c("span", { staticClass: "caret mr-4" }, [
-                      _vm._v(_vm._s(_vm.user.prenom))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
-            ])
-          ]
-        )
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggler",
-        attrs: {
-          type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#navbarSupportedContent",
-          "aria-controls": "navbarSupportedContent",
-          "aria-expanded": "false",
-          "aria-label": "Toggle navigation"
-        }
-      },
-      [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "dropdown-menu",
-        attrs: { "aria-labelledby": "navbarDropdown" }
-      },
-      [
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
-          _vm._v("xxx")
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _c("i", { staticClass: "fa fa-angle-right mr-3" }),
-          _vm._v("xxx")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "dropdown-divider" }),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "dropdown-item",
-            attrs: {
-              href: "",
-              onclick:
-                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
-            }
-          },
-          [
-            _c("i", {
-              staticClass: "fa fa-power-off mr-2",
-              staticStyle: { color: "indianred" }
-            }),
-            _vm._v("Deconnexion\n                        ")
-          ]
-        ),
-        _vm._v(" "),
-        _c("form", {
-          staticStyle: { display: "none" },
-          attrs: { id: "logout-form", action: "", method: "POST" }
-        })
-      ]
-    )
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cd7fb372", module.exports)
-  }
-}
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(136)(module)))
 
 /***/ })
 /******/ ]);
