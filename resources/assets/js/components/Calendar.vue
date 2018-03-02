@@ -66,7 +66,6 @@
                 selectedDateSession :moment(),
                 selectedDate:'',
                 today :moment(),
-                yearLeap: false,
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
             }
@@ -74,31 +73,21 @@
         mounted() {
             let Sunday = [this.weeksShort.shift()]
             this.weeksShort = this.weeksShort.concat(Sunday);
-            this.yearLeap = this.isLEap();
+
+
             this.makeCalendar();
 
-            Event.$on('subWeek',(data)=>{
 
-                this.selectedDateSession = data;
-                this.selectedDate = data.format('Y-MM-DD');
-                this.yearLeap = this.isLEap();
-                this.makeCalendar();
+            Event.$on('subWeek',(data)=>{
+                this.modifyDate(data)
             })
 
             Event.$on('addWeek',(data)=>{
-
-                this.selectedDateSession = data;
-                this.selectedDate = data.format('Y-MM-DD');
-                this.yearLeap = this.isLEap();
-                this.makeCalendar();
+                this.modifyDate(data)
             })
 
             Event.$on('resetWeek',(data)=>{
-
-                this.selectedDateSession = data;
-                this.selectedDate = data.format('Y-MM-DD');
-                this.yearLeap = this.isLEap();
-                this.makeCalendar();
+                this.modifyDate(data)
             })
 
         },
@@ -120,140 +109,70 @@
             }
         },
         methods: {
+            modifyDate(data){
+                this.selectedDateSession = data;
+                this.selectedDate = data.format('Y-MM-DD');
+                this.makeCalendar();
+            },
 
             isEqualMonth(date){
               return date.substr(5,2) !== this.selectedDateSession.format('Y-MM-DD').substr(5,2);
             },
-            isLEap(){
-               let date_y = this.selectedDateSession.format('Y');
-                return ((date_y % 4 === 0) && (date_y % 100 !== 0)) || (date_y % 400 === 0);
+
+            defineRefDate(year,start){
+
+                if(start >=0 && start<=12)
+                    return moment().year(year).startOf('year').month(start-1).startOf('month').startOf('week')
+                    ;
+
+                return moment().year(year).startOf('month').startOf('week')
             },
+
             makeCalendar(){
+                // di = 0  /  lun = 1 / mar = 2  / mer = 3  / je = 4 / ven = 5 / sam = 6 .
+                //declaration de la date de reference
 
-                this.cal=[];
                 let dateMutable = this.selectedDateSession;
-
-                let startWeek = moment(dateMutable).startOf('month').startOf('week').week();
                 let startDayWeek = moment(dateMutable).startOf('month').startOf('week');
-                let endDayWeek = moment(dateMutable).endOf('month').endOf('week');
-                let endWeek = endDayWeek.week();
-                let diffWeek = startWeek-endWeek;
+                let refDate = startDayWeek
 
+                 //refDate =   this.defineRefDate('2018',12);
 
-                /*
-                  *  problematique de confition jamais remplie
-                  *  on ne rentre jamais dans la boucle car depart 52 fin 5 , condition 52 <= 5 jamais valider.
-                 * */
-                let diff = startDayWeek.weeksInYear() - startWeek + endWeek + 1;
-                var w = startWeek ;
-                let lastWeekOnYear =  startWeek > endWeek ;
+                this.cal = [];
+                for(let w=0 ; w<=5 ; w++){
+                    this.cal.push({
+                        date: Array(7)
+                            .fill(0)
+                            .map( function(n, i){
 
-                // test années bisextile ( jour décallé )
-                if(this.yearLeap){
-                    console.log('anné bissextile')
-                    if(lastWeekOnYear)
-                    {
-                        console.log('derniere semaine'),
-                        console.log(startDayWeek.format('Y-MM-DD'))
-
-                        startDayWeek.subtract(1,'days');
-                        for( var test = 1 ; test <= diff ; test++ )
-                        {
-                            if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
-
-                            this.cal.push({
-                                week:week,
-                                date: Array(7) .fill(-1) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
-                            });
-
-                            w++;
-                        };
-                    }
-                    else{
-                        console.log('ce nest pas la derniere semaine de lannée')
-                        //startDayWeek = startDayWeek.subtract(3,'days');
-
-                        console.log(startDayWeek.format('Y-MM-DD'))
-                        /*
-                         * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                         * */
-                        for( var week = startWeek; week <= endWeek  ; week++ ) {
-                            if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
-                            this.cal.push({
-                                week:week,
-                                date:
-                                    Array(7) .fill(0)
-                                        .map(
-                                            (n, i) =>
-                                                moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
-                                                    .add(n + i, 'day')
-                                                    .format('YYYY-MM-DD')
-                                            ,
-                                        )
-                            })
-                        }
-                    }
+                                if(i === 0 && w ===0){
+                                    return refDate.format('Y-MM-DD')
+                                }
+                                else{
+                                    return refDate.add(1,'day').format('Y-MM-DD')
+                                }
+                                return w
+                            }, [w])
+                    });
                 }
-                else{
-
-                    /*
-                    * PROBLEME DE GESTION DES SEMAINE voir changement d'année !
-                    * */
-                    if(lastWeekOnYear)
-                    {
-                        console.log(startDayWeek.format('Y-MM-DD'))
-                        startDayWeek.subtract(1,'days');
-
-                        for( var test = 1 ; test <= diff ; test++ )
-                        {
-                            if( w > startDayWeek.weeksInYear() ) w = w - startDayWeek.weeksInYear();
-
-                            this.cal.push({
-                                week:week,
-                                date: Array(7) .fill(0) .map( (n, i) => startDayWeek.add(1, 'day').format('YYYY-MM-DD'), )
-                            });
-
-                            w++;
-                        };
-                    }
-                    else{
-                       console.log(startDayWeek.format('Y-MM-DD'))
-                        for( var week = startWeek; week <= endWeek  ; week++ ) {
-                            if(week > startDayWeek.weeksInYear()) week = week - startDayWeek.weeksInYear();
-                            this.cal.push({
-                                week:week,
-                                date:
-                                    Array(7) .fill(0)
-                                        .map(
-                                            (n, i) =>
-                                                moment() .year(startDayWeek.year()) .week(week) .startOf('week') .clone()
-                                                    .add(n + i, 'day')
-                                                    .format('YYYY-MM-DD')
-                                            ,
-                                        )
-                            })
-                        }
-                    }
-                }
+                console.log(this.cal);
             },
 
             subMonth(){
                 this.selectedDateSession = this.selectedDateSession.clone().subtract(1,'months');
-                this.yearLeap=this.isLEap();
                 this.makeCalendar();
             },
             addMonth(){
                 this.selectedDateSession = this.selectedDateSession.clone().add(1,'months');
-                this.yearLeap=this.isLEap();
                 this.makeCalendar();
             },
             reset(){
                 this.selectedDateSession = moment();
-                this.yearLeap=this.isLEap();
                 this.makeCalendar();
             },
             chooseDate(date){
-                this.selectedDate = date
+                this.selectedDate = date;
+                console.log(date);
                 Event.$emit('chooseDate',date);
             }
         }

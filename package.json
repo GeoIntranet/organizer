@@ -23,8 +23,10 @@
     "moment": "^2.18.1"
   },
   "dependencies": {
+    "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "tether": "^1.4.3",
+    "vue-lodash": "^1.0.4",
     "vue2-dragula": "^2.5.4",
     "vuedraggable": "^2.16.0"
   }
