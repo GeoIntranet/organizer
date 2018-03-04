@@ -2,7 +2,7 @@
 
 
 @section('menu')
-   
+
     <navbar
             :year="{{carbon('y')}}"
             :month="{{carbon('m')}}"
