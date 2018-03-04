@@ -31,6 +31,8 @@ Vue.component('calendar', require('./components/Calendar.vue'));
 Vue.component('week', require('./components/Week.vue'));
 Vue.component('work', require('./components/Work.vue'));
 Vue.component('navbar', require('./components/Navbar.vue'));
+Vue.component('search', require('./components/Search.vue'));
+Vue.component('result-search', require('./components/Result_search'));
 
 window.Event = new Vue();
 

@@ -12,15 +12,15 @@
   "devDependencies": {
     "axios": "^0.18",
     "bootstrap": "^4.0.0",
-    "popper.js": "^1.12",
     "cross-env": "^5.1",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.2",
     "laravel-mix": "^2.0",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "popper.js": "^1.13.0",
     "vue": "^2.5.7",
-    "font-awesome": "^4.7.0",
-    "vue-template-compiler": "^2.3.2",
-    "moment": "^2.18.1"
+    "vue-template-compiler": "^2.3.2"
   },
   "dependencies": {
     "lodash": "^4.17.5",

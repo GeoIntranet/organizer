@@ -10,12 +10,15 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
-                    <a class="navbar-brand mr-4" href="/">
+                <ul class="navbar-nav  col-6">
+                    <a @click.prevent="hideCalendar" class="navbar-brand mr-3" href="/">
+                       <i class="fa fa-bars"> </i>
+                    </a>
+                    <a class="navbar-brand mr-4 ml-3" href="/">
                         <img src="/images/light.png" width="30" height="30" class="d-inline-block align-top" alt="">
                         {{app}}
                     </a>
-                    <a @click.prevent="resetWeek" class="ml-4 mr-4 navbar-brand" href="#">
+                    <a @click.prevent="getTodayWork" class="ml-4 mr-4 navbar-brand" href="#">
                         Aujourd'hui
                     </a>
                     <a class="ml-4  mr-1 navbar-brand" href="#" @click.prevent="subWeek">
@@ -27,38 +30,23 @@
                     <a class="navbar-brand" href="#">
                        {{displayMonth | capitalize}} {{year}}
                     </a>
-
-
                 </ul>
 
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- Authentication Links -->
+                <ul class="navbar-nav mr-auto  col-6">
 
+                    <search></search>
+
+                    <!-- Authentication Links -->
                     <li v-if="!signed"><a class="nav-link" href="">Login</a></li>
                     <li v-if="!signed"><a class="nav-link" href="">Register</a></li>
 
 
-                    <li class="nav-item dropdown ">
-
-                        <a id="navbarDropdown" class=" mr-4 nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret mr-4">{{user.prenom}}</span>
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#"><i class="fa fa-angle-right mr-3"> </i>xxx</a>
-                            <a class="dropdown-item" href="#"><i class="fa fa-angle-right mr-3"> </i>xxx</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href=""
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                <i class="fa fa-power-off mr-2" style="color:indianred"> </i>Deconnexion
-                            </a>
-
-                            <form id="logout-form" action="" method="POST" style="display: none;">
-                            </form>
-                        </div>
-                    </li>
+                    <a  class="navbar-brand col-md-auto ml-2 p-0" href="/"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    >
+                        {{user.prenom}} <i class="fa fa-power-off ml-2" style="color:indianred"> </i>
+                    </a>
 
                 </ul>
             </div>
@@ -110,6 +98,9 @@
 
         },
         methods:{
+            hideCalendar(){
+                Event.$emit('toggleCalendar', true )
+            },
             addWeek(){
                 this.dt = this.dt.add(1, 'week' )
                 this.displayMonth = moment.months()[this.dt.month()]
@@ -120,10 +111,13 @@
                 this.displayMonth = moment.months()[this.dt.month()]
                 Event.$emit('subWeek', this.dt )
             },
-            resetWeek(){
-                this.dt = moment();
-                this.displayMonth = moment.months()[this.dt.month()]
-                Event.$emit('resetWeek', moment() )
+            getTodayWork(){
+                let diffWeek = this.dt.week() !== moment().week();
+                if(diffWeek){
+                    this.dt = moment();
+                    this.displayMonth = moment.months()[this.dt.month()]
+                    Event.$emit('resetWeek', this.dt )
+                }
             }
         },
         filters:{

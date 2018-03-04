@@ -1,0 +1,41 @@
+.col-work-week{
+  border-right: solid 1px $border;
+}
+
+.sortable-chosen{
+  opacity: 1 !important;  /* Opacity for Modern Browsers */
+  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
+  zoom: 1;  /* Fix for IE7 */
+  background-color: blue;
+}
+.sortable-drag {
+  opacity: 1 !important;  /* Opacity for Modern Browsers */
+  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
+  background-color: blue;
+}
+.ghost {
+  color: #EAEAEA;
+  background-color: #EAEAEA;
+  border: 2px dashed #aaa;
+}
+.sortable-ghost {
+  opacity: 1 !important;  /* Opacity for Modern Browsers */
+  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
+  background-color: blue;
+}
+
+.sortable-fallback {
+  opacity: 1 !important;  /* Opacity for Modern Browsers */
+  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
+  background-color: blue;
+}
+
+
+.work{
+  border-bottom: solid 1px $border;
+  cursor:pointer;
+
+  &:active{
+    cursor:pointer;
+  }
+}

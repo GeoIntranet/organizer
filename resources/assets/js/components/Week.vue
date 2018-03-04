@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="row" >
-            <div class="col-md-auto border">
+        <div class="row wrapper-weeks" >
+            <div class="col-md-auto col-week-number">
                 {{weekNumber}}
             </div>
-            <div class="col border" v-for="(date,index) in cal">
+            <div class="col col-week-day" v-for="(date,index) in cal">
                 {{date.dn | capitalize}}
                 <br>
                 <h1>{{date.dnu.substr(-2)}}</h1>

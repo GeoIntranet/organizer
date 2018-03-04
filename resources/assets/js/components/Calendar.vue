@@ -1,5 +1,6 @@
 <template>
-    <div class="row calendar-wrapper">
+    <div v-if="showCalendar" class="col-md-auto hidden-lg-up column-calendar" >
+    <div class="row calendar-wrapper ">
         <div class="col">
 
             <div class="row " >
@@ -49,6 +50,7 @@
         </div>
 
     </div>
+    </div>
 
 </template>
 
@@ -62,12 +64,14 @@
     export default {
         data(){
             return{
+                showCalendar:true,
                 cal : [],
                 selectedDateSession :moment(),
                 selectedDate:'',
                 today :moment(),
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
+                weekNumber:''
             }
         },
         mounted() {
@@ -77,7 +81,9 @@
 
             this.makeCalendar();
 
-
+            Event.$on('toggleCalendar',(data)=>{
+                this.showCalendar = ! this.showCalendar;
+            })
             Event.$on('subWeek',(data)=>{
                 this.modifyDate(data)
             })
@@ -155,7 +161,7 @@
                             }, [w])
                     });
                 }
-                console.log(this.cal);
+                //console.log(this.cal);
             },
 
             subMonth(){
@@ -171,9 +177,23 @@
                 this.makeCalendar();
             },
             chooseDate(date){
+                let dateTMP = moment(date);
+                let diffMonth = _.parseInt(date.substr(5,2)) !== this.selectedDateSession.month()+1;
+                let diffWeek  = dateTMP.week() !== this.selectedDateSession.week()
+
+
+                this.selectedDateSession = moment(date);
                 this.selectedDate = date;
-                console.log(date);
-                Event.$emit('chooseDate',date);
+
+                if(diffWeek)
+                {
+                    Event.$emit('resetResultWork') ;
+                    Event.$emit('chooseDate',date);
+                }
+
+                if(diffMonth)
+                    this.makeCalendar();
+
             }
         }
     }

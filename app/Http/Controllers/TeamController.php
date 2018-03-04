@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Cache;
 
 class TeamController extends Controller
 {
@@ -62,6 +63,9 @@ class TeamController extends Controller
      */
     public function searchWork($semaine)
     {
+        $team = 1;
+        $keyCache = 'works_'.$team.'_'.$semaine;
+
 
         $date = Carbon::now();
         $date->setISODate($date->copy()->format('Y'),$semaine);
@@ -73,12 +77,13 @@ class TeamController extends Controller
             $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
         }
 
-        $delais = Delais::where('semaine_envoie',$semaine)->orderBy('order','ASC')->get()->groupBy('date_envoie');
+        $delais = Delais::where('semaine_envoie',$semaine)->select('id_cmd','id','order','semaine_envoie','date_envoie')->orderBy('order','ASC')->get()->groupBy('date_envoie');
 
         $data = [];
         foreach ($week as $index => $day) {
             $data[$index] = isset($delais[$day->format('Y-m-d')]) ? $delais[$day->format('Y-m-d')] : [] ;
         }
+
 
         return $data;
     }

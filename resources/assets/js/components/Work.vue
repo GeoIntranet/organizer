@@ -1,30 +1,18 @@
 <template>
     <div>
-        <div class="row" style="display: none;">
-            <div class="col-md-auto">
-                Element draggé :
-                <pre>{{selectedElement}}</pre>
-            </div>
-            <div class="col-md-auto">
-                Element remplacé:
-                <pre>{{replaceElement}}</pre>
-            </div>
-            <div class="col-md-auto">
-                Colonne déposé
-                <pre>{{selectedColElement}}</pre>
-            </div>
-            <div class="col-md-auto">
-                INDEX element deposer
-                <pre>{{selectedNewIndexElement}}</pre>
-            </div>
-        </div>
 
         <div class="row">
-            <div class="col-md-auto border" style="color:black">
+            <div class="col-md-auto col-week-number" style="color:black">
                 {{weekNumber}}
             </div>
-            <div class="col border" style=" min-height: 87vh;"
+
+            <div class="col col-work-week" style=" min-height: 87vh;"
             >
+
+                <div class="row p-3" v-if="isLoading">
+                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
+                </div>
+
                 <draggable
                         :list="wLun"
                         style=" min-height: 87vh;"
@@ -34,17 +22,21 @@
                         @start="onStart"
                         @end="onEnd"
                         @add="onAdd"
-                        class=" row border"
+                        class=" row "
                 >
 
-                    <transition-group type="transition" :name="'flip-list'" class="col " id="0">
+                    <transition-group type="transition" :name="'flip-list'" class="col" id="0">
 
                         <div
-                                class="row "
+                                class="row work"
                                 v-for="element in wLun"
                                 :key="element.id"
-                                style="height: 60px;border-bottom:solid 1px lightgray"
+                                style="height: 60px;"
+
                         >
+                            <div class="col text-left " @click="editItem(element.id)">
+                                <i class="fa fa-pencil"> </i>
+                            </div>
                             <div class="col text-left ">
                                 <b> {{element.id}}</b>
                             </div>
@@ -56,8 +48,14 @@
                     </transition-group>
                 </draggable>
             </div>
-            <div class="col border" style=" min-height: 87vh;"
+
+            <div class="col col-work-week" style=" min-height: 87vh;"
             >
+
+                <div class="row p-3" v-if="isLoading">
+                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
+                </div>
+
                 <draggable
                         :list="wMar"
                         style=" min-height: 87vh;"
@@ -73,10 +71,11 @@
                     <transition-group type="transition" :name="'flip-list'" class="col" id="1">
 
                         <div
-                                class="row border"
+                                class="row work"
                                 v-for="element in wMar"
                                 :key="element.id"
                                 style="height: 60px;"
+
                         >
                             <div class="col text-left ">
                                 <b> {{element.id}}</b>
@@ -90,9 +89,13 @@
                 </draggable>
             </div>
 
-
-            <div class="col border" style=" min-height: 87vh;"
+            <div class="col col-work-week" style=" min-height: 87vh;"
             >
+
+                <div class="row p-3" v-if="isLoading">
+                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
+                </div>
+
                 <draggable
                         :list="wMer"
                         style=" min-height: 87vh;"
@@ -108,7 +111,7 @@
                     <transition-group type="transition" :name="'flip-list'" class="col" id="2">
 
                         <div
-                                class="row border"
+                                class="row work"
                                 v-for="element in wMer"
                                 :key="element.id"
                                 style="height: 60px;"
@@ -125,8 +128,13 @@
                 </draggable>
             </div>
 
-            <div class="col border"  style=" min-height: 87vh;"
+            <div class="col col-work-week"  style=" min-height: 87vh;"
             >
+
+                <div class="row p-3" v-if="isLoading">
+                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
+                </div>
+
                 <draggable
                         :list="wJe"
                         style=" min-height: 87vh;"
@@ -141,7 +149,7 @@
 
                     <transition-group type="transition" :name="'flip-list'" class="col " id="3">
                         <div
-                                class="row border"
+                                class="row work"
                                 v-for="element in wJe"
                                 :key="element.id"
                                 style="height: 60px;"
@@ -157,8 +165,14 @@
                     </transition-group>
                 </draggable>
             </div>
-            <div class="col border"  style=" min-height: 87vh;"
+
+            <div class="col col-work-week"  style=" min-height: 87vh;"
             >
+
+                <div class="row p-3" v-if="isLoading">
+                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
+                </div>
+
                 <draggable
                         :list="wVen"
                         style=" min-height: 87vh;"
@@ -178,8 +192,9 @@
                             id="4"
                     >
 
+
                         <div
-                                class="row border"
+                                class="row work"
                                 v-for="element in wVen"
                                 :key="element.id"
                                 style="height: 60px; cursor: pointer;"
@@ -227,6 +242,7 @@
         },
         data() {
             return {
+                isLoading : false,
                 wLun: [],
                 wMar: [],
                 wMer: [],
@@ -247,14 +263,33 @@
         mounted(){
             Event.$on('getWorks',(data)=>{
                 this.weekNumber = data;
+                this.wLun = [];
+                this.wMar = [];
+                this.wMer = [];
+                this.wJe = [];
+                this.wVen = [];
                 this.getWorksWeek()
+            })
+
+            Event.$on('resetResultWork',(data)=>{
+                this.wLun = [];
+                this.wMar = [];
+                this.wMer = [];
+                this.wJe = [];
+                this.wVen = [];
             })
 
                 this.getWorksWeek()
         },
         methods: {
+            editItem(data){
+                Event.$emit('editItem',data)
+                Event.$emit('focusSearchDelais',data)
+            },
             getWorksWeek(){
-                axios.get('/team/get/work/'+this.weekNumber).then(
+                this.isLoading = true;
+                axios.get('/team/get/work/'+this.weekNumber)
+                    .then(
                     response => {
                         this.work =  response.data;
 
@@ -263,6 +298,7 @@
                         this.wMer = response.data[2];
                         this.wJe = response.data[3];
                         this.wVen = response.data[4];
+                        this.isLoading = false;
                     }
                 );
             },
@@ -273,8 +309,8 @@
                 var itemEl = evt.item;  // dragged HTMLElement
                 var colFrom = evt.from.getAttribute('id')
                 var colTo = evt.to.getAttribute('id')
-                console.log(colFrom);
-                console.log(colTo);
+                //console.log(colFrom);
+                //console.log(colTo);
                 this.selectedColElement = colTo;
                 //console.log(itemEl);    // target list
                 //console.log(evt.to);    // target list
@@ -284,7 +320,7 @@
 
                 axios.get('/team/'+this.semaine+'/'+this.selectedElement+'/'+this.selectedNewIndexElement+'/'+this.selectedColElement).then(
                     response => {
-                        console.log(response.data)
+                        //console.log(response.data)
                     }
                 );
 
@@ -369,20 +405,24 @@
     }
 
     .ghost {
-        opacity: .5;
-        background: #C8EBFB;
-    }
 
+        background-color: lightgrey;
+        color: lightgrey;
+        //background: #C8EBFB;
+    }
+    .sortable-chosen{
+
+    }
     .list-group {
         min-height: 20px;
         border: solid 1px red;
     }
 
     .list-group-item {
-        cursor: pointer;
+
     }
 
     .list-group-item i {
-        cursor: pointer;
+
     }
 </style>
