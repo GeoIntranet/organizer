@@ -3,9 +3,22 @@
 }
 .calendar-wrapper{
   padding: 20px 21px 20px 21px;
-  border-top: solid 1px $border;
   border-bottom: solid 1px $border;
+  border-top: solid 1px $border;
 }
+.col-calendar{ border-right: solid 1px $border; }
+.col-week-number{ border-right: solid 1px $border; }
+.col-day-week{ border-right: solid 1px $border; }
+.item-day{
+  border-bottom: solid 1px $border;
+  padding: 3px;
+
+  &:hover{
+cursor: move;
+  }
+
+}
+
 .size--date-number{
   padding: 10px 4px 10px 4px;
   font-size: 11px;
@@ -24,11 +37,12 @@
   }
 
 }
-
 .size--date-day{
-
   font-weight: bold;
   font-size: 11px;
   padding: 26px 4px 10px 4px;
-
+}
+.week-wrapper{
+  border-bottom:solid 1px $border;
+  border-top:solid 1px $border;
 }

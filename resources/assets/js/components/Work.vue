@@ -65,7 +65,7 @@
                         @start="onStart"
                         @end="onEnd"
                         @add="onAdd"
-                        class=" row "
+                        class="row "
                 >
 
                     <transition-group type="transition" :name="'flip-list'" class="col" id="1">
@@ -212,6 +212,7 @@
             </div>
 
         </div>
+
         <div class="row" style="display:none">
             <div class="col">
                 <pre>{{lunString}}</pre>

@@ -16,11 +16,8 @@
 
     <div class="container-fluid  ">
         <div class="row container-wrapper ">
-
             <result-search></result-search>
-
             <calendar > </calendar>
-
 
             <div class="col ">
                 <week
