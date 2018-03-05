@@ -4,10 +4,25 @@
             <div class="col-md-auto col-week-number">
                 {{weekNumber}}
             </div>
-            <div class="col col-week-day" v-for="(date,index) in cal">
-                {{date.dn | capitalize}}
-                <br>
-                <h1>{{date.dnu.substr(-2)}}</h1>
+            <div class="col col-day" v-for="(date,index) in cal">
+
+                <div class="row week">
+                    <div class="col">
+                        {{date.dn | capitalize}}
+                        <br>
+                        <h1>{{date.dnu.substr(-2)}}</h1>
+                    </div>
+                </div>
+
+                <div class="row work">
+                   <div class="col"><h4>test</h4></div>
+                </div>
+                <div class="row work">
+                    <div class="col"><h4>test</h4></div>
+                </div>
+                <div class="row work">
+                    <div class="col"><h4>test</h4></div>
+                </div>
             </div>
         </div>
 
@@ -33,6 +48,7 @@
                 yearLeap: false,
                 weeks : moment.weekdays(),
                 weeksShort : moment.weekdaysShort(),
+                weeksLong : moment.weekdays(),
                 weeksDay : [],
                 weekNumber : moment().week(),
                 work : [],
@@ -70,17 +86,18 @@
             this.dt = moment([this.year,this.month,this.day]).subtract(1,'month');
             this.weekNumber = this.dt.week()
 
-            this.weeksShort.shift();
-            this.weeksShort.pop();
+            this.fitDayNumber();
+
+
 
             this.cal = this.getDayOfWeek();
 
         },
         filters:{
             capitalize: function (value) {
+
                 if (!value) return ''
-                value = value.toString()
-                return value.charAt(0).toUpperCase() + value.slice(1)
+                return _.capitalize(value);
             },
             formated(data){
                 return data.toUpperCase().replace('.','').substr(0,1);
@@ -99,11 +116,19 @@
             }
         },
         methods: {
+            fitDayNumber(){
+
+                this.weeksShort.shift();
+                this.weeksShort.pop();
+
+                this.weeksLong.shift();
+                this.weeksLong.pop();
+            },
             syncDate(data){
                 this.dt = data
                 this.weekNumber = data.week();
                 this.cal = this.getDayOfWeek();
-                //Event.$emit('syncWeekNavbar', this.weekNumber )
+
                 Event.$emit('getWorks', this.weekNumber )
             },
             getWorksWeek(){

@@ -70,21 +70,6 @@
                 else{
                     //Event.$emit('closeSearch', this.search)
                 }
-                if (this.search !== '') {
-                    //
-                    // axios.post('/search', {
-                    //     search: this.search,
-                    // })
-                    //     .then((response) => {
-                    //         this.hasData = true;
-                    //         this.errorSearch = '';
-                    //         this.data = response.data;
-                    //     })
-                    //     .catch((response) => {
-                    //         this.hasData = true;
-                    //         this.errorSearch = 'il y\'a un probleme lors de la recherche ';
-                    //     });
-                }
             }
         },
         mounted() {
@@ -94,7 +79,7 @@
             })
 
             Event.$on('focusSearchDelais',(data)=>{
-                this.search = 'de'+data.id;
+                this.search = 'del'+data.id;
                 this.$refs.search_input.focus();
             })
         }

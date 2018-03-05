@@ -4,8 +4,17 @@
 }
 
 .col-week-number{
-  border-right:solid 1px $border;
 }
-.col-week-day{
-  border-right:solid 1px $border;
+
+.col-day{
+
+  .week{
+    border-right:solid 1px $border;
+    border-bottom: solid 1px $border;
+  }
+
+  .work{
+    border-right:solid 1px $border;
+  }
+
 }

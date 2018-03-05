@@ -2,30 +2,22 @@
   border-right: solid 1px $border;
 }
 
-.sortable-chosen{
-  opacity: 1 !important;  /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
-  zoom: 1;  /* Fix for IE7 */
-  background-color: blue;
-}
+
 .sortable-drag {
   opacity: 1 !important;  /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
-  background-color: blue;
-}
-.ghost {
-  opacity: 1 !important;  /* Opacity for Modern Browsers */
-  color: #EAEAEA;
-  background-color: #EAEAEA;
-  border: 2px dashed #aaa;
-}
-.sortable-ghost {
-  opacity: 1 !important;  /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
-  background-color: blue;
+  background-color: white;
+  -webkit-box-shadow: 10px 10px 31px -5px rgba(133,133,133,1);
+  -moz-box-shadow: 10px 10px 31px -5px rgba(133,133,133,1);
+  box-shadow: 10px 10px 31px -5px rgba(133,133,133,1);
 }
 
-.sortable-fallback {
+.ghost {
+  opacity: 1 !important;  /* Opacity for Modern Browsers */
+  background-color: #EAEAEA;
+}
+
+
+.sortable-fallback__ {
   opacity: 1 !important;  /* Opacity for Modern Browsers */
   filter: alpha(opacity=100)!important;  /* Opacity for IE8 and lower */
   background-color: blue;

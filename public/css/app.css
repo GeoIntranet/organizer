@@ -13144,11 +13144,12 @@ a.text-dark:focus {
   border-bottom: solid 1px #dee2e6;
 }
 
-.col-week-number {
+.col-day .week {
   border-right: solid 1px #dee2e6;
+  border-bottom: solid 1px #dee2e6;
 }
 
-.col-week-day {
+.col-day .work {
   border-right: solid 1px #dee2e6;
 }
 
@@ -13156,41 +13157,21 @@ a.text-dark:focus {
   border-right: solid 1px #dee2e6;
 }
 
-.sortable-chosen {
-  opacity: 1 !important;
-  /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100) !important;
-  /* Opacity for IE8 and lower */
-  zoom: 1;
-  /* Fix for IE7 */
-  background-color: blue;
-}
-
 .sortable-drag {
   opacity: 1 !important;
   /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100) !important;
-  /* Opacity for IE8 and lower */
-  background-color: blue;
+  background-color: white;
+  -webkit-box-shadow: 10px 10px 31px -5px #858585;
+  box-shadow: 10px 10px 31px -5px #858585;
 }
 
 .ghost {
   opacity: 1 !important;
   /* Opacity for Modern Browsers */
-  color: #EAEAEA;
   background-color: #EAEAEA;
-  border: 2px dashed #aaa;
 }
 
-.sortable-ghost {
-  opacity: 1 !important;
-  /* Opacity for Modern Browsers */
-  filter: alpha(opacity=100) !important;
-  /* Opacity for IE8 and lower */
-  background-color: blue;
-}
-
-.sortable-fallback {
+.sortable-fallback__ {
   opacity: 1 !important;
   /* Opacity for Modern Browsers */
   filter: alpha(opacity=100) !important;

@@ -34,7 +34,7 @@
                                 style="height: 60px;"
 
                         >
-                            <div class="col text-left " @click="editItem(element.id)">
+                            <div class="col text-left " @click="editItem(element)">
                                 <i class="fa fa-pencil"> </i>
                             </div>
                             <div class="col text-left ">
