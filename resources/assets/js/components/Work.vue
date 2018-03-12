@@ -1,22 +1,40 @@
 <template>
     <div>
 
-        <div class="row">
+        <div class="row " v-if="isLoading">
+            <div class="col-md-auto col-week-number" style="color:black ; min-height: 87vh;">
+                {{weekNumber}}
+            </div>
+            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
+                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
+            </div>
+            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
+                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
+            </div>
+            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
+                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
+            </div>
+            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
+                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
+            </div>
+            <div style="min-height: 87vh;" class="pt-3 col col-work-week  text-center ">
+                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
+            </div>
+        </div>
+
+        <div v-else class="row">
             <div class="col-md-auto col-week-number" style="color:black">
                 {{weekNumber}}
             </div>
-
-            <div class="col col-work-week" style=" min-height: 87vh;"
+            <div
+                    v-for="(dayWeeks,index) in weeksList"
+                    class="col col-work-week"
+                    style=" min-height: 87vh;"
             >
-
-                <div class="row p-3" v-if="isLoading">
-                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
-                </div>
-
                 <draggable
-                        :list="wLun"
+                        :list="weeksList[index]"
                         style=" min-height: 87vh;"
-                        v-model="wLun"
+                        v-model="weeksList[index]"
                         :options="dragOptions"
                         :move="onMove"
                         @start="onStart"
@@ -25,11 +43,11 @@
                         class=" row "
                 >
 
-                    <transition-group type="transition" :name="'flip-list'" class="col" id="0">
+                    <transition-group type="transition" :name="'flip-list'" class="col" :id="index">
 
                         <div
                                 class="row work"
-                                v-for="element in wLun"
+                                v-for="element in weeksList[index]"
                                 :key="element.id"
                                 style="height: 60px;"
 
@@ -48,187 +66,6 @@
                     </transition-group>
                 </draggable>
             </div>
-
-            <div class="col col-work-week" style=" min-height: 87vh;"
-            >
-
-                <div class="row p-3" v-if="isLoading">
-                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
-                </div>
-
-                <draggable
-                        :list="wMar"
-                        style=" min-height: 87vh;"
-                        v-model="wMar"
-                        :options="dragOptions"
-                        :move="onMove"
-                        @start="onStart"
-                        @end="onEnd"
-                        @add="onAdd"
-                        class="row "
-                >
-
-                    <transition-group type="transition" :name="'flip-list'" class="col" id="1">
-
-                        <div
-                                class="row work"
-                                v-for="element in wMar"
-                                :key="element.id"
-                                style="height: 60px;"
-
-                        >
-                            <div class="col text-left ">
-                                <b> {{element.id}}</b>
-                            </div>
-                            <div class="col">
-                                {{element.id_cmd}}
-                            </div>
-
-                        </div>
-                    </transition-group>
-                </draggable>
-            </div>
-
-            <div class="col col-work-week" style=" min-height: 87vh;"
-            >
-
-                <div class="row p-3" v-if="isLoading">
-                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
-                </div>
-
-                <draggable
-                        :list="wMer"
-                        style=" min-height: 87vh;"
-                        v-model="wMer"
-                        :options="dragOptions"
-                        :move="onMove"
-                        @start="onStart"
-                        @end="onEnd"
-                        @add="onAdd"
-                        class=" row "
-                >
-
-                    <transition-group type="transition" :name="'flip-list'" class="col" id="2">
-
-                        <div
-                                class="row work"
-                                v-for="element in wMer"
-                                :key="element.id"
-                                style="height: 60px;"
-                        >
-                            <div class="col text-left ">
-                                <b> {{element.id}}</b>
-                            </div>
-                            <div class="col">
-                                {{element.id_cmd}}
-                            </div>
-
-                        </div>
-                    </transition-group>
-                </draggable>
-            </div>
-
-            <div class="col col-work-week"  style=" min-height: 87vh;"
-            >
-
-                <div class="row p-3" v-if="isLoading">
-                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
-                </div>
-
-                <draggable
-                        :list="wJe"
-                        style=" min-height: 87vh;"
-                        v-model="wJe"
-                        :options="dragOptions"
-                        :move="onMove"
-                        @start="onStart"
-                        @end="onEnd"
-                        @add="onAdd"
-                        class=" row "
-                >
-
-                    <transition-group type="transition" :name="'flip-list'" class="col " id="3">
-                        <div
-                                class="row work"
-                                v-for="element in wJe"
-                                :key="element.id"
-                                style="height: 60px;"
-                        >
-                            <div class="col text-left ">
-                                <b> {{element.id}}</b>
-                            </div>
-                            <div class="col">
-                                {{element.id_cmd}}
-                            </div>
-
-                        </div>
-                    </transition-group>
-                </draggable>
-            </div>
-
-            <div class="col col-work-week"  style=" min-height: 87vh;"
-            >
-
-                <div class="row p-3" v-if="isLoading">
-                    <div class="col text-center "><i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i></div>
-                </div>
-
-                <draggable
-                        :list="wVen"
-                        style=" min-height: 87vh;"
-                        v-model="wVen"
-                        :options="dragOptions"
-                        :move="onMove"
-                        @start="onStart"
-                        @end="onEnd"
-                        @add="onAdd"
-                        class=" row "
-                >
-
-                    <transition-group
-                            type="transition"
-                            :name="'flip-list'"
-                            class="col "
-                            id="4"
-                    >
-
-
-                        <div
-                                class="row work"
-                                v-for="element in wVen"
-                                :key="element.id"
-                                style="height: 60px; cursor: pointer;"
-                        >
-                            <div class="col text-left ">
-                                <b> {{element.id}}</b>
-                            </div>
-                            <div class="col">
-                                {{element.id_cmd}}
-                            </div>
-
-                        </div>
-                    </transition-group>
-                </draggable>
-            </div>
-
-        </div>
-
-        <div class="row" style="display:none">
-            <div class="col">
-                <pre>{{lunString}}</pre>
-            </div>
-            <div class="col">
-                <pre>{{marString}}</pre>
-            </div>
-            <div class="col">
-                <pre>{{merString}}</pre>
-            </div>
-            <div class="col">
-                <pre>{{jeString}}</pre>
-            </div>
-            <div class="col">
-                <pre>{{venString}}</pre>
-            </div>
         </div>
     </div>
 </template>
@@ -244,6 +81,7 @@
         data() {
             return {
                 isLoading : false,
+                weeksList : [],
                 wLun: [],
                 wMar: [],
                 wMer: [],
@@ -262,7 +100,17 @@
         },
         props: ['semaine'],
         mounted(){
+
+            this.weeksList.push(this.wLun);
+            this.weeksList.push(this.wMar);
+            this.weeksList.push(this.wMer);
+            this.weeksList.push(this.wJe);
+            this.weeksList.push(this.wVen);
+
+
             Event.$on('getWorks',(data)=>{
+                console.log(this.isLoading)
+
                 this.weekNumber = data;
                 this.wLun = [];
                 this.wMar = [];
@@ -273,20 +121,28 @@
             })
 
             Event.$on('resetResultWork',(data)=>{
+                this.isLoading = true;
+                console.log('JE RESET ');
+                this.weeksList = [];
                 this.wLun = [];
                 this.wMar = [];
                 this.wMer = [];
                 this.wJe = [];
+
                 this.wVen = [];
+                console.log(this.isLoading)
+
             })
 
-                this.getWorksWeek()
+            this.getWorksWeek()
         },
         methods: {
+
             editItem(data){
                 Event.$emit('editItem',data)
                 Event.$emit('focusSearchDelais',data)
             },
+
             getWorksWeek(){
                 this.isLoading = true;
                 axios.get('/team/get/work/'+this.weekNumber)
@@ -294,11 +150,12 @@
                     response => {
                         this.work =  response.data;
 
-                        this.wLun = response.data[0];
-                        this.wMar = response.data[1];
-                        this.wMer = response.data[2];
-                        this.wJe = response.data[3];
-                        this.wVen = response.data[4];
+                        let arrayElement = []
+                        response.data.forEach(function(element) {
+                            arrayElement.push(element);
+                        });
+
+                        this.weeksList = arrayElement;
                         this.isLoading = false;
                     }
                 );
@@ -382,7 +239,6 @@
             }
         },
         watch: {
-
             isDragging(newValue) {
                 if (newValue) {
                     this.delayedDragging = true

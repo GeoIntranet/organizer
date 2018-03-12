@@ -2193,15 +2193,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2250,7 +2241,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.monthN = parseInt(this.month);
         this.yearN = parseInt(this.year);
 
-        // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+        // ATTENTION dans moment les mois c'est de 0 a 11 ! - c'est pk on sub un month
         this.dt = moment([this.year, this.month, this.day]).subtract(1, 'month');
         this.weekNumber = this.dt.week();
 
@@ -2419,169 +2410,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2593,6 +2421,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             isLoading: false,
+            weeksList: [],
             wLun: [],
             wMar: [],
             wMer: [],
@@ -2614,7 +2443,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
+        this.weeksList.push(this.wLun);
+        this.weeksList.push(this.wMar);
+        this.weeksList.push(this.wMer);
+        this.weeksList.push(this.wJe);
+        this.weeksList.push(this.wVen);
+
         Event.$on('getWorks', function (data) {
+            console.log(_this.isLoading);
+
             _this.weekNumber = data;
             _this.wLun = [];
             _this.wMar = [];
@@ -2625,11 +2462,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         Event.$on('resetResultWork', function (data) {
+            _this.isLoading = true;
+            console.log('JE RESET ');
+            _this.weeksList = [];
             _this.wLun = [];
             _this.wMar = [];
             _this.wMer = [];
             _this.wJe = [];
+
             _this.wVen = [];
+            console.log(_this.isLoading);
         });
 
         this.getWorksWeek();
@@ -2647,11 +2489,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/team/get/work/' + this.weekNumber).then(function (response) {
                 _this2.work = response.data;
 
-                _this2.wLun = response.data[0];
-                _this2.wMar = response.data[1];
-                _this2.wMer = response.data[2];
-                _this2.wJe = response.data[3];
-                _this2.wVen = response.data[4];
+                var arrayElement = [];
+                response.data.forEach(function (element) {
+                    arrayElement.push(element);
+                });
+
+                _this2.weeksList = arrayElement;
                 _this2.isLoading = false;
             });
         },
@@ -57461,391 +57304,129 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        {
-          staticClass: "col-md-auto col-week-number",
-          staticStyle: { color: "black" }
-        },
-        [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col col-work-week",
-          staticStyle: { "min-height": "87vh" }
-        },
-        [
-          _vm.isLoading
-            ? _c("div", { staticClass: "row p-3" }, [_vm._m(0)])
-            : _vm._e(),
-          _vm._v(" "),
+    _vm.isLoading
+      ? _c("div", { staticClass: "row " }, [
           _c(
-            "draggable",
+            "div",
             {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wLun,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wLun,
-                callback: function($$v) {
-                  _vm.wLun = $$v
-                },
-                expression: "wLun"
-              }
+              staticClass: "col-md-auto col-week-number",
+              staticStyle: { color: "black", "min-height": "87vh" }
             },
-            [
-              _c(
-                "transition-group",
+            [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _vm._m(4)
+        ])
+      : _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "col-md-auto col-week-number",
+                staticStyle: { color: "black" }
+              },
+              [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.weeksList, function(dayWeeks, index) {
+              return _c(
+                "div",
                 {
-                  staticClass: "col",
-                  attrs: { type: "transition", name: "flip-list", id: "0" }
+                  staticClass: "col col-work-week",
+                  staticStyle: { "min-height": "87vh" }
                 },
-                _vm._l(_vm.wLun, function(element) {
-                  return _c(
-                    "div",
+                [
+                  _c(
+                    "draggable",
                     {
-                      key: element.id,
-                      staticClass: "row work",
-                      staticStyle: { height: "60px" }
+                      staticClass: " row ",
+                      staticStyle: { "min-height": "87vh" },
+                      attrs: {
+                        list: _vm.weeksList[index],
+                        options: _vm.dragOptions,
+                        move: _vm.onMove
+                      },
+                      on: {
+                        start: _vm.onStart,
+                        end: _vm.onEnd,
+                        add: _vm.onAdd
+                      },
+                      model: {
+                        value: _vm.weeksList[index],
+                        callback: function($$v) {
+                          _vm.$set(_vm.weeksList, index, $$v)
+                        },
+                        expression: "weeksList[index]"
+                      }
                     },
                     [
                       _c(
-                        "div",
+                        "transition-group",
                         {
-                          staticClass: "col text-left ",
-                          on: {
-                            click: function($event) {
-                              _vm.editItem(element)
-                            }
+                          staticClass: "col",
+                          attrs: {
+                            type: "transition",
+                            name: "flip-list",
+                            id: index
                           }
                         },
-                        [_c("i", { staticClass: "fa fa-pencil" })]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
+                        _vm._l(_vm.weeksList[index], function(element) {
+                          return _c(
+                            "div",
+                            {
+                              key: element.id,
+                              staticClass: "row work",
+                              staticStyle: { height: "60px" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "col text-left ",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.editItem(element)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-pencil" })]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col text-left " }, [
+                                _c("b", [_vm._v(" " + _vm._s(element.id))])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(element.id_cmd) +
+                                    "\n                        "
+                                )
+                              ])
+                            ]
+                          )
+                        })
+                      )
+                    ],
+                    1
                   )
-                })
+                ],
+                1
               )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col col-work-week",
-          staticStyle: { "min-height": "87vh" }
-        },
-        [
-          _vm.isLoading
-            ? _c("div", { staticClass: "row p-3" }, [_vm._m(1)])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "draggable",
-            {
-              staticClass: "row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wMar,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wMar,
-                callback: function($$v) {
-                  _vm.wMar = $$v
-                },
-                expression: "wMar"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col",
-                  attrs: { type: "transition", name: "flip-list", id: "1" }
-                },
-                _vm._l(_vm.wMar, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row work",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col col-work-week",
-          staticStyle: { "min-height": "87vh" }
-        },
-        [
-          _vm.isLoading
-            ? _c("div", { staticClass: "row p-3" }, [_vm._m(2)])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wMer,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wMer,
-                callback: function($$v) {
-                  _vm.wMer = $$v
-                },
-                expression: "wMer"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col",
-                  attrs: { type: "transition", name: "flip-list", id: "2" }
-                },
-                _vm._l(_vm.wMer, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row work",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col col-work-week",
-          staticStyle: { "min-height": "87vh" }
-        },
-        [
-          _vm.isLoading
-            ? _c("div", { staticClass: "row p-3" }, [_vm._m(3)])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wJe,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wJe,
-                callback: function($$v) {
-                  _vm.wJe = $$v
-                },
-                expression: "wJe"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col ",
-                  attrs: { type: "transition", name: "flip-list", id: "3" }
-                },
-                _vm._l(_vm.wJe, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row work",
-                      staticStyle: { height: "60px" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col col-work-week",
-          staticStyle: { "min-height": "87vh" }
-        },
-        [
-          _vm.isLoading
-            ? _c("div", { staticClass: "row p-3" }, [_vm._m(4)])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "draggable",
-            {
-              staticClass: " row ",
-              staticStyle: { "min-height": "87vh" },
-              attrs: {
-                list: _vm.wVen,
-                options: _vm.dragOptions,
-                move: _vm.onMove
-              },
-              on: { start: _vm.onStart, end: _vm.onEnd, add: _vm.onAdd },
-              model: {
-                value: _vm.wVen,
-                callback: function($$v) {
-                  _vm.wVen = $$v
-                },
-                expression: "wVen"
-              }
-            },
-            [
-              _c(
-                "transition-group",
-                {
-                  staticClass: "col ",
-                  attrs: { type: "transition", name: "flip-list", id: "4" }
-                },
-                _vm._l(_vm.wVen, function(element) {
-                  return _c(
-                    "div",
-                    {
-                      key: element.id,
-                      staticClass: "row work",
-                      staticStyle: { height: "60px", cursor: "pointer" }
-                    },
-                    [
-                      _c("div", { staticClass: "col text-left " }, [
-                        _c("b", [_vm._v(" " + _vm._s(element.id))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(element.id_cmd) +
-                            "\n                        "
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row", staticStyle: { display: "none" } }, [
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.lunString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.marString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.merString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.jeString))])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("pre", [_vm._v(_vm._s(_vm.venString))])
-      ])
-    ])
+            })
+          ],
+          2
+        )
   ])
 }
 var staticRenderFns = [
@@ -57853,56 +57434,91 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center " }, [
-      _c("i", {
-        staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-        staticStyle: { color: "lightgray" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "pt-3 col  col-work-week text-center ",
+        staticStyle: { "min-height": "87vh" }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+          staticStyle: { color: "lightgray" }
+        })
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center " }, [
-      _c("i", {
-        staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-        staticStyle: { color: "lightgray" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "pt-3 col  col-work-week text-center ",
+        staticStyle: { "min-height": "87vh" }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+          staticStyle: { color: "lightgray" }
+        })
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center " }, [
-      _c("i", {
-        staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-        staticStyle: { color: "lightgray" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "pt-3 col  col-work-week text-center ",
+        staticStyle: { "min-height": "87vh" }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+          staticStyle: { color: "lightgray" }
+        })
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center " }, [
-      _c("i", {
-        staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-        staticStyle: { color: "lightgray" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "pt-3 col  col-work-week text-center ",
+        staticStyle: { "min-height": "87vh" }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+          staticStyle: { color: "lightgray" }
+        })
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center " }, [
-      _c("i", {
-        staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-        staticStyle: { color: "lightgray" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "pt-3 col col-work-week  text-center ",
+        staticStyle: { "min-height": "87vh" }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+          staticStyle: { color: "lightgray" }
+        })
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -58020,13 +57636,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
                 ])
-              ]),
-              _vm._v(" "),
-              _vm._m(0, true),
-              _vm._v(" "),
-              _vm._m(1, true),
-              _vm._v(" "),
-              _vm._m(2, true)
+              ])
             ])
           })
         ],
@@ -58038,32 +57648,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row work" }, [
-      _c("div", { staticClass: "col" }, [_c("h4", [_vm._v("test")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row work" }, [
-      _c("div", { staticClass: "col" }, [_c("h4", [_vm._v("test")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row work" }, [
-      _c("div", { staticClass: "col" }, [_c("h4", [_vm._v("test")])])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

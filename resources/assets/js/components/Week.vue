@@ -14,15 +14,6 @@
                     </div>
                 </div>
 
-                <div class="row work">
-                   <div class="col"><h4>test</h4></div>
-                </div>
-                <div class="row work">
-                    <div class="col"><h4>test</h4></div>
-                </div>
-                <div class="row work">
-                    <div class="col"><h4>test</h4></div>
-                </div>
             </div>
         </div>
 
@@ -82,7 +73,7 @@
             this.monthN = parseInt(this.month);
             this.yearN = parseInt(this.year);
 
-            // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+            // ATTENTION dans moment les mois c'est de 0 a 11 ! - c'est pk on sub un month
             this.dt = moment([this.year,this.month,this.day]).subtract(1,'month');
             this.weekNumber = this.dt.week()
 
