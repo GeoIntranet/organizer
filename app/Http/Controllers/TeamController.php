@@ -77,7 +77,10 @@ class TeamController extends Controller
             $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
         }
 
-        $delais = Delais::where('semaine_envoie',$semaine)->select('id_cmd','id','order','semaine_envoie','date_envoie')->orderBy('order','ASC')->get()->groupBy('date_envoie');
+        $delais = Delais::where('semaine_envoie',$semaine)
+            ->with('client')
+            ->orderBy('order','ASC')
+            ->get()->groupBy('date_envoie');
 
         $data = [];
         foreach ($week as $index => $day) {

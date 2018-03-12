@@ -5,19 +5,10 @@
             <div class="col-md-auto col-week-number" style="color:black ; min-height: 87vh;">
                 {{weekNumber}}
             </div>
-            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
-                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
-            </div>
-            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
-                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
-            </div>
-            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
-                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
-            </div>
-            <div style="min-height: 87vh;" class="pt-3 col  col-work-week text-center ">
-                <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
-            </div>
-            <div style="min-height: 87vh;" class="pt-3 col col-work-week  text-center ">
+            <div v-for="(dayWeeks,index) in weeksList"
+                 style="min-height: 87vh;"
+                 class="pt-3 col  col-work-week text-center "
+            >
                 <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x"> </i>
             </div>
         </div>
@@ -31,6 +22,7 @@
                     class="col col-work-week"
                     style=" min-height: 87vh;"
             >
+
                 <draggable
                         :list="weeksList[index]"
                         style=" min-height: 87vh;"
@@ -49,18 +41,31 @@
                                 class="row work"
                                 v-for="element in weeksList[index]"
                                 :key="element.id"
-                                style="height: 60px;"
+                                style="height: 75px;"
 
                         >
-                            <div class="col text-left " @click="editItem(element)">
-                                <i class="fa fa-pencil"> </i>
-                            </div>
-                            <div class="col text-left ">
-                                <b> {{element.id}}</b>
-                            </div>
                             <div class="col">
-                                {{element.id_cmd}}
+                                <div class="row">
+                                    <div class="col" style="cursor:default" @click=" editItem(element) ">
+                                        {{element.id_cmd}}
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col" style="font-size: 0.8em">
+                                        {{element.client.nsoc | client}}
+                                    </div>
+                                </div>
+                                <div class="row pb-1 pt-1">
+                                    <div class="col text-right" style="font-size: 0.8em">
+                                            <i v-if="element.da == 1" class="fa fa-dollar ml-1"> </i>
+                                            <i v-if="element.inc == 1" class="fa fa-bell ml-1"> </i>
+                                            <i v-if="element.devis == 1" class="fa fa-ban ml-1"> </i>
+                                    </div>
+                                </div>
                             </div>
+
+
 
                         </div>
                     </transition-group>
@@ -80,13 +85,9 @@
         },
         data() {
             return {
+                lodash :_,
                 isLoading : false,
                 weeksList : [],
-                wLun: [],
-                wMar: [],
-                wMer: [],
-                wJe: [],
-                wVen: [],
                 work:[],
                 editable: true,
                 isDragging: false,
@@ -101,43 +102,45 @@
         props: ['semaine'],
         mounted(){
 
-            this.weeksList.push(this.wLun);
-            this.weeksList.push(this.wMar);
-            this.weeksList.push(this.wMer);
-            this.weeksList.push(this.wJe);
-            this.weeksList.push(this.wVen);
-
+            for (let i=0; i<5; i++) {
+                this.weeksList.push([]);
+            }
 
             Event.$on('getWorks',(data)=>{
-                console.log(this.isLoading)
-
                 this.weekNumber = data;
-                this.wLun = [];
-                this.wMar = [];
-                this.wMer = [];
-                this.wJe = [];
-                this.wVen = [];
                 this.getWorksWeek()
             })
 
             Event.$on('resetResultWork',(data)=>{
                 this.isLoading = true;
-                console.log('JE RESET ');
-                this.weeksList = [];
-                this.wLun = [];
-                this.wMar = [];
-                this.wMer = [];
-                this.wJe = [];
 
-                this.wVen = [];
-                console.log(this.isLoading)
+                this.weeksList.forEach(function(element){
+                    return [];
+                });
 
             })
 
             this.getWorksWeek()
         },
+        filters:{
+            client(client){
+                return   _.upperFirst(_.lowerCase(client.substr(0,15)))
+            },
+            da(da){
+                return   da == 1 ? "<i class=fa fa-dollar ml-2> </i>" : ''
+            },
+            devis(devis){
+                return   ''
+            },
+            inc(inc){
+                return   ''
+            }
+        },
         methods: {
+            getClient(client){
 
+                return 'test_'+client
+            },
             editItem(data){
                 Event.$emit('editItem',data)
                 Event.$emit('focusSearchDelais',data)
@@ -167,13 +170,7 @@
                 var itemEl = evt.item;  // dragged HTMLElement
                 var colFrom = evt.from.getAttribute('id')
                 var colTo = evt.to.getAttribute('id')
-                //console.log(colFrom);
-                //console.log(colTo);
                 this.selectedColElement = colTo;
-                //console.log(itemEl);    // target list
-                //console.log(evt.to);    // target list
-                //console.log(evt.from);  // previous list
-                //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
                 this.selectedNewIndexElement = evt.newIndex+1
 
                 axios.get('/team/'+this.semaine+'/'+this.selectedElement+'/'+this.selectedNewIndexElement+'/'+this.selectedColElement).then(
@@ -208,6 +205,7 @@
             }
         },
         computed: {
+
             dragOptions() {
                 return {
                     animation: 0,
@@ -216,27 +214,6 @@
                     ghostClass: 'ghost'
                 };
             },
-            listString() {
-                return JSON.stringify(this.list, null, 2);
-            },
-            lunString() {
-                return JSON.stringify(this.wLun, null, 2);
-            },
-            marString() {
-                return JSON.stringify(this.wMar, null, 2);
-            },
-            merString() {
-                return JSON.stringify(this.wMer, null, 2);
-            },
-            jeString() {
-                return JSON.stringify(this.wJe, null, 2);
-            },
-            venString() {
-                return JSON.stringify(this.wVen, null, 2);
-            },
-            list2String() {
-                return JSON.stringify(this.list2, null, 2);
-            }
         },
         watch: {
             isDragging(newValue) {

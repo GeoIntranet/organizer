@@ -2410,6 +2410,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2420,13 +2425,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+            lodash: _,
             isLoading: false,
             weeksList: [],
-            wLun: [],
-            wMar: [],
-            wMer: [],
-            wJe: [],
-            wVen: [],
             work: [],
             editable: true,
             isDragging: false,
@@ -2443,41 +2444,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        this.weeksList.push(this.wLun);
-        this.weeksList.push(this.wMar);
-        this.weeksList.push(this.wMer);
-        this.weeksList.push(this.wJe);
-        this.weeksList.push(this.wVen);
+        for (var i = 0; i < 5; i++) {
+            this.weeksList.push([]);
+        }
 
         Event.$on('getWorks', function (data) {
-            console.log(_this.isLoading);
-
             _this.weekNumber = data;
-            _this.wLun = [];
-            _this.wMar = [];
-            _this.wMer = [];
-            _this.wJe = [];
-            _this.wVen = [];
             _this.getWorksWeek();
         });
 
         Event.$on('resetResultWork', function (data) {
             _this.isLoading = true;
-            console.log('JE RESET ');
-            _this.weeksList = [];
-            _this.wLun = [];
-            _this.wMar = [];
-            _this.wMer = [];
-            _this.wJe = [];
 
-            _this.wVen = [];
-            console.log(_this.isLoading);
+            _this.weeksList.forEach(function (element) {
+                return [];
+            });
         });
 
         this.getWorksWeek();
     },
 
+    filters: {
+        client: function client(_client) {
+            return _.upperFirst(_.lowerCase(_client.substr(0, 15)));
+        },
+        da: function da(_da) {
+            return _da == 1 ? "<i class=fa fa-dollar ml-2> </i>" : '';
+        },
+        devis: function devis(_devis) {
+            return '';
+        },
+        inc: function inc(_inc) {
+            return '';
+        }
+    },
     methods: {
+        getClient: function getClient(client) {
+
+            return 'test_' + client;
+        },
         editItem: function editItem(data) {
             Event.$emit('editItem', data);
             Event.$emit('focusSearchDelais', data);
@@ -2504,13 +2509,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var itemEl = evt.item; // dragged HTMLElement
             var colFrom = evt.from.getAttribute('id');
             var colTo = evt.to.getAttribute('id');
-            //console.log(colFrom);
-            //console.log(colTo);
             this.selectedColElement = colTo;
-            //console.log(itemEl);    // target list
-            //console.log(evt.to);    // target list
-            //console.log(evt.from);  // previous list
-            //console.log('OldIndex- '+evt.oldIndex);  // element's old index within old parent
             this.selectedNewIndexElement = evt.newIndex + 1;
 
             axios.get('/team/' + this.semaine + '/' + this.selectedElement + '/' + this.selectedNewIndexElement + '/' + this.selectedColElement).then(function (response) {
@@ -2547,27 +2546,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 disabled: !this.editable,
                 ghostClass: 'ghost'
             };
-        },
-        listString: function listString() {
-            return JSON.stringify(this.list, null, 2);
-        },
-        lunString: function lunString() {
-            return JSON.stringify(this.wLun, null, 2);
-        },
-        marString: function marString() {
-            return JSON.stringify(this.wMar, null, 2);
-        },
-        merString: function merString() {
-            return JSON.stringify(this.wMer, null, 2);
-        },
-        jeString: function jeString() {
-            return JSON.stringify(this.wJe, null, 2);
-        },
-        venString: function venString() {
-            return JSON.stringify(this.wVen, null, 2);
-        },
-        list2String: function list2String() {
-            return JSON.stringify(this.list2, null, 2);
         }
     },
     watch: {
@@ -54179,7 +54157,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
 				_css(ghostEl, 'width', rect.width);
 				_css(ghostEl, 'height', rect.height);
-				_css(ghostEl, 'opacity', '0.8');
+				_css(ghostEl, 'opacity___', '1');
 				_css(ghostEl, 'position', 'fixed');
 				_css(ghostEl, 'zIndex', '100000');
 				_css(ghostEl, 'pointerEvents', 'none');
@@ -57305,26 +57283,37 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm.isLoading
-      ? _c("div", { staticClass: "row " }, [
-          _c(
-            "div",
-            {
-              staticClass: "col-md-auto col-week-number",
-              staticStyle: { color: "black", "min-height": "87vh" }
-            },
-            [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _vm._m(3),
-          _vm._v(" "),
-          _vm._m(4)
-        ])
+      ? _c(
+          "div",
+          { staticClass: "row " },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "col-md-auto col-week-number",
+                staticStyle: { color: "black", "min-height": "87vh" }
+              },
+              [_vm._v("\n            " + _vm._s(_vm.weekNumber) + "\n        ")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.weeksList, function(dayWeeks, index) {
+              return _c(
+                "div",
+                {
+                  staticClass: "pt-3 col  col-work-week text-center ",
+                  staticStyle: { "min-height": "87vh" }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
+                    staticStyle: { color: "lightgray" }
+                  })
+                ]
+              )
+            })
+          ],
+          2
+        )
       : _c(
           "div",
           { staticClass: "row" },
@@ -57386,32 +57375,81 @@ var render = function() {
                             {
                               key: element.id,
                               staticClass: "row work",
-                              staticStyle: { height: "60px" }
+                              staticStyle: { height: "75px" }
                             },
                             [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "col text-left ",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.editItem(element)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "fa fa-pencil" })]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col text-left " }, [
-                                _c("b", [_vm._v(" " + _vm._s(element.id))])
-                              ]),
-                              _vm._v(" "),
                               _c("div", { staticClass: "col" }, [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(element.id_cmd) +
-                                    "\n                        "
-                                )
+                                _c("div", { staticClass: "row" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "col",
+                                      staticStyle: { cursor: "default" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.editItem(element)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(element.id_cmd) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "col",
+                                      staticStyle: { "font-size": "0.8em" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(
+                                            _vm._f("client")(
+                                              element.client.nsoc
+                                            )
+                                          ) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row pb-1 pt-1" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "col text-right",
+                                      staticStyle: { "font-size": "0.8em" }
+                                    },
+                                    [
+                                      element.da == 1
+                                        ? _c("i", {
+                                            staticClass: "fa fa-dollar ml-1"
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      element.inc == 1
+                                        ? _c("i", {
+                                            staticClass: "fa fa-bell ml-1"
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      element.devis == 1
+                                        ? _c("i", {
+                                            staticClass: "fa fa-ban ml-1"
+                                          })
+                                        : _vm._e()
+                                    ]
+                                  )
+                                ])
                               ])
                             ]
                           )
@@ -57429,98 +57467,7 @@ var render = function() {
         )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "pt-3 col  col-work-week text-center ",
-        staticStyle: { "min-height": "87vh" }
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-          staticStyle: { color: "lightgray" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "pt-3 col  col-work-week text-center ",
-        staticStyle: { "min-height": "87vh" }
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-          staticStyle: { color: "lightgray" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "pt-3 col  col-work-week text-center ",
-        staticStyle: { "min-height": "87vh" }
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-          staticStyle: { color: "lightgray" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "pt-3 col  col-work-week text-center ",
-        staticStyle: { "min-height": "87vh" }
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-          staticStyle: { color: "lightgray" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "pt-3 col col-work-week  text-center ",
-        staticStyle: { "min-height": "87vh" }
-      },
-      [
-        _c("i", {
-          staticClass: "fa fa-circle-o-notch fa-spin fa-2x",
-          staticStyle: { color: "lightgray" }
-        })
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
