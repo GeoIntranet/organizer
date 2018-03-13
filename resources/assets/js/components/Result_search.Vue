@@ -5,9 +5,9 @@
            <div  class="col " style="background-color: white; min-height: 88vh;">
                <div class="row p-3 ">
 
-                   <div @click="closeResultWindow" class="col-md-auto"><i class="fa fa-times fa-2x"> </i></div>
+                   <div @click="closeResultWindow" class="col text-right"><i class="fa fa-times fa-2x"> </i></div>
 
-                   <div class="col-2" v-if="activeCalendar">
+                   <div class="col-md-auto" v-if="activeCalendar">
                         <pick-calendar :dtenvoie="search.date_envoie" > </pick-calendar>
                    </div>
 
@@ -20,6 +20,8 @@
                            </div>
                        </div>
                    </div>
+
+
                </div>
            </div>
         </div>

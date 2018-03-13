@@ -35,7 +35,7 @@
         ,
         filters:{
             client(client){
-                return   _.upperFirst(_.lowerCase(client.substr(0,25)))
+                return   _.upperFirst(_.lowerCase(client.substr(0,17)))
             },
         },
         methods:{

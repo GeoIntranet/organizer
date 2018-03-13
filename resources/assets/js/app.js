@@ -37,6 +37,7 @@ Vue.component('pick-calendar', require('./components/Pick_calendar'));
 Vue.component('element-work', require('./components/Element_work'));
 Vue.component('toolbar', require('./components/ToolBar'));
 Vue.component('commandes', require('./components/Commandes'));
+Vue.component('navigation', require('./components/Navigation'));
 
 window.Event = new Vue();
 
@@ -47,3 +48,4 @@ $(function () {
 const app = new Vue({
     el: '#app',
 });
+console.log(screen.height)

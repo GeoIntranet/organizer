@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showCalendar" class="col-md-auto hidden-lg-up column-calendar ">
+    <div class="col-md-auto hidden-lg-up column-calendar ">
         <div class="row calendar-wrapper ">
             <div class="col">
                 <div class="row ">
@@ -63,7 +63,6 @@
     export default {
         data(){
             return{
-                showCalendar:true,
                 cal : [],
                 selectedDateSession :moment(),
                 selectedDate:'',
@@ -80,9 +79,7 @@
 
             this.makeCalendar();
 
-            Event.$on('toggleCalendar',(data)=>{
-                this.showCalendar = ! this.showCalendar;
-            })
+
             Event.$on('subWeek',(data)=>{
                 this.modifyDate(data)
             })

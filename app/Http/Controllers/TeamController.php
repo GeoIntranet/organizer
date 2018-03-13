@@ -158,7 +158,7 @@ class TeamController extends Controller
         //    ->groupBy('date_envoie')
         //;
 
-        $cmd = Commande::enCours()->limit(0)->take(25)->get();
+        $cmd = Commande::enCours()->with('clientDelivered')->limit(0)->take(16)->get();
 
         return view('team.work')
             ->with('commandes',$cmd)

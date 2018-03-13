@@ -1,12 +1,12 @@
 <template>
-<div class="col-md-auto toolbar">
+<div class="col-md-auto toolbar" v-if="showToolbar">
     
     <div class="row p-0">
         <calendar></calendar>
     </div>
-
-    <commandes :commandes="commandes" ></commandes>
-
+    <div class="row p-2">
+        <navigation></navigation>
+    </div>
 </div>
 
 </template>
@@ -15,10 +15,17 @@
     export default {
         data(){
           return{
+              showToolbar:true,
           }
         },
         props:['commandes'],
         mounted() {
+            Event.$on('toggleToolbar',(data)=>{
+                this.showToolbar = ! this.showToolbar;
+            })
+        },
+        methods:{
+
         }
     }
 </script>

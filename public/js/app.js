@@ -1705,7 +1705,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            showCalendar: true,
             cal: [],
             selectedDateSession: moment(),
             selectedDate: '',
@@ -1723,9 +1722,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.makeCalendar();
 
-        Event.$on('toggleCalendar', function (data) {
-            _this.showCalendar = !_this.showCalendar;
-        });
         Event.$on('subWeek', function (data) {
             _this.modifyDate(data);
         });
@@ -1854,13 +1850,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            showCommande: true,
+            dummy: []
+        };
+    },
     mounted: function mounted() {
+        for (var i = 0; i < 15; i++) {
+            this.dummy.push(i);
+        }
         console.log('Component mounted.');
     },
 
-    props: ['commandes']
+    props: ['commandes'],
+    methods: {
+        toggleCommande: function toggleCommande() {
+            this.showCommande = !this.showCommande;
+        }
+    },
+    filters: {
+        client: function client(_client) {
+            return _.upperFirst(_.lowerCase(_client.substr(0, 17)));
+        }
+    }
 });
 
 /***/ }),
@@ -1908,7 +1948,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     filters: {
         client: function client(_client) {
-            return _.upperFirst(_.lowerCase(_client.substr(0, 25)));
+            return _.upperFirst(_.lowerCase(_client.substr(0, 17)));
         }
     },
     methods: {
@@ -2063,8 +2103,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        hideCalendar: function hideCalendar() {
-            Event.$emit('toggleCalendar', true);
+        hideToolbar: function hideToolbar() {
+            Event.$emit('toggleToolbar', true);
         },
         addWeek: function addWeek() {
             this.dt = this.dt.add(1, 'week');
@@ -2093,6 +2133,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     }
 
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Navigation.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
 });
 
 /***/ }),
@@ -2339,6 +2417,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -2511,14 +2591,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
+    data: function data() {
+        return {
+            showToolbar: true
+        };
+    },
 
-  props: ['commandes'],
-  mounted: function mounted() {}
+    props: ['commandes'],
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('toggleToolbar', function (data) {
+            _this.showToolbar = !_this.showToolbar;
+        });
+    },
+
+    methods: {}
 });
 
 /***/ }),
@@ -54513,7 +54605,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
 				_css(ghostEl, 'width', rect.width);
 				_css(ghostEl, 'height', rect.height);
-				_css(ghostEl, 'opacity', '0.8');
+				_css(ghostEl, 'opacity___', '1');
 				_css(ghostEl, 'position', 'fixed');
 				_css(ghostEl, 'zIndex', '100000');
 				_css(ghostEl, 'pointerEvents', 'none');
@@ -57476,16 +57568,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "col-md-auto toolbar" },
-    [
-      _c("div", { staticClass: "row p-0" }, [_c("calendar")], 1),
-      _vm._v(" "),
-      _c("commandes", { attrs: { commandes: _vm.commandes } })
-    ],
-    1
-  )
+  return _vm.showToolbar
+    ? _c("div", { staticClass: "col-md-auto toolbar" }, [
+        _c("div", { staticClass: "row p-0" }, [_c("calendar")], 1),
+        _vm._v(" "),
+        _c("div", { staticClass: "row p-2" }, [_c("navigation")], 1)
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -57667,147 +57756,143 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.showCalendar
-    ? _c("div", { staticClass: "col-md-auto hidden-lg-up column-calendar " }, [
-        _c("div", { staticClass: "row calendar-wrapper " }, [
-          _c(
-            "div",
-            { staticClass: "col" },
-            [
-              _c("div", { staticClass: "row " }, [
-                _c("div", { staticClass: "col " }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-m-auto " }, [
-                      _c("b", [
-                        _vm._v(
-                          _vm._s(
-                            _vm._f("dateCalendar")(_vm.selectedDateSession)
-                          )
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              _vm.subMonth($event)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa fa-angle-left  mr-1 b" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              _vm.addMonth($event)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa fa-angle-right b ml-1" })]
+  return _c(
+    "div",
+    { staticClass: "col-md-auto hidden-lg-up column-calendar " },
+    [
+      _c("div", { staticClass: "row calendar-wrapper " }, [
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("div", { staticClass: "row " }, [
+              _c("div", { staticClass: "col " }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-m-auto " }, [
+                    _c("b", [
+                      _vm._v(
+                        _vm._s(_vm._f("dateCalendar")(_vm.selectedDateSession))
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "row" },
-                    _vm._l(_vm.weeksShort, function(jour, index) {
-                      return _c(
-                        "div",
-                        { staticClass: "col  text-center size--date-day" },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm._f("formated")(jour)) +
-                              "\n                        "
-                          )
-                        ]
-                      )
-                    })
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.cal, function(week) {
-                return _c(
+                  _c("div", { staticClass: "col text-right" }, [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.subMonth($event)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-angle-left  mr-1 b" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addMonth($event)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-angle-right b ml-1" })]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
                   "div",
-                  { staticClass: "row bg-" },
-                  _vm._l(week.date, function(date) {
+                  { staticClass: "row" },
+                  _vm._l(_vm.weeksShort, function(jour, index) {
                     return _c(
                       "div",
-                      { staticClass: "col size--date-number " },
+                      { staticClass: "col  text-center size--date-day" },
                       [
-                        date === _vm.today.format("Y-MM-DD")
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "rounded-circle ",
-                                staticStyle: {
-                                  "background-color": "cornflowerblue",
-                                  color: "white",
-                                  "font-weight": "bold"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    _vm.chooseDate(date)
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm._f("substrDay")(date)) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _c(
-                              "span",
-                              {
-                                staticClass: "rounded-circle",
-                                class: {
-                                  "rounded-circle": true,
-                                  "bg-warning": date === _vm.selectedDate,
-                                  b: date === _vm.selectedDate,
-                                  lightgrey: _vm.isEqualMonth(date)
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    _vm.chooseDate(date)
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm._f("substrDay")(date)) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm._f("formated")(jour)) +
+                            "\n                        "
+                        )
                       ]
                     )
                   })
                 )
-              })
-            ],
-            2
-          )
-        ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.cal, function(week) {
+              return _c(
+                "div",
+                { staticClass: "row bg-" },
+                _vm._l(week.date, function(date) {
+                  return _c("div", { staticClass: "col size--date-number " }, [
+                    date === _vm.today.format("Y-MM-DD")
+                      ? _c(
+                          "span",
+                          {
+                            staticClass: "rounded-circle ",
+                            staticStyle: {
+                              "background-color": "cornflowerblue",
+                              color: "white",
+                              "font-weight": "bold"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.chooseDate(date)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm._f("substrDay")(date)) +
+                                "\n                    "
+                            )
+                          ]
+                        )
+                      : _c(
+                          "span",
+                          {
+                            staticClass: "rounded-circle",
+                            class: {
+                              "rounded-circle": true,
+                              "bg-warning": date === _vm.selectedDate,
+                              b: date === _vm.selectedDate,
+                              lightgrey: _vm.isEqualMonth(date)
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.chooseDate(date)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm._f("substrDay")(date)) +
+                                "\n                    "
+                            )
+                          ]
+                        )
+                  ])
+                })
+              )
+            })
+          ],
+          2
+        )
       ])
-    : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -57960,27 +58045,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    _vm._l(_vm.commandes, function(item) {
-      return _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col item-fiche" }, [
-          _c("i", {
-            staticClass: "fa fa-circle mr-2",
-            staticStyle: { color: "indianred" }
-          }),
-          _vm._v(
-            "\n            " +
-              _vm._s(item.id_cmd) +
-              "\n                \n            "
-          ),
-          _c("small", [_vm._v(_vm._s(item.cd_cmd_cli))])
-        ])
-      ])
-    })
-  )
+  return _c("div", [
+    _vm.showCommande
+      ? _c(
+          "div",
+          [
+            _c(
+              "div",
+              {
+                staticClass: "row item-fiche p-2",
+                staticStyle: { height: "75px" }
+              },
+              [
+                _c("div", { staticClass: "col-md-auto pt-3" }, [
+                  _c("i", {
+                    staticClass: "fa fa-angle-right",
+                    on: { click: _vm.toggleCommande }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.commandes, function(item) {
+              return _c("div", { staticClass: "row item-fiche p-1" }, [
+                _c("div", { staticClass: "col " }, [
+                  _c("i", {
+                    staticClass: "fa fa-circle mr-2",
+                    staticStyle: { color: "indianred" }
+                  }),
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(item.id_cmd) +
+                      "\n                    \n                "
+                  ),
+                  _c("small", [
+                    _vm._v(_vm._s(_vm._f("client")(item.client_delivered.nsoc)))
+                  ])
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      : _c(
+          "div",
+          [
+            _c(
+              "div",
+              {
+                staticClass: "row item-fiche p-2",
+                staticStyle: { height: "75px" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-auto pt-3",
+                    on: { click: _vm.toggleCommande }
+                  },
+                  [_c("i", { staticClass: "fa fa-angle-left" })]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.dummy, function(item) {
+              return _c("div", { staticClass: "row item-fiche p-1" }, [
+                _vm._m(1, true)
+              ])
+            })
+          ],
+          2
+        )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col pt-3" }, [
+      _c("h5", [_vm._v("Fiches en cours")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col " }, [
+      _c("span", { staticStyle: { color: "lightgrey" } }, [_vm._v("...")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -58060,6 +58217,63 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-7b88e3df", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9364ea6a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Navigation.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticStyle: { "font-size": "1.2em" } }, [
+      _c("li", { staticClass: "title" }, [
+        _c("i", { staticClass: "fa fa-compass fa-2x" }),
+        _vm._v(" Navigation")
+      ]),
+      _vm._v(" "),
+      _c("li", [_vm._v("test 1-1")]),
+      _vm._v(" "),
+      _c("li", [
+        _vm._v("\n        test 1-2\n        "),
+        _c("ul", [
+          _c("li", [_vm._v("test 2-1")]),
+          _vm._v(" "),
+          _c("li", [_vm._v("test 2-2")]),
+          _vm._v(" "),
+          _c("li", [_vm._v("test 2-3")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _vm._v("\n        test 1-3\n        "),
+        _c("ul", [
+          _c("li", [_vm._v("test 2-4")]),
+          _vm._v(" "),
+          _c("li", [_vm._v("test 2-5")]),
+          _vm._v(" "),
+          _c("li", [_vm._v("test 2-6")])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9364ea6a", module.exports)
   }
 }
 
@@ -58222,33 +58436,14 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      _vm.hideCalendar($event)
+                      _vm.hideToolbar($event)
                     }
                   }
                 },
                 [_c("i", { staticClass: "fa fa-bars" })]
               ),
               _vm._v(" "),
-              _c(
-                "a",
-                { staticClass: "navbar-brand mr-4 ml-3", attrs: { href: "/" } },
-                [
-                  _c("img", {
-                    staticClass: "d-inline-block align-top",
-                    attrs: {
-                      src: "/images/light.png",
-                      width: "30",
-                      height: "30",
-                      alt: ""
-                    }
-                  }),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.app) +
-                      "\n                "
-                  )
-                ]
-              ),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "a",
@@ -58381,6 +58576,25 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "navbar-brand mr-4 ml-3", attrs: { href: "/" } },
+      [
+        _c("img", {
+          staticClass: "d-inline-block align-top",
+          attrs: { src: "/images/euro.png", width: "30", height: "30", alt: "" }
+        }),
+        _vm._v(" "),
+        _c("b", [_vm._v("O")]),
+        _c("i", [_c("u", [_vm._v("rg")])]),
+        _c("b", [_vm._v("anizer")])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -58424,7 +58638,7 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass: "col-md-auto",
+                      staticClass: "col text-right",
                       on: { click: _vm.closeResultWindow }
                     },
                     [_c("i", { staticClass: "fa fa-times fa-2x" })]
@@ -58433,7 +58647,7 @@ var render = function() {
                   _vm.activeCalendar
                     ? _c(
                         "div",
-                        { staticClass: "col-2" },
+                        { staticClass: "col-md-auto" },
                         [
                           _c("pick-calendar", {
                             attrs: { dtenvoie: _vm.search.date_envoie }
@@ -70191,6 +70405,7 @@ Vue.component('pick-calendar', __webpack_require__("./resources/assets/js/compon
 Vue.component('element-work', __webpack_require__("./resources/assets/js/components/Element_work.vue"));
 Vue.component('toolbar', __webpack_require__("./resources/assets/js/components/ToolBar.vue"));
 Vue.component('commandes', __webpack_require__("./resources/assets/js/components/Commandes.vue"));
+Vue.component('navigation', __webpack_require__("./resources/assets/js/components/Navigation.vue"));
 
 window.Event = new Vue();
 
@@ -70201,6 +70416,7 @@ $(function () {
 var app = new Vue({
     el: '#app'
 });
+console.log(screen.height);
 
 /***/ }),
 
@@ -70437,6 +70653,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-cd7fb372", Component.options)
   } else {
     hotAPI.reload("data-v-cd7fb372", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Navigation.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Navigation.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9364ea6a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Navigation.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Navigation.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9364ea6a", Component.options)
+  } else {
+    hotAPI.reload("data-v-9364ea6a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

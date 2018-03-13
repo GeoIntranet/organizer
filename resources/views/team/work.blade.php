@@ -19,7 +19,7 @@
 
             <result-search></result-search>
 
-            <toolbar :commandes="{{$commandes}}"> </toolbar>
+            <toolbar > </toolbar>
 
             <div class="col">
                 <week
@@ -31,8 +31,8 @@
                 </week>
             </div>
 
-            <div class=" col-information col-md-auto p-2" >
-                <h4>INFORMATION</h4>
+            <div class=" col-information col-md-auto " >
+                <commandes :commandes="{{$commandes}}" ></commandes>
             </div>
 
         </div>
