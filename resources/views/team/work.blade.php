@@ -16,10 +16,12 @@
 
     <div class="container-fluid  ">
         <div class="row container-wrapper ">
-            <result-search></result-search>
-            <calendar > </calendar>
 
-            <div class="col ">
+            <result-search></result-search>
+
+            <toolbar :commandes="{{$commandes}}"> </toolbar>
+
+            <div class="col">
                 <week
                     :year="{{carbon('y')}}"
                     :month="{{carbon('m')}}"
@@ -28,6 +30,7 @@
 
                 </week>
             </div>
+
             <div class=" col-information col-md-auto p-2" >
                 <h4>INFORMATION</h4>
             </div>

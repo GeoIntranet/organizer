@@ -13080,10 +13080,6 @@ a.text-dark:focus {
   min-height: 94.5vh;
 }
 
-.column-calendar {
-  border-right: solid 1px #dee2e6;
-}
-
 .calendar-wrapper {
   padding: 20px 21px 20px 21px;
   border-bottom: solid 1px #dee2e6;
@@ -13191,5 +13187,14 @@ a.text-dark:focus {
 
 .col-information {
   border-top: solid 1px #dee2e6;
+}
+
+.toolbar {
+  border-right: solid 1px #dee2e6;
+  height: 94vh;
+}
+
+.item-fiche {
+  border-bottom: solid 1px #dee2e6;
 }
 

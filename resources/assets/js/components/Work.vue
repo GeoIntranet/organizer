@@ -44,28 +44,7 @@
                                 style="height: 75px;"
 
                         >
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col" style="cursor:default" @click=" editItem(element) ">
-                                        {{element.id_cmd}}
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col" style="font-size: 0.8em">
-                                        {{element.client.nsoc | client}}
-                                    </div>
-                                </div>
-                                <div class="row pb-1 pt-1">
-                                    <div class="col text-right" style="font-size: 0.8em">
-                                            <i v-if="element.da == 1" class="fa fa-dollar ml-1"> </i>
-                                            <i v-if="element.inc == 1" class="fa fa-bell ml-1"> </i>
-                                            <i v-if="element.devis == 1" class="fa fa-ban ml-1"> </i>
-                                    </div>
-                                </div>
-                            </div>
-
-
+                            <element-work :work="element"></element-work>
 
                         </div>
                     </transition-group>
@@ -111,6 +90,22 @@
                 this.getWorksWeek()
             })
 
+            Event.$on('refreshWork',(data)=>{
+                this.getWorksWeek()
+            })
+
+            Event.$on('removeElement',(data)=>{
+
+                this.work.forEach(function(element){
+                   element.forEach(function(item,index){
+                       if(item.id === data ){
+                           element.splice(index,1);
+                       }
+                   })
+                })
+                //this.getWorksWeek()
+            })
+
             Event.$on('resetResultWork',(data)=>{
                 this.isLoading = true;
 
@@ -122,29 +117,9 @@
 
             this.getWorksWeek()
         },
-        filters:{
-            client(client){
-                return   _.upperFirst(_.lowerCase(client.substr(0,15)))
-            },
-            da(da){
-                return   da == 1 ? "<i class=fa fa-dollar ml-2> </i>" : ''
-            },
-            devis(devis){
-                return   ''
-            },
-            inc(inc){
-                return   ''
-            }
-        },
-        methods: {
-            getClient(client){
 
-                return 'test_'+client
-            },
-            editItem(data){
-                Event.$emit('editItem',data)
-                Event.$emit('focusSearchDelais',data)
-            },
+        methods: {
+
 
             getWorksWeek(){
                 this.isLoading = true;

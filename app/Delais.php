@@ -26,6 +26,6 @@ class Delais extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class,'client','id_client');
+        return $this->belongsTo(Client::class,'id_client','id_client');
     }
 }

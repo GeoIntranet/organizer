@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Delais;
-use App\Http\Controllers\Lib\Calender\CalenderGestion;
-use App\Http\Controllers\Lib\Calender\WeekGestion;
 use App\Http\Controllers\Lib\Team\TeamOrganiser;
-use App\Incident;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
+use App\Commande;
+use App\Delais;
+
 
 class TeamController extends Controller
 {
@@ -71,11 +67,13 @@ class TeamController extends Controller
         $date->setISODate($date->copy()->format('Y'),$semaine);
         $start =  $date->startOfWeek();
         $week = [];
+
         $dt = new carbon($start);
 
         for( $i=0 ; $i <5 ; $i++ ){
             $week[] = $i > 0 ? $dt->addDay(1)->copy() : $dt->copy() ;
         }
+
 
         $delais = Delais::where('semaine_envoie',$semaine)
             ->with('client')
@@ -128,6 +126,15 @@ class TeamController extends Controller
         //return ['update OK'];
     }
 
+    public function updateDate($id,$dt)
+    {
+            $semaine = (new Carbon($dt))->weekOfYear;
+
+            Delais::where('id',$id)->update(['date_envoie'=>$dt,'semaine_envoie'=>$semaine]);
+
+            return ['ok'];
+    }
+
     /**
      * @param null $date
      * @return mixed
@@ -151,8 +158,10 @@ class TeamController extends Controller
         //    ->groupBy('date_envoie')
         //;
 
+        $cmd = Commande::enCours()->limit(0)->take(25)->get();
+
         return view('team.work')
-            //->with('week',$calendar)
+            ->with('commandes',$cmd)
             //->with('delais',$delaisItem)
             //->with('users',$users)
             ;

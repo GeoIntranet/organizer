@@ -143,7 +143,6 @@ class Commande extends Model
             $query -> orderBy ('date_cmd','DESC');
         }
 
-        $query = $query->get();
 
         return $query;
     }

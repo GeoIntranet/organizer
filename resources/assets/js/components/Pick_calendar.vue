@@ -1,10 +1,11 @@
 <template>
-    <div v-if="showCalendar" class="col-md-auto hidden-lg-up column-calendar ">
+    <div v-if="showCalendar" class="col-md-auto hidden-lg-up column-calendar" >
         <div class="row calendar-wrapper ">
             <div class="col">
-                <div class="row ">
+
+                <div class="row " >
                     <div class="col ">
-                        <div class="row">
+                        <div class="row" >
                             <div class="col-m-auto ">
                                 <b>{{ selectedDateSession | dateCalendar}}</b>
                             </div>
@@ -15,7 +16,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row" >
                             <div class="col  text-center size--date-day" v-for="(jour,index) in weeksShort ">
                                 {{ jour | formated }}
                             </div>
@@ -76,9 +77,13 @@
         mounted() {
             let Sunday = [this.weeksShort.shift()]
             this.weeksShort = this.weeksShort.concat(Sunday);
+            this.selectedDateSession = moment(this.dtenvoie);
+            this.selectedDate = moment(this.dtenvoie).format('Y-MM-DD');
 
 
             this.makeCalendar();
+
+
 
             Event.$on('toggleCalendar',(data)=>{
                 this.showCalendar = ! this.showCalendar;
@@ -113,6 +118,7 @@
                 return data.substr(-2);
             }
         },
+        props:['dtenvoie'],
         methods: {
             modifyDate(data){
                 this.selectedDateSession = data;
@@ -121,14 +127,14 @@
             },
 
             isEqualMonth(date){
-              return date.substr(5,2) !== this.selectedDateSession.format('Y-MM-DD').substr(5,2);
+                return date.substr(5,2) !== this.selectedDateSession.format('Y-MM-DD').substr(5,2);
             },
 
             defineRefDate(year,start){
 
                 if(start >=0 && start<=12)
                     return moment().year(year).startOf('year').month(start-1).startOf('month').startOf('week')
-                    ;
+                        ;
 
                 return moment().year(year).startOf('month').startOf('week')
             },
@@ -141,7 +147,7 @@
                 let startDayWeek = moment(dateMutable).startOf('month').startOf('week');
                 let refDate = startDayWeek
 
-                 //refDate =   this.defineRefDate('2018',12);
+                //refDate =   this.defineRefDate('2018',12);
 
                 this.cal = [];
                 for(let w=0 ; w<=5 ; w++){
@@ -176,6 +182,11 @@
                 this.makeCalendar();
             },
             chooseDate(date){
+
+               Event.$emit('pick_dt_envoie',date);
+               //Event.$emit('desactivateUpdateCalendar',date);
+
+
                 let dateTMP = moment(date);
                 let diffMonth = _.parseInt(date.substr(5,2)) !== this.selectedDateSession.month()+1;
                 let diffWeek  = dateTMP.week() !== this.selectedDateSession.week()
@@ -186,8 +197,7 @@
 
                 if(diffWeek)
                 {
-                    Event.$emit('resetResultWork') ;
-                    Event.$emit('chooseDate',date);
+
                 }
 
                 if(diffMonth)

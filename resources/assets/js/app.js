@@ -33,6 +33,10 @@ Vue.component('work', require('./components/Work.vue'));
 Vue.component('navbar', require('./components/Navbar.vue'));
 Vue.component('search', require('./components/Search.vue'));
 Vue.component('result-search', require('./components/Result_search'));
+Vue.component('pick-calendar', require('./components/Pick_calendar'));
+Vue.component('element-work', require('./components/Element_work'));
+Vue.component('toolbar', require('./components/ToolBar'));
+Vue.component('commandes', require('./components/Commandes'));
 
 window.Event = new Vue();
 
