@@ -2166,10 +2166,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            showSubOne: false,
+            showSubTwo: false,
+            showSubThree: false,
+            showSubFour: false,
+            iconeOne: '+',
+            iconeTwo: '+',
+            iconeThree: '+',
+            iconeFour: '+'
+        };
+    },
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+
+    computed: {
+        sigleFour: function sigleFour() {
+            return '-';
+        }
+    },
+    methods: {
+        toggleSubFour: function toggleSubFour() {
+            this.showSubFour = !this.showSubFour;
+            this.toggleIcone(4);
+        },
+        toggleSubThree: function toggleSubThree() {
+            this.showSubThree = !this.showSubThree;
+            this.toggleIcone(3);
+        },
+        toggleSubTwo: function toggleSubTwo() {
+            this.showSubTwo = !this.showSubTwo;
+            this.toggleIcone(2);
+        },
+        toggleSubOne: function toggleSubOne() {
+            this.showSubOne = !this.showSubOne;
+            this.toggleIcone(1);
+        },
+        toggleIcone: function toggleIcone(icone) {
+            if (icone === 4) this.iconeFour = this.iconeFour === '+' ? '-' : '+';
+            if (icone === 3) this.iconeThree = this.iconeThree === '+' ? '-' : '+';
+            if (icone === 2) this.iconeTwo = this.iconeTwo === '+' ? '-' : '+';
+            if (icone === 1) this.iconeOne = this.iconeOne === '+' ? '-' : '+';
+        }
     }
 });
 
@@ -54605,7 +54663,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
 				_css(ghostEl, 'width', rect.width);
 				_css(ghostEl, 'height', rect.height);
-				_css(ghostEl, 'opacity___', '1');
+				_css(ghostEl, 'opacity', '0.8');
 				_css(ghostEl, 'position', 'fixed');
 				_css(ghostEl, 'zIndex', '100000');
 				_css(ghostEl, 'pointerEvents', 'none');
@@ -58229,42 +58287,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "ul",
+    { staticClass: "nopuce ", staticStyle: { "font-size": "15px" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("li", { staticClass: "item-nav" }, [_vm._v("En cours")]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "span",
+          { staticClass: "header-sub-nav", on: { click: _vm.toggleSubOne } },
+          [_vm._v(_vm._s(_vm.iconeOne) + "   Fiches")]
+        ),
+        _vm._v(" "),
+        _vm.showSubOne
+          ? _c("ul", [
+              _c("li", [_vm._v("test 2-1")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-2")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-3")])
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "span",
+          { staticClass: "header-sub-nav", on: { click: _vm.toggleSubTwo } },
+          [_vm._v(_vm._s(_vm.iconeTwo) + "   Achats")]
+        ),
+        _vm._v(" "),
+        _vm.showSubTwo
+          ? _c("ul", [
+              _c("li", [_vm._v("test 2-4")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-5")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-6")])
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "span",
+          { staticClass: "header-sub-nav", on: { click: _vm.toggleSubThree } },
+          [_vm._v(_vm._s(_vm.iconeThree) + "   Stock")]
+        ),
+        _vm._v(" "),
+        _vm.showSubThree
+          ? _c("ul", [
+              _c("li", [_vm._v("test 2-4")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-5")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-6")])
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "span",
+          { staticClass: "header-sub-nav", on: { click: _vm.toggleSubFour } },
+          [_vm._v(" " + _vm._s(_vm.iconeFour) + "   Administration")]
+        ),
+        _vm._v(" "),
+        _vm.showSubFour
+          ? _c("ul", [
+              _c("li", [_vm._v("test 2-4")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-5")]),
+              _vm._v(" "),
+              _c("li", [_vm._v("test 2-6")])
+            ])
+          : _vm._e()
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", { staticStyle: { "font-size": "1.2em" } }, [
-      _c("li", { staticClass: "title" }, [
-        _c("i", { staticClass: "fa fa-compass fa-2x" }),
-        _vm._v(" Navigation")
-      ]),
-      _vm._v(" "),
-      _c("li", [_vm._v("test 1-1")]),
-      _vm._v(" "),
-      _c("li", [
-        _vm._v("\n        test 1-2\n        "),
-        _c("ul", [
-          _c("li", [_vm._v("test 2-1")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("test 2-2")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("test 2-3")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _vm._v("\n        test 1-3\n        "),
-        _c("ul", [
-          _c("li", [_vm._v("test 2-4")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("test 2-5")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("test 2-6")])
-        ])
-      ])
+    return _c("li", { staticClass: "title-nav" }, [
+      _c("i", { staticClass: "fa fa-compass fa-2x" }),
+      _vm._v(" Navigation")
     ])
   }
 ]
