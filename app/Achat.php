@@ -10,9 +10,7 @@ class Achat extends Model
     protected $primaryKey = 'id_pd';
     protected $connection = "eurocomputer" ;
     protected $table ='pd';
-    protected $relations;
     public $timestamps = false;
-    protected $attributes;
 
 
     public function __construct()

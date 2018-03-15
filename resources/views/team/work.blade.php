@@ -18,6 +18,8 @@
         <div class="row container-wrapper ">
 
             <result-search></result-search>
+            <delais-specific></delais-specific>
+            <all-fiche></all-fiche>
 
             <toolbar > </toolbar>
 

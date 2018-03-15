@@ -38,6 +38,8 @@ Vue.component('element-work', require('./components/Element_work'));
 Vue.component('toolbar', require('./components/ToolBar'));
 Vue.component('commandes', require('./components/Commandes'));
 Vue.component('navigation', require('./components/Navigation'));
+Vue.component('delais-specific', require('./components/DelaisSpecific'));
+Vue.component('all-fiche', require('./components/Allfiche'));
 
 window.Event = new Vue();
 

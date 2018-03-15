@@ -24,8 +24,10 @@ Route::get('/team/{id}/{date}', ['as'=>'updatedElementDate','uses' => 'TeamContr
 Route::get('/team/get/work/{semaine}', ['as'=>'searchwork','uses' => 'TeamController@searchWork']);
 Route::get('/team/{semaine}/{id}/{order}/{dayNumber}', ['as'=>'updatedElement','uses' => 'TeamController@updateColumn']);
 Route::get('/team/works/{date}', ['as'=>'works','uses' => 'TeamController@works']);
-Route::get('/works/week', ['as'=>'works','uses' => 'TeamController@works']);
+Route::get('/works', ['as'=>'works','uses' => 'TeamController@works']);
 Route::get('/team/{bl}/add', ['as'=>'works','uses' => 'TeamController@dayAdd']);
 Route::get('/team/{bl}/sub', ['as'=>'works','uses' => 'TeamController@daySub']);
 Route::get('/usercheck', ['as'=>'apicheck','uses' => 'TeamController@api']);
 Route::get('/apireceiv', ['as'=>'apireceiv','uses' => 'TeamController@apireceiv']);
+
+Route::get('/fiches', ['as'=>'ficheall','uses' => 'FicheController@all']);
