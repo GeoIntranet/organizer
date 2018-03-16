@@ -9,12 +9,13 @@
                     <h5>Fiches en cours</h5>
                 </div>
             </div>
-            <div class="row item-fiche p-1" v-for="item in commandes">
-                <div class="col " >
-                    <i class="fa fa-circle mr-2" style="color:indianred"> </i>
-                    {{item.id_cmd}}
+            <div class="row item-fiche p-1" v-for="commande in commandes_">
+                <div class="col " @click="showCommandeItem(commande)">
+                    <i v-if="commande.delais" class="fa fa-circle mr-2" style="color:mediumaquamarine"> </i>
+                    <i v-else class="fa fa-circle mr-2" style="color:indianred"> </i>
+                    {{commande.id_cmd}}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <small>{{item.client_delivered.nsoc | client}}</small>
+                    <small>{{commande.client_delivered.nsoc | client}}</small>
                 </div>
             </div>
         </div>
@@ -43,18 +44,32 @@
             return{
                 showCommande : true,
                 dummy:[],
+                commandes_:[]
             }
         },
         mounted() {
+            this.commandes_  = this.commandes;
             for(let i=0 ; i<15 ; i++){
                 this.dummy.push(i)
             }
-            console.log('Component mounted.')
+            Event.$on('refreshCommandesListe',(data)=>{
+               this.refreshList()
+            })
         },
         props:['commandes'],
         methods:{
+            refreshList(){
+                axios.get('/works').then(
+                    response => {
+                        this.commandes_ =  response.data;
+                    }
+                );
+            },
             toggleCommande(){
                 this.showCommande = ! this.showCommande
+            },
+            showCommandeItem(commande){
+                Event.$emit('editCommande',commande)
             }
         },
         filters:{

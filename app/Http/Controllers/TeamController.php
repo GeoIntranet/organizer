@@ -7,7 +7,7 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use App\Commande;
 use App\Delais;
-
+use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
@@ -139,26 +139,14 @@ class TeamController extends Controller
      * @param null $date
      * @return mixed
      */
-    public function works($date=null)
+    public function works(Request $request,$date=null)
     {
-        //$users =[48 => 'gv' , 51 => 'cc', 52 => 'flm' , 78 => 'jfl'];
-        //$calendar = new WeekGestion();
-        //
-        //if($date <> null) $calendar->setStarterDate($date);
-        //
-        //$calendar = $calendar->generateWeek();
-        //
-        //$week = $calendar->getWeek();
-        //
-        //$delaisItem = New Delais();
-        //
-        //$delaisItem = $delaisItem
-        //    ->whereBetween('date_envoie',[$calendar->firstDay(),$calendar->lastDay()])
-        //    ->get()
-        //    ->groupBy('date_envoie')
-        //;
+        if($request->ajax()){
+            return  $cmd = Commande::enCours()->with('clientDelivered','delais')->limit(0)->take(16)->get();;
+        }
 
-        $cmd = Commande::enCours()->with('clientDelivered')->limit(0)->take(16)->get();
+
+        $cmd = Commande::enCours()->with('clientDelivered','delais')->limit(0)->take(16)->get();
 
         return view('team.work')
             ->with('commandes',$cmd)

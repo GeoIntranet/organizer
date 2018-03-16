@@ -39,6 +39,8 @@ Vue.component('toolbar', require('./components/ToolBar'));
 Vue.component('commandes', require('./components/Commandes'));
 Vue.component('navigation', require('./components/Navigation'));
 Vue.component('delais-specific', require('./components/DelaisSpecific'));
+Vue.component('commande-specific', require('./components/CommandeSpecific'));
+Vue.component('commande-calendar', require('./components/CommandeCalendar'));
 Vue.component('all-fiche', require('./components/Allfiche'));
 
 window.Event = new Vue();

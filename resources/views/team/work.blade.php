@@ -19,6 +19,7 @@
 
             <result-search></result-search>
             <delais-specific></delais-specific>
+            <commande-specific></commande-specific>
             <all-fiche></all-fiche>
 
             <toolbar > </toolbar>

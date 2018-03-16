@@ -18,9 +18,25 @@
                </div>
                <div class="row p-3" v-else>
                    <div class="col-6 border" v-for="col in fiches">
-                      <div class="row border" v-for="bl in col">
+                      <div style="height: 80px;" class="row border p-1" v-for="(bl,index) in col">
                           <div class="col">
-                              {{bl.id_cmd}} / {{bl.clientDelivered.id}}
+                              <div class="row">
+                                  <div class="col">
+                                      <i v-if="bl.delais" class="fa fa-circle  mr-2" style="color:mediumaquamarine" > </i>
+                                      <i  class="fa fa-circle  mr-2" style="color:indianred" v-else> </i>
+                                      {{bl.id_cmd}} -
+                                      {{bl.client_delivered.nsoc}}
+                                      <span v-if="bl.delais">- {{this.moment(bl.delais.date_envoie).format('DD-MM-Y')}}</span>
+
+                                  </div>
+                              </div>
+                              <div class="row ml-2">
+                                  <div class="col " v-if="bl.it_cmd">
+                                      <span v-if="bl.it_cmd.info_prod" v-html="bl.it_cmd.info_prod"></span>
+                                      <span v-else></span>
+                                  </div>
+                                  <div class="col" v-else></div>
+                              </div>
                           </div>
                       </div>
                    </div>
@@ -41,6 +57,11 @@
                 showAllFiche: false,
                 fiches:[],
             }
+        },
+        filters:{
+          nullable(data){
+              return 'aucune info de production'
+          }
         },
         mounted() {
             Event.$on('closeSearch',(data)=>{

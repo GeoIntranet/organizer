@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Commande;
+use App\Delais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,15 +18,14 @@ class FicheController extends Controller
 
 
         $fiches  = Commande::encours()
-            ->with('ligne','clientDelivered','clientFacture','achat')
+            ->with('delais','ligne','clientDelivered','clientFacture','achat','itCmd')
             ->get();
-        foreach ($fiches as $index => $fich) {
-            var_dump($fich->clientDelivered->nsoc);
-        }
+
+
         //die();
         //dd($fiches[0]->clientDelivered->nsoc);
-        return  $fiches;
         $expiresAt = now()->addMinutes(10);
+        return  $fiches->chunk(intval(count($fiches))/2);
 
         //Cache::put('fichesEnCours', ($fiches), $expiresAt);
         //return view('home');

@@ -31,3 +31,4 @@ Route::get('/usercheck', ['as'=>'apicheck','uses' => 'TeamController@api']);
 Route::get('/apireceiv', ['as'=>'apireceiv','uses' => 'TeamController@apireceiv']);
 
 Route::get('/fiches', ['as'=>'ficheall','uses' => 'FicheController@all']);
+Route::get('/delais/add/{bl}/{dt}', ['as'=>'ficheall','uses' => 'DelaisController@add']);

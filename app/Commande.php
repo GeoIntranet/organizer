@@ -241,6 +241,23 @@ class Commande extends Model
     {
         return $this->belongsTo(Client::class,'id_clientfact','id_client');
     }
+    /**
+     * retourne les info tech sur une commande
+     *
+     */
+    public function itCmd()
+    {
+        return $this->hasOne(InfoCommande::class,'id_cmd','id_cmd');
+    }
+
+    /**
+     * retourne les info tech sur une commande
+     *
+     */
+    public function delais()
+    {
+        return $this->hasOne(Delais::class,'id_cmd','id_cmd');
+    }
 
     /**
      * retourne le vendeur de la commande
