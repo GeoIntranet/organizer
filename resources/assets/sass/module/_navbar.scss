@@ -1,0 +1,29 @@
+.nav-today{
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: $bluepale;
+  border-radius:5px;
+  &:hover{
+    background-color: darken($bluepale,5%);
+  }
+}
+.burger{
+  color:grey;
+  margin-right:0.5em;
+  text-align: center;
+  border-radius:20px;
+  width: 40px;
+  &:hover{
+    background-color: darken($bluepale,5%);
+  }
+}
+
+.nav-addsub{
+  margin-right:0.5em;
+  text-align: center;
+  border-radius:20px;
+  width: 40px;
+  &:hover{
+    background-color: darken($bluepale,5%);
+  }
+}

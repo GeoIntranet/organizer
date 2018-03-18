@@ -1,0 +1,31 @@
+.toggle-commande{
+  cursor: pointer;
+  color:grey;
+  margin-right:0.5em;
+  margin-top: 5px;
+  text-align: center;
+  border-radius:40px;
+  width: 40px;
+  height: 40px;
+  padding-top: 10px;
+  &:hover{
+    background-color: darken($bluepale,5%);
+  }
+}
+
+.dummyrow{
+  background-color: $bluepale;
+}
+.commande-row{
+  &:hover{
+    background-color: $bluepale;
+  }
+  .commande-item{
+    cursor: pointer;
+    &:hover{
+      .bl{
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -51,18 +51,32 @@
             },
             toggleSubFour(){
                 this.showSubFour = ! this.showSubFour
+
+                this.showSubOne = false ;
+                this.showSubTwo = false ;
+                this.showSubThree = false ;
+
                 this.toggleIcone(4);
             },
             toggleSubThree(){
                 this.showSubThree = ! this.showSubThree
+                this.showSubOne = false ;
+                this.showSubTwo = false ;
+                this.showSubFour = false ;
                 this.toggleIcone(3);
             },
             toggleSubTwo(){
                 this.showSubTwo = ! this.showSubTwo
+                this.showSubOne = false ;
+                this.showSubFour = false ;
+                this.showSubThree = false ;
                 this.toggleIcone(2);
             },
             toggleSubOne(){
                 this.showSubOne = ! this.showSubOne
+                this.showSubFour = false ;
+                this.showSubTwo = false ;
+                this.showSubThree = false ;
                 this.toggleIcone(1);
             },
             toggleIcone(icone){

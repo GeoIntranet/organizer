@@ -11,20 +11,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav  col-6">
-                    <a @click.prevent="hideToolbar" class="navbar-brand mr-3" href="/">
+                    <a @click.prevent="hideToolbar" class="navbar-brand mr-3 burger" href="/">
                        <i class="fa fa-bars"> </i>
                     </a>
                     <a class="navbar-brand mr-4 ml-3" href="/">
                         <img src="/images/euro.png" width="30" height="30" class="d-inline-block align-top" alt="">
                         <b>O</b><i><u>rg</u></i><b>anizer</b>
                     </a>
-                    <a @click.prevent="getTodayWork" class="ml-4 mr-4 navbar-brand" href="#">
+                    <a @click.prevent="getTodayWork" class="ml-4 mr-4 navbar-brand nav-today" href="#">
                         Aujourd'hui
                     </a>
-                    <a class="ml-4  mr-1 navbar-brand" href="#" @click.prevent="subWeek">
+                    <a class=" navbar-brand nav-addsub" href="#" @click.prevent="subWeek">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a class="ml-1 navbar-brand" href="#" @click.prevent="addWeek">
+                    <a class=" navbar-brand nav-addsub" href="#" @click.prevent="addWeek">
                         <i class="fa fa-angle-right"></i>
                     </a>
                     <a class="navbar-brand" href="#">

@@ -3,6 +3,7 @@
         <form >
             <input
                     ref="search_input"
+                    id="search_input"
                     autofocus
                     autocomplete="off" name="search" v-model="search"
                     @keyup="autocomplete"

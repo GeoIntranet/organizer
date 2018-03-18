@@ -2,8 +2,8 @@
     <div >
         <div v-if="showCommande">
             <div class="row item-fiche p-2" style="height: 75px;">
-                <div class="col-md-auto pt-3" >
-                    <i class="fa fa-angle-right" @click="toggleCommande"> </i>
+                <div class="col-md-auto toggle-commande" @click="toggleCommande">
+                    <i class="fa fa-angle-right"> </i>
                 </div>
                 <div class="col pt-3">
                     <h5>Fiches en cours</h5>
@@ -14,11 +14,11 @@
                     <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x mr-3"> </i>
                 </div>
             </div>
-             <div class="row item-fiche p-1" v-for="commande in commandes_" v-else>
-                <div class="col " @click="showCommandeItem(commande)">
+             <div class="row item-fiche p-1 commande-row" v-for="commande in commandes_" v-else>
+                <div class="col commande-item" @click="showCommandeItem(commande)">
                     <i v-if="commande.delais" class="fa fa-circle mr-2" style="color:mediumaquamarine"> </i>
                     <i  class="fa fa-circle mr-2" style="color:indianred" v-else> </i>
-                    {{commande.id_cmd}}
+                    <span class="bl">{{commande.id_cmd}}</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <small>{{commande.client_delivered.nsoc | client}}</small>
                 </div>
@@ -26,14 +26,14 @@
         </div>
         <div v-else>
             <div class="row item-fiche p-2" style="height: 75px;">
-                <div class="col-md-auto pt-3"  @click="toggleCommande">
+                <div class="col-md-auto toggle-commande"  @click="toggleCommande">
                     <i class="fa fa-angle-left"> </i>
                 </div>
             </div>
 
-            <div class="row item-fiche p-1" v-for="item in dummy">
+            <div class="row item-fiche p-1 dummyrow" v-for="item in dummy">
                 <div class="col " >
-                   <span style="color:lightgrey">...</span>
+                   <span style="color:lightgrey"> . . .</span>
                 </div>
             </div>
 

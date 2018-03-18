@@ -2736,18 +2736,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleSubFour: function toggleSubFour() {
             this.showSubFour = !this.showSubFour;
+
+            this.showSubOne = false;
+            this.showSubTwo = false;
+            this.showSubThree = false;
+
             this.toggleIcone(4);
         },
         toggleSubThree: function toggleSubThree() {
             this.showSubThree = !this.showSubThree;
+            this.showSubOne = false;
+            this.showSubTwo = false;
+            this.showSubFour = false;
             this.toggleIcone(3);
         },
         toggleSubTwo: function toggleSubTwo() {
             this.showSubTwo = !this.showSubTwo;
+            this.showSubOne = false;
+            this.showSubFour = false;
+            this.showSubThree = false;
             this.toggleIcone(2);
         },
         toggleSubOne: function toggleSubOne() {
             this.showSubOne = !this.showSubOne;
+            this.showSubFour = false;
+            this.showSubTwo = false;
+            this.showSubThree = false;
             this.toggleIcone(1);
         },
         toggleIcone: function toggleIcone(icone) {
@@ -3037,6 +3051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -58902,12 +58917,14 @@ var render = function() {
                 staticStyle: { height: "75px" }
               },
               [
-                _c("div", { staticClass: "col-md-auto pt-3" }, [
-                  _c("i", {
-                    staticClass: "fa fa-angle-right",
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-auto toggle-commande",
                     on: { click: _vm.toggleCommande }
-                  })
-                ]),
+                  },
+                  [_c("i", { staticClass: "fa fa-angle-right" })]
+                ),
                 _vm._v(" "),
                 _vm._m(0)
               ]
@@ -58916,42 +58933,46 @@ var render = function() {
             _vm.isLoading
               ? _c("div", { staticClass: "row pt-3" }, [_vm._m(1)])
               : _vm._l(_vm.commandes_, function(commande) {
-                  return _c("div", { staticClass: "row item-fiche p-1" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "col ",
-                        on: {
-                          click: function($event) {
-                            _vm.showCommandeItem(commande)
+                  return _c(
+                    "div",
+                    { staticClass: "row item-fiche p-1 commande-row" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col commande-item",
+                          on: {
+                            click: function($event) {
+                              _vm.showCommandeItem(commande)
+                            }
                           }
-                        }
-                      },
-                      [
-                        commande.delais
-                          ? _c("i", {
-                              staticClass: "fa fa-circle mr-2",
-                              staticStyle: { color: "mediumaquamarine" }
-                            })
-                          : _c("i", {
-                              staticClass: "fa fa-circle mr-2",
-                              staticStyle: { color: "indianred" }
-                            }),
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(commande.id_cmd) +
-                            "\n                    \n                "
-                        ),
-                        _c("small", [
-                          _vm._v(
-                            _vm._s(
-                              _vm._f("client")(commande.client_delivered.nsoc)
+                        },
+                        [
+                          commande.delais
+                            ? _c("i", {
+                                staticClass: "fa fa-circle mr-2",
+                                staticStyle: { color: "mediumaquamarine" }
+                              })
+                            : _c("i", {
+                                staticClass: "fa fa-circle mr-2",
+                                staticStyle: { color: "indianred" }
+                              }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "bl" }, [
+                            _vm._v(_vm._s(commande.id_cmd))
+                          ]),
+                          _vm._v("\n                    \n                "),
+                          _c("small", [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("client")(commande.client_delivered.nsoc)
+                              )
                             )
-                          )
-                        ])
-                      ]
-                    )
-                  ])
+                          ])
+                        ]
+                      )
+                    ]
+                  )
                 })
           ],
           2
@@ -58969,7 +58990,7 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "col-md-auto pt-3",
+                    staticClass: "col-md-auto toggle-commande",
                     on: { click: _vm.toggleCommande }
                   },
                   [_c("i", { staticClass: "fa fa-angle-left" })]
@@ -58978,7 +58999,7 @@ var render = function() {
             ),
             _vm._v(" "),
             _vm._l(_vm.dummy, function(item) {
-              return _c("div", { staticClass: "row item-fiche p-1" }, [
+              return _c("div", { staticClass: "row item-fiche p-1 dummyrow" }, [
                 _vm._m(2, true)
               ])
             })
@@ -59012,7 +59033,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col " }, [
-      _c("span", { staticStyle: { color: "lightgrey" } }, [_vm._v("...")])
+      _c("span", { staticStyle: { color: "lightgrey" } }, [_vm._v(" . . .")])
     ])
   }
 ]
@@ -59048,6 +59069,7 @@ var render = function() {
         ref: "search_input",
         staticClass: "form-control col-12 ",
         attrs: {
+          id: "search_input",
           autofocus: "",
           autocomplete: "off",
           name: "search",
@@ -59626,7 +59648,7 @@ var render = function() {
               _c(
                 "a",
                 {
-                  staticClass: "navbar-brand mr-3",
+                  staticClass: "navbar-brand mr-3 burger",
                   attrs: { href: "/" },
                   on: {
                     click: function($event) {
@@ -59643,7 +59665,7 @@ var render = function() {
               _c(
                 "a",
                 {
-                  staticClass: "ml-4 mr-4 navbar-brand",
+                  staticClass: "ml-4 mr-4 navbar-brand nav-today",
                   attrs: { href: "#" },
                   on: {
                     click: function($event) {
@@ -59658,7 +59680,7 @@ var render = function() {
               _c(
                 "a",
                 {
-                  staticClass: "ml-4  mr-1 navbar-brand",
+                  staticClass: " navbar-brand nav-addsub",
                   attrs: { href: "#" },
                   on: {
                     click: function($event) {
@@ -59673,7 +59695,7 @@ var render = function() {
               _c(
                 "a",
                 {
-                  staticClass: "ml-1 navbar-brand",
+                  staticClass: " navbar-brand nav-addsub",
                   attrs: { href: "#" },
                   on: {
                     click: function($event) {

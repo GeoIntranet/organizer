@@ -1,0 +1,7 @@
+#search_input{
+  border:solid 2px darken($bluepale,10%);
+  &:focus{
+    box-shadow: none;
+    border:solid 2px darken($bluepale,20%);
+  }
+}

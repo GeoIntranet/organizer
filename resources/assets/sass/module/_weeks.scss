@@ -12,9 +12,7 @@
     border-right:solid 1px $border;
       .col-today{
         color:cornflowerblue;
-        border-right: 1px solid $border;
-        border-left: 1px solid $border;
-        background-color: lighten($blue,30%);
+        background-color: #F5F5F5;
         h1{
           font-weight: bold;
         }
