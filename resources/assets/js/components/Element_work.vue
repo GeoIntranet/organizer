@@ -1,5 +1,5 @@
 <template>
-    <div class="col">
+    <div class="col" style="background-color: white;">
         <div class="row">
             <div class="col-md-auto" style="cursor:default" @click=" editItem(work) ">
                 {{work.id_cmd}}

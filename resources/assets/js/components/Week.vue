@@ -7,10 +7,16 @@
             <div class="col col-day" v-for="(date,index) in cal">
 
                 <div class="row week">
-                    <div class="col">
+                    <div class="col col-today" v-if="isToday(date.dnu)">
                         {{date.dn | capitalize}}
                         <br>
-                        <h1>{{date.dnu.substr(-2)}}</h1>
+                        <h1 >{{date.dnu.substr(-2)}}</h1>
+
+                    </div>
+                    <div class="col" v-else>
+                        {{date.dn | capitalize}}
+                        <br>
+                        <h1 style="color:grey; font-weight: bolder">{{date.dnu.substr(-2)}}</h1>
                     </div>
                 </div>
 
@@ -107,6 +113,9 @@
             }
         },
         methods: {
+            isToday(date){
+                return (moment().format('Y-MM-DD') === date);
+            },
             fitDayNumber(){
 
                 this.weeksShort.shift();

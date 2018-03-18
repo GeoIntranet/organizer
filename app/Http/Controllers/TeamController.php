@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Lib\Team\TeamOrganiser;
-use App\Http\Requests;
 use Carbon\Carbon;
 use App\Commande;
 use App\Delais;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class TeamController extends Controller
 {
@@ -136,22 +136,23 @@ class TeamController extends Controller
     }
 
     /**
+     * liste des commandes sur la side bar
+     * @param \Illuminate\Http\Request $request
      * @param null $date
      * @return mixed
      */
     public function works(Request $request,$date=null)
     {
-        if($request->ajax()){
-            return  $cmd = Commande::enCours()->with('clientDelivered','delais')->limit(0)->take(16)->get();;
+        $commandes = Cache::remember('cmd_works_', 10, function () {
+            return  $cmd = Commande::enCours()->with('clientDelivered','delais')->limit(0)->take(16)->get();
+        });
+
+        if($request->wantsJson() || request()->ajax()){
+            return $commandes;
         }
 
-
-        $cmd = Commande::enCours()->with('clientDelivered','delais')->limit(0)->take(16)->get();
-
         return view('team.work')
-            ->with('commandes',$cmd)
-            //->with('delais',$delaisItem)
-            //->with('users',$users)
+            ->with('commandes',$commandes)
             ;
 
     }
@@ -161,7 +162,9 @@ class TeamController extends Controller
         $delais = Delais::find($bl) ;
         $date = new carbon($delais->date_envoie);
         $date = $date->dayOfWeek == 5 ? $date->addDays(3) : $date->addDay(1);
+
         $delais->update(['date_envoie' => $date]);
+
         return back();
     }
 

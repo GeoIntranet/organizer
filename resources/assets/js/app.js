@@ -10,7 +10,7 @@ window.moment = require('moment');
 require('./library/moment_local.js');
 
 window.axios = require('axios');
-
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 require('bootstrap');
 
 window.Laravel = {

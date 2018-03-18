@@ -11,23 +11,17 @@ class FicheController extends Controller
 {
     public function all()
     {
-        //if(Cache::has('fichesEnCours') )
-        //{
-        //    return (Cache::get('fichesEnCours'));
-        //}
+        $fiches = Cache::remember('component_all_fiche', 10, function () {
+            return   $fiches  = Commande::encours()
+                ->with('delais','ligne','clientDelivered','clientFacture','achat','itCmd')
+                ->get();
+        });
 
+        if(request()->wantsJson() || request()->ajax()){
+            return $fiches->chunk(intval(count($fiches))/2);
+            //return $fiches->chunk(intval(count($fiches))/2);
+        }
 
-        $fiches  = Commande::encours()
-            ->with('delais','ligne','clientDelivered','clientFacture','achat','itCmd')
-            ->get();
-
-
-        //die();
-        //dd($fiches[0]->clientDelivered->nsoc);
-        $expiresAt = now()->addMinutes(10);
-        return  $fiches->chunk(intval(count($fiches))/2);
-
-        //Cache::put('fichesEnCours', ($fiches), $expiresAt);
-        //return view('home');
+        return ['error'];
     }
 }

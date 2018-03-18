@@ -22,8 +22,8 @@
                           <div class="col">
                               <div class="row">
                                   <div class="col">
-                                      <i v-if="bl.delais" class="fa fa-circle  mr-2" style="color:mediumaquamarine" > </i>
-                                      <i  class="fa fa-circle  mr-2" style="color:indianred" v-else> </i>
+                                      <i v-if="bl.delais" class="fa fa-circle mr-2" style="color:mediumaquamarine" > </i>
+                                      <i  class="fa fa-circle mr-2" style="color:indianred" v-else> </i>
                                       {{bl.id_cmd}} -
                                       {{bl.client_delivered.nsoc}}
                                       <span v-if="bl.delais">- {{this.moment(bl.delais.date_envoie).format('DD-MM-Y')}}</span>

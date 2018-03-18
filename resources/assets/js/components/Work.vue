@@ -19,7 +19,8 @@
             </div>
             <div
                     v-for="(dayWeeks,index) in weeksList"
-                    class="col col-work-week"
+                    class="col col-work-week "
+                    v-bind:class="{ coltoday: isToday(weekNumber,index) }"
                     style=" min-height: 87vh;"
             >
 
@@ -119,7 +120,14 @@
         },
 
         methods: {
-
+            isToday(week,day){
+                let dt =  moment();
+                let dayN = dt.day() === 0 ? 6 :  dt.day()-1
+                let semaine =dt.week();
+                console.log(day)
+                console.log((( week === semaine ) && (day === dayN)))
+                return (( week === semaine ) && (day === dayN));
+            },
 
             getWorksWeek(){
                 this.isLoading = true;
@@ -180,6 +188,7 @@
             }
         },
         computed: {
+
 
             dragOptions() {
                 return {

@@ -2282,10 +2282,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            isLoading: false,
             showCommande: true,
             dummy: [],
             commandes_: []
@@ -2295,9 +2301,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.commandes_ = this.commandes;
+
         for (var i = 0; i < 15; i++) {
             this.dummy.push(i);
         }
+
         Event.$on('refreshCommandesListe', function (data) {
             _this.refreshList();
         });
@@ -2308,7 +2316,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         refreshList: function refreshList() {
             var _this2 = this;
 
+            this.isLoading = true;
             axios.get('/works').then(function (response) {
+                //this.commandes_ =  response.data;
+                _this2.isLoading = false;
                 _this2.commandes_ = response.data;
             });
         },
@@ -3190,6 +3201,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3269,6 +3286,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        isToday: function isToday(date) {
+            return moment().format('Y-MM-DD') === date;
+        },
         fitDayNumber: function fitDayNumber() {
 
             this.weeksShort.shift();
@@ -3335,6 +3355,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__("./node_modules/vuedraggable/dist/vuedraggable.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+//
 //
 //
 //
@@ -3458,6 +3479,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
+        isToday: function isToday(week, day) {
+            var dt = moment();
+            var dayN = dt.day() === 0 ? 6 : dt.day() - 1;
+            var semaine = dt.week();
+            console.log(day);
+            console.log(week === semaine && day === dayN);
+            return week === semaine && day === dayN;
+        },
         getWorksWeek: function getWorksWeek() {
             var _this2 = this;
 
@@ -58778,7 +58807,8 @@ var render = function() {
               return _c(
                 "div",
                 {
-                  staticClass: "col col-work-week",
+                  staticClass: "col col-work-week ",
+                  class: { coltoday: _vm.isToday(_vm.weekNumber, index) },
                   staticStyle: { "min-height": "87vh" }
                 },
                 [
@@ -58883,42 +58913,46 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._l(_vm.commandes_, function(commande) {
-              return _c("div", { staticClass: "row item-fiche p-1" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "col ",
-                    on: {
-                      click: function($event) {
-                        _vm.showCommandeItem(commande)
-                      }
-                    }
-                  },
-                  [
-                    commande.delais
-                      ? _c("i", {
-                          staticClass: "fa fa-circle mr-2",
-                          staticStyle: { color: "mediumaquamarine" }
-                        })
-                      : _c("i", {
-                          staticClass: "fa fa-circle mr-2",
-                          staticStyle: { color: "indianred" }
-                        }),
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(commande.id_cmd) +
-                        "\n                    \n                "
-                    ),
-                    _c("small", [
-                      _vm._v(
-                        _vm._s(_vm._f("client")(commande.client_delivered.nsoc))
-                      )
-                    ])
-                  ]
-                )
-              ])
-            })
+            _vm.isLoading
+              ? _c("div", { staticClass: "row pt-3" }, [_vm._m(1)])
+              : _vm._l(_vm.commandes_, function(commande) {
+                  return _c("div", { staticClass: "row item-fiche p-1" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col ",
+                        on: {
+                          click: function($event) {
+                            _vm.showCommandeItem(commande)
+                          }
+                        }
+                      },
+                      [
+                        commande.delais
+                          ? _c("i", {
+                              staticClass: "fa fa-circle mr-2",
+                              staticStyle: { color: "mediumaquamarine" }
+                            })
+                          : _c("i", {
+                              staticClass: "fa fa-circle mr-2",
+                              staticStyle: { color: "indianred" }
+                            }),
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(commande.id_cmd) +
+                            "\n                    \n                "
+                        ),
+                        _c("small", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("client")(commande.client_delivered.nsoc)
+                            )
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                })
           ],
           2
         )
@@ -58945,7 +58979,7 @@ var render = function() {
             _vm._v(" "),
             _vm._l(_vm.dummy, function(item) {
               return _c("div", { staticClass: "row item-fiche p-1" }, [
-                _vm._m(1, true)
+                _vm._m(2, true)
               ])
             })
           ],
@@ -58960,6 +58994,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col pt-3" }, [
       _c("h5", [_vm._v("Fiches en cours")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col text-center" }, [
+      _c("i", {
+        staticClass: "fa fa-circle-o-notch fa-spin fa-2x mr-3",
+        staticStyle: { color: "lightgray" }
+      })
     ])
   },
   function() {
@@ -59159,16 +59204,36 @@ var render = function() {
           _vm._l(_vm.cal, function(date, index) {
             return _c("div", { staticClass: "col col-day" }, [
               _c("div", { staticClass: "row week" }, [
-                _c("div", { staticClass: "col" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm._f("capitalize")(date.dn)) +
-                      "\n                    "
-                  ),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
-                ])
+                _vm.isToday(date.dnu)
+                  ? _c("div", { staticClass: "col col-today" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm._f("capitalize")(date.dn)) +
+                          "\n                    "
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("h1", [_vm._v(_vm._s(date.dnu.substr(-2)))])
+                    ])
+                  : _c("div", { staticClass: "col" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm._f("capitalize")(date.dn)) +
+                          "\n                    "
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c(
+                        "h1",
+                        {
+                          staticStyle: {
+                            color: "grey",
+                            "font-weight": "bolder"
+                          }
+                        },
+                        [_vm._v(_vm._s(date.dnu.substr(-2)))]
+                      )
+                    ])
               ])
             ])
           })
@@ -59307,56 +59372,64 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col" }, [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        {
-          staticClass: "col-md-auto",
-          staticStyle: { cursor: "default" },
-          on: {
-            click: function($event) {
-              _vm.editItem(_vm.work)
+  return _c(
+    "div",
+    { staticClass: "col", staticStyle: { "background-color": "white" } },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          {
+            staticClass: "col-md-auto",
+            staticStyle: { cursor: "default" },
+            on: {
+              click: function($event) {
+                _vm.editItem(_vm.work)
+              }
             }
-          }
-        },
-        [_vm._v("\n            " + _vm._s(_vm.work.id_cmd) + "\n        ")]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col", staticStyle: { "font-size": "0.8em" } }, [
-        _vm._v(
-          "\n            " +
-            _vm._s(_vm._f("client")(_vm.work.client.nsoc)) +
-            "\n        "
+          },
+          [_vm._v("\n            " + _vm._s(_vm.work.id_cmd) + "\n        ")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col", staticStyle: { "font-size": "0.8em" } },
+          [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm._f("client")(_vm.work.client.nsoc)) +
+                "\n        "
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row pb-1 pt-1" }, [
+        _c(
+          "div",
+          {
+            staticClass: "col text-right",
+            staticStyle: { "font-size": "0.9em" }
+          },
+          [
+            _vm.work.da == 1
+              ? _c("i", { staticClass: "fa fa-dollar ml-1" })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.work.inc == 1
+              ? _c("i", { staticClass: "fa fa-bell ml-1" })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.work.devis == 1
+              ? _c("i", { staticClass: "fa fa-ban ml-1" })
+              : _vm._e()
+          ]
         )
       ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row pb-1 pt-1" }, [
-      _c(
-        "div",
-        {
-          staticClass: "col text-right",
-          staticStyle: { "font-size": "0.9em" }
-        },
-        [
-          _vm.work.da == 1
-            ? _c("i", { staticClass: "fa fa-dollar ml-1" })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.work.inc == 1
-            ? _c("i", { staticClass: "fa fa-bell ml-1" })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.work.devis == 1
-            ? _c("i", { staticClass: "fa fa-ban ml-1" })
-            : _vm._e()
-        ]
-      )
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -59431,13 +59504,13 @@ var render = function() {
                                     _c("div", { staticClass: "col" }, [
                                       bl.delais
                                         ? _c("i", {
-                                            staticClass: "fa fa-circle  mr-2",
+                                            staticClass: "fa fa-circle mr-2",
                                             staticStyle: {
                                               color: "mediumaquamarine"
                                             }
                                           })
                                         : _c("i", {
-                                            staticClass: "fa fa-circle  mr-2",
+                                            staticClass: "fa fa-circle mr-2",
                                             staticStyle: { color: "indianred" }
                                           }),
                                       _vm._v(
@@ -71503,7 +71576,7 @@ window.moment = __webpack_require__("./node_modules/moment/moment.js");
 __webpack_require__("./resources/assets/js/library/moment_local.js");
 
 window.axios = __webpack_require__("./node_modules/axios/index.js");
-
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 __webpack_require__("./node_modules/bootstrap/dist/js/bootstrap.js");
 
 window.Laravel = {

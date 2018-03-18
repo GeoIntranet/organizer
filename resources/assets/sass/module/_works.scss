@@ -1,5 +1,8 @@
 .col-work-week{
-  border-right: solid 1px $border;
+  border-right: 1px solid $border;
+  &.coltoday{
+    background-color: lighten($blue,30%);
+  }
 }
 
 

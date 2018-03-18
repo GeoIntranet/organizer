@@ -10,7 +10,15 @@
 
   .week{
     border-right:solid 1px $border;
-    //border-bottom: solid 1px $border;
+      .col-today{
+        color:cornflowerblue;
+        border-right: 1px solid $border;
+        border-left: 1px solid $border;
+        background-color: lighten($blue,30%);
+        h1{
+          font-weight: bold;
+        }
+      }
   }
 
   .work{

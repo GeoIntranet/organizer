@@ -9,10 +9,15 @@
                     <h5>Fiches en cours</h5>
                 </div>
             </div>
-            <div class="row item-fiche p-1" v-for="commande in commandes_">
+            <div class="row pt-3" v-if="isLoading">
+                <div class="col text-center">
+                    <i style="color:lightgray" class="fa fa-circle-o-notch fa-spin fa-2x mr-3"> </i>
+                </div>
+            </div>
+             <div class="row item-fiche p-1" v-for="commande in commandes_" v-else>
                 <div class="col " @click="showCommandeItem(commande)">
                     <i v-if="commande.delais" class="fa fa-circle mr-2" style="color:mediumaquamarine"> </i>
-                    <i v-else class="fa fa-circle mr-2" style="color:indianred"> </i>
+                    <i  class="fa fa-circle mr-2" style="color:indianred" v-else> </i>
                     {{commande.id_cmd}}
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <small>{{commande.client_delivered.nsoc | client}}</small>
@@ -42,6 +47,7 @@
     export default {
         data(){
             return{
+                isLoading : false,
                 showCommande : true,
                 dummy:[],
                 commandes_:[]
@@ -49,9 +55,11 @@
         },
         mounted() {
             this.commandes_  = this.commandes;
+
             for(let i=0 ; i<15 ; i++){
                 this.dummy.push(i)
             }
+
             Event.$on('refreshCommandesListe',(data)=>{
                this.refreshList()
             })
@@ -59,9 +67,12 @@
         props:['commandes'],
         methods:{
             refreshList(){
+                this.isLoading = true;
                 axios.get('/works').then(
                     response => {
-                        this.commandes_ =  response.data;
+                        //this.commandes_ =  response.data;
+                        this.isLoading = false;
+                        this.commandes_= response.data;
                     }
                 );
             },
