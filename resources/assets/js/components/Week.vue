@@ -84,9 +84,6 @@
             this.weekNumber = this.dt.week()
 
             this.fitDayNumber();
-
-
-
             this.cal = this.getDayOfWeek();
 
         },

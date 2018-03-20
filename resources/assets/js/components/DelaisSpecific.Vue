@@ -75,7 +75,7 @@
 
                 axios.get('/team/'+ this.search.id+'/'+ dateEnvoie.format('Y-MM-DD') ).then(
                     response => {
-
+                        console.log(response.data)
                         if(week !== refWeek){
                             Event.$emit('removeElement',this.search.id);
                         }

@@ -69,6 +69,10 @@
                 axios.get('/delais/add/'+this.cmd.id_cmd+'/'+data)
                     .then(
                         response => {
+                            console.log(response.data)
+
+                            Flash(response.data.msg,response.data.state)
+
                            Event.$emit('refreshWork');
                            Event.$emit('refreshCommandesListe');
                            this.showCommandeItem = false;

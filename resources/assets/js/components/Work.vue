@@ -122,10 +122,8 @@
         methods: {
             isToday(week,day){
                 let dt =  moment();
-                let dayN = dt.day() === 0 ? 6 :  dt.day()-1
-                let semaine =dt.week();
-                console.log(day)
-                console.log((( week === semaine ) && (day === dayN)))
+                let dayN = dt.day() === 0 ? 6 :  dt.day() - 1
+                let semaine = dt.week();
                 return (( week === semaine ) && (day === dayN));
             },
 

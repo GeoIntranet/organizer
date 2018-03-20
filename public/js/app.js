@@ -2217,6 +2217,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         Event.$on('create_cmd_date', function (data) {
             axios.get('/delais/add/' + _this.cmd.id_cmd + '/' + data).then(function (response) {
+                console.log(response.data);
+
+                Flash(response.data.msg, response.data.state);
+
                 Event.$emit('refreshWork');
                 Event.$emit('refreshCommandesListe');
                 _this.showCommandeItem = false;
@@ -2420,7 +2424,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var refWeek = refDateEnvoie.clone().week();
 
             axios.get('/team/' + _this.search.id + '/' + dateEnvoie.format('Y-MM-DD')).then(function (response) {
-
+                console.log(response.data);
                 if (week !== refWeek) {
                     Event.$emit('removeElement', _this.search.id);
                 } else {
@@ -2530,6 +2534,127 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/FlashMessage.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        timeout: {
+            type: Number,
+            default: 3000
+        },
+        transition: {
+            type: String,
+            default: 'slide-fade'
+        },
+        types: {
+            type: Object,
+            default: function _default() {
+                return {
+                    base: 'alert',
+                    success: 'alert-success',
+                    error: 'alert-danger',
+                    warning: 'alert-warning',
+                    info: 'alert-info'
+                };
+            }
+        },
+        displayIcons: {
+            type: Boolean,
+            default: false
+        },
+        icons: {
+            type: Object,
+            default: function _default() {
+                return {
+                    base: 'fa',
+                    error: 'fa-exclamation-circle',
+                    success: 'fa-check-circle',
+                    info: 'fa-info-circle',
+                    warning: 'fa-exclamation-circle'
+                };
+            }
+        }
+    },
+    data: function data() {
+        return {
+            notifications: []
+        };
+    },
+    /**
+     * On creation Flash a message if a message exists otherwise listen for
+     * flash event from global event bus
+     */
+    created: function created() {
+        var _this = this;
+
+        Event.$on('flash', function (message, type) {
+            return _this.flash(message, type);
+        });
+    },
+
+    methods: {
+        /**
+         * Flash our alert to the screen for the user to see
+         * and begin the process to hide it
+         *
+         * @param message
+         * @param type
+         */
+        flash: function flash(message, type) {
+            this.notifications.push({
+                message: message,
+                type: type,
+                typeObject: this.classes(this.types, type),
+                iconObject: this.classes(this.icons, type)
+            });
+            setTimeout(this.hide, this.timeout);
+        },
+
+        /**
+         * Sets and returns the values needed
+         *
+         * @param type
+         */
+        classes: function classes(propObject, type) {
+            var classes = {};
+            if (propObject.hasOwnProperty('base')) {
+                classes[propObject.base] = true;
+            }
+            if (propObject.hasOwnProperty(type)) {
+                classes[propObject[type]] = true;
+            }
+            return classes;
+        },
+
+        /**
+         * Hide Our Alert
+         *
+         * @param item
+         */
+        hide: function hide() {
+            var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.notifications[0];
+
+            var key = this.notifications.indexOf(item);
+            this.notifications.splice(key, 1);
+        }
     }
 });
 
@@ -3275,7 +3400,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.weekNumber = this.dt.week();
 
         this.fitDayNumber();
-
         this.cal = this.getDayOfWeek();
     },
 
@@ -3498,8 +3622,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var dt = moment();
             var dayN = dt.day() === 0 ? 6 : dt.day() - 1;
             var semaine = dt.week();
-            console.log(day);
-            console.log(week === semaine && day === dayN);
             return week === semaine && day === dayN;
         },
         getWorksWeek: function getWorksWeek() {
@@ -7477,6 +7599,21 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/FlashMessage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.alert-wrap[data-v-231c256e] {\n    position: fixed;\n    right: 25px;\n    bottom: 25px;\n    z-index:9999;\n    background-color: indianred;\n}\n/**\n * Fade transition styles\n */\n.fade-enter-active[data-v-231c256e], .fade-leave-active[data-v-231c256e] {\n    -webkit-transition: opacity .5s;\n    transition: opacity .5s\n}\n.fade-enter[data-v-231c256e], .fade-leave-to[data-v-231c256e] /* .fade-leave-active in <2.1.8 */ {\n    opacity: 0\n}\n/**\n * Bounce transition styles\n */\n.bounce-enter-active[data-v-231c256e] {\n    -webkit-animation: bounce-in-data-v-231c256e .5s;\n            animation: bounce-in-data-v-231c256e .5s;\n}\n.bounce-leave-active[data-v-231c256e] {\n    animation: bounce-in-data-v-231c256e .5s reverse;\n}\n@-webkit-keyframes bounce-in-data-v-231c256e {\n0% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n}\n50% {\n        -webkit-transform: scale(1.5);\n                transform: scale(1.5);\n}\n100% {\n        -webkit-transform: scale(1);\n                transform: scale(1);\n}\n}\n@keyframes bounce-in-data-v-231c256e {\n0% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n}\n50% {\n        -webkit-transform: scale(1.5);\n                transform: scale(1.5);\n}\n100% {\n        -webkit-transform: scale(1);\n                transform: scale(1);\n}\n}\n/**\n * Slide transition styles\n */\n.slide-fade-enter-active[data-v-231c256e] {\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n.slide-fade-leave-active[data-v-231c256e] {\n    -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter[data-v-231c256e], .slide-fade-leave-to[data-v-231c256e]\n    /* .slide-fade-leave-active for <2.1.8 */ {\n    -webkit-transform: translateX(10px);\n            transform: translateX(10px);\n    opacity: 0;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
@@ -58259,6 +58396,50 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-231c256e\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/FlashMessage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "alert-wrap" },
+    [
+      _c(
+        "transition-group",
+        { attrs: { name: _vm.transition, tag: "div" } },
+        _vm._l(_vm.notifications, function(item, index) {
+          return _c(
+            "div",
+            { key: index, class: item.typeObject, attrs: { role: "alert" } },
+            [
+              _vm.displayIcons
+                ? _c("span", { class: item.iconObject })
+                : _vm._e(),
+              _vm._v(" "),
+              _c("span", { domProps: { innerHTML: _vm._s(item.message) } })
+            ]
+          )
+        })
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-231c256e", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-30689698\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ToolBar.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59892,6 +60073,33 @@ if (false) {
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-f5cf25ba", module.exports)
   }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/FlashMessage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/FlashMessage.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("33942cf5", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FlashMessage.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FlashMessage.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ }),
@@ -71607,13 +71815,18 @@ window.Laravel = {
 
 window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 window._ = __webpack_require__("./node_modules/lodash/lodash.js");
+window.Event = new Vue();
 
+window.Flash = function (message, type) {
+    Event.$emit('flash', message, type);
+};
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('flash-message', __webpack_require__("./resources/assets/js/components/FlashMessage.vue"));
 Vue.component('example', __webpack_require__("./resources/assets/js/components/ExampleComponent.vue"));
 Vue.component('calendar', __webpack_require__("./resources/assets/js/components/Calendar.vue"));
 Vue.component('week', __webpack_require__("./resources/assets/js/components/Week.vue"));
@@ -71630,8 +71843,6 @@ Vue.component('delais-specific', __webpack_require__("./resources/assets/js/comp
 Vue.component('commande-specific', __webpack_require__("./resources/assets/js/components/CommandeSpecific.vue"));
 Vue.component('commande-calendar', __webpack_require__("./resources/assets/js/components/CommandeCalendar.vue"));
 Vue.component('all-fiche', __webpack_require__("./resources/assets/js/components/Allfiche.vue"));
-
-window.Event = new Vue();
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -72025,6 +72236,58 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-0ca92eac", Component.options)
   } else {
     hotAPI.reload("data-v-0ca92eac", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/FlashMessage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-231c256e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/FlashMessage.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/FlashMessage.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-231c256e\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/FlashMessage.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-231c256e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\FlashMessage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-231c256e", Component.options)
+  } else {
+    hotAPI.reload("data-v-231c256e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

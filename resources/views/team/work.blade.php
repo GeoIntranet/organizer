@@ -38,6 +38,8 @@
                 <commandes :commandes="{{$commandes}}" ></commandes>
             </div>
 
+            <flash-message></flash-message>
+
         </div>
     </div>
 @endsection

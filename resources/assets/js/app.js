@@ -19,13 +19,18 @@ window.Laravel = {
 
 window.Vue = require('vue');
 window._ = require('lodash');
+window.Event = new Vue();
 
+window.Flash = function(message, type) {
+    Event.$emit('flash', message, type);
+};
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('flash-message', require('./components/FlashMessage.vue'));
 Vue.component('example', require('./components/ExampleComponent.vue'));
 Vue.component('calendar', require('./components/Calendar.vue'));
 Vue.component('week', require('./components/Week.vue'));
@@ -43,7 +48,7 @@ Vue.component('commande-specific', require('./components/CommandeSpecific'));
 Vue.component('commande-calendar', require('./components/CommandeCalendar'));
 Vue.component('all-fiche', require('./components/Allfiche'));
 
-window.Event = new Vue();
+
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
