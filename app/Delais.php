@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delais extends Model
 {
-
+    protected $connection='yoda';
     protected $primaryKey='id_cmd';
     protected $fillable =['date_envoie','order','semaine_envoie','id_cmd','id_client'];
 
