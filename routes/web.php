@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/articles', 'CategorieController@index')->name('as400');
+
 // TEAM WORKS ---------------------------------------------------------------------------------------------------------------------------
 Route::get('/team', ['as'=>'team','uses' => 'TeamController@index']);
 Route::get('/team/{id}/{date}', ['as'=>'updatedElementDate','uses' => 'TeamController@updateDate']);
