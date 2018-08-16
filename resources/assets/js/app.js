@@ -16,7 +16,7 @@ require('bootstrap');
 window.Laravel = {
     csrfToken: $('meta[name=csrf-token]').attr("content")
 };
-
+require('es6-promise').polyfill();
 window.Vue = require('vue');
 window._ = require('lodash');
 window.Event = new Vue();
