@@ -42,10 +42,12 @@
                     <li v-if="!signed"><a class="nav-link" href="">Register</a></li>
 
 
-                    <a  class="navbar-brand col-md-auto ml-2 p-0" href="/"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    <a
+                            href="/"
+                        class="navbar-brand col-md-auto ml-2 p-0"
+                        @click.prevent="logout()"
                     >
-                        {{user.prenom}} <i class="fa fa-power-off ml-2" style="color:indianred"> </i>
+                        {{user.name}} <i class="fa fa-power-off ml-2" style="color:indianred"> </i>
                     </a>
 
                 </ul>
@@ -77,7 +79,7 @@
             this.monthN = parseInt(this.month);
             this.yearN = parseInt(this.year);
 
-            // ATTENTION dans moment les mont c'est de 0 a 11 ! - c'est pk on sub un month
+            // ATTENTION dans library -moment- les mois c'est de 0 a 11 ! - c'est pk on sub un month
             this.dt = moment([this.year,this.month,this.day]).subtract(1,'month');
             this.weekNumber = this.dt.week()
             this.displayMonth = moment.months()[this.monthN-1]
@@ -98,6 +100,13 @@
 
         },
         methods:{
+            logout(){
+                Flash('Deconnexion utilisateur','success')
+                //return document.location.reload(true);
+            },
+            isSigned(){
+                return this.window.organizer.signedIn  ;
+            },
             hideToolbar(){
                 Event.$emit('toggleToolbar', true )
             },

@@ -83,8 +83,6 @@
 
             this.makeCalendar();
 
-
-
             Event.$on('toggleCalendar',(data)=>{
                 this.showCalendar = ! this.showCalendar;
             })
@@ -182,10 +180,7 @@
                 this.makeCalendar();
             },
             chooseDate(date){
-
                Event.$emit('create_cmd_date',date);
-
-
 
                 let dateTMP = moment(date);
                 let diffMonth = _.parseInt(date.substr(5,2)) !== this.selectedDateSession.month()+1;
@@ -197,7 +192,6 @@
 
                 if(diffWeek)
                 {
-
                 }
 
                 if(diffMonth)

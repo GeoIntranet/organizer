@@ -4,11 +4,15 @@
 @section('menu')
 
     <navbar
+            v-if="{{json_encode(auth()->user())}}"
             :year="{{carbon('y')}}"
             :month="{{carbon('m')}}"
             :day="{{carbon('d')}}"
             >
     </navbar>
+
+    <auth-user v-if="{{json_encode(auth()->user() == null)}}"> </auth-user>
+
 @endsection
 
 
@@ -21,7 +25,6 @@
             <delais-specific></delais-specific>
             <commande-specific></commande-specific>
             <all-fiche></all-fiche>
-
             <toolbar > </toolbar>
 
             <div class="col">
@@ -35,7 +38,11 @@
             </div>
 
             <div class=" col-information col-md-auto " >
-                <commandes :commandes="{{$commandes}}" ></commandes>
+                <commandes
+                        v-if="{{json_encode(auth()->user())}}"
+                        :commandes="{{$commandes}}" >
+
+                </commandes>
             </div>
 
             <flash-message></flash-message>

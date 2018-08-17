@@ -47,6 +47,7 @@ Vue.component('delais-specific', require('./components/DelaisSpecific'));
 Vue.component('commande-specific', require('./components/CommandeSpecific'));
 Vue.component('commande-calendar', require('./components/CommandeCalendar'));
 Vue.component('all-fiche', require('./components/Allfiche'));
+Vue.component('auth-user', require('./components/AuthUser'));
 
 
 
@@ -56,5 +57,13 @@ $(function () {
 
 const app = new Vue({
     el: '#app',
+    data: {
+        auth : window.organizer.signedIn
+    },
+    methods: {
+        isSigned() {
+            return this.window.organizer.signedIn;
+        },
+    }
 });
 console.log(screen.height)

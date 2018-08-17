@@ -23,6 +23,7 @@
     "vue-template-compiler": "^2.3.2"
   },
   "dependencies": {
+    "es6-promise": "^4.2.4",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "tether": "^1.4.3",
