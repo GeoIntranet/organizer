@@ -12,10 +12,14 @@
 */
 
 Route::get('/', function () {
-    return redirect('/works');
+    return redirect('/calendar');
 });
-
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('loginForm');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
 Auth::routes();
+
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/articles', 'CategorieController@index')->name('as400');
@@ -26,7 +30,7 @@ Route::get('/team/{id}/{date}', ['as'=>'updatedElementDate','uses' => 'TeamContr
 Route::get('/team/get/work/{semaine}', ['as'=>'searchwork','uses' => 'TeamController@searchWork']);
 Route::get('/team/{semaine}/{id}/{order}/{dayNumber}', ['as'=>'updatedElement','uses' => 'TeamController@updateColumn']);
 Route::get('/team/works/{date}', ['as'=>'works','uses' => 'TeamController@works']);
-Route::get('/works', ['as'=>'works','uses' => 'TeamController@works']);
+Route::get('/calendar', ['as'=>'works','uses' => 'TeamController@works']);
 Route::get('/team/{bl}/add', ['as'=>'works','uses' => 'TeamController@dayAdd']);
 Route::get('/team/{bl}/sub', ['as'=>'works','uses' => 'TeamController@daySub']);
 Route::get('/usercheck', ['as'=>'apicheck','uses' => 'TeamController@api']);
