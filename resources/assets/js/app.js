@@ -48,6 +48,8 @@ Vue.component('commande-specific', require('./components/CommandeSpecific'));
 Vue.component('commande-calendar', require('./components/CommandeCalendar'));
 Vue.component('all-fiche', require('./components/Allfiche'));
 Vue.component('auth-user', require('./components/AuthUser'));
+Vue.component('user-setting', require('./components/UserSetting'));
+Vue.component('user-content-setting', require('./components/UserContentSetting'));
 
 
 

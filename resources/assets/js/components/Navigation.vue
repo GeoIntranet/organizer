@@ -1,6 +1,11 @@
 <template>
         <ul class="nopuce " style="font-size:15px">
             <li class="title-nav"><i class="fa fa-compass fa-2x"> </i> Navigation</li>
+
+            <li @click="showModule('user_setting')">
+                <span  class="header-sub-nav" >{{iconeOne}} &nbsp; Parametres</span>
+            </li>
+
             <li>
                 <span @click="toggleSubOne" class="header-sub-nav">{{iconeOne}} &nbsp; Fiches</span>
                 <ul v-if="showSubOne">

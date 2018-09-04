@@ -28,13 +28,17 @@
             <toolbar > </toolbar>
 
             <div class="col">
+
+                <user-content-setting></user-content-setting>
+
                 <week
                     :year="{{carbon('y')}}"
                     :month="{{carbon('m')}}"
                     :day="{{carbon('d')}}"
                 >
-
                 </week>
+
+
             </div>
 
             <div class=" col-information col-md-auto " >
