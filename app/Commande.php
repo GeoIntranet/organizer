@@ -42,7 +42,7 @@ class Commande extends Model
         return User::find($this->getAttribute('id_prepar'));
     }
 
-    public function scopeCommandLast($query,$date)
+    public function scopeCommandeSentAtDate($query,$date)
     {
         return $query
             ->select('id_cmd','date_livr','id_clientlivr')
@@ -50,20 +50,13 @@ class Commande extends Model
             ->where('etat_livr','2') ;
     }
 
-    public function scopeCommandLastOuvrableD($query,$date,$array)
-    {
-       return LigneCommande::query()
-           ->select('*')
-           ->whereIn('id_cmd',$array)
-           ;
-    }
 
     public function getItems()
     {
         return $this->items;
     }
 
-    public function scopeCommandYear($query,$option)
+    public function scopeCommandSentInYear($query,$option)
     {
         $query = $query->select('id_cmd');
         $query = $query->whereBetween('date_livr',[$option['intervalle']['begin']->format('Y-m-d') ,$option['intervalle']['end']->format('Y-m-d')]);
@@ -71,7 +64,7 @@ class Commande extends Model
         return $query;
     }
 
-    public function scopeCommandSent($query , $date)
+    public function scopeCommandSentBetweenDate($query , $date)
     {
         $query = $query->select('id_cmd','id_clientlivr','id_vendeur','id_clientfact','date_livr','date_cmd')
         ->whereBetween('date_livr',[$date['begin'],$date['end']])
@@ -89,7 +82,7 @@ class Commande extends Model
 
     }
 
-    public function scopeCommandSentBl($query , $bl)
+    public function scopeGetSentBl($query , $bl)
     {
         $query = $query->select('id_cmd','id_clientlivr','id_vendeur','id_clientfact','date_livr','date_cmd');
         $query = $query->where('id_cmd',$bl);
@@ -104,7 +97,7 @@ class Commande extends Model
             ;
     }
 
-    public function scopeEnCours($query , $option = null)
+    public function scopeCommandeEnCours($query , $option = null)
     {
 
          $query = $query

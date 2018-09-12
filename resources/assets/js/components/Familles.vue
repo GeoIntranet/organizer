@@ -20,13 +20,13 @@
             <tbody>
             <tr v-for="famille,index in familleCopy[pageActive]">
                 <td > {{famille.famille}} </td>
-                <td @click="updateCol(famille,'therm',index)"> {{famille.therm}} </td>
-                <td @click="updateCol(famille,'mic',index)"> {{famille.mic}} </td>
-                <td @click="updateCol(famille,'pisto',index)"> {{famille.pisto}} </td>
-                <td @click="updateCol(famille,'las',index)"> {{famille.las}} </td>
-                <td @click="updateCol(famille,'mat',index)"> {{famille.mat}} </td>
-                <td @click="updateCol(famille,'as',index)"> {{famille.as}} </td>
-                <td @click="updateCol(famille,'jet',index)"> {{famille.jet}} </td>
+                <td @click="updateCol(famille,'therm',index)"> <i class="fa fa-check-circle green" v-if="famille.therm"></i> <span v-else>-</span></td>
+                <td @click="updateCol(famille,'mic',index)">  <i class="fa fa-check-circle green" v-if="famille.mic"></i> <span v-else>-</span></td>
+                <td @click="updateCol(famille,'pisto',index)">  <i class="fa fa-check-circle green" v-if="famille.pisto"></i> <span v-else>-</span> </td>
+                <td @click="updateCol(famille,'las',index)">  <i class="fa fa-check-circle green" v-if="famille.las"></i> <span v-else>-</span> </td>
+                <td @click="updateCol(famille,'mat',index)">  <i class="fa fa-check-circle green" v-if="famille.mat"></i> <span v-else>-</span> </td>
+                <td @click="updateCol(famille,'as',index)">  <i class="fa fa-check-circle green" v-if="famille.as"></i> <span v-else>-</span> </td>
+                <td @click="updateCol(famille,'jet',index)">  <i class="fa fa-check-circle green" v-if="famille.jet"></i> <span v-else>-</span> </td>
             </tr>
             </tbody>
         </table>

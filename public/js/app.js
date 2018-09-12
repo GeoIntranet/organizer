@@ -59827,7 +59827,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.therm) + " ")]
+              [
+                famille.therm
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59839,7 +59843,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.mic) + " ")]
+              [
+                famille.mic
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59851,7 +59859,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.pisto) + " ")]
+              [
+                famille.pisto
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59863,7 +59875,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.las) + " ")]
+              [
+                famille.las
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59875,7 +59891,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.mat) + " ")]
+              [
+                famille.mat
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59887,7 +59907,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.as) + " ")]
+              [
+                famille.as
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -59899,7 +59923,11 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v(" " + _vm._s(famille.jet) + " ")]
+              [
+                famille.jet
+                  ? _c("i", { staticClass: "fa fa-check-circle green" })
+                  : _c("span", [_vm._v("-")])
+              ]
             )
           ])
         })

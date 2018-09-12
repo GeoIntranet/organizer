@@ -27,7 +27,7 @@ class FamilleController extends Controller
     }
 
     /**
-     *
+     * update la valeur d'une colonne d'une famille spécific
      */
     public function update()
     {

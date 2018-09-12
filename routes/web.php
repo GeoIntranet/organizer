@@ -22,8 +22,12 @@ Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/setting/articles', 'CategorieController@index')->name('as400');
+
 Route::get('/setting/famille', 'FamilleController@index')->name('famille');
+
+Route::get('/setting/classeur', 'CategorieFicheController@index')->name('classeur');
 
 
 Route::post('/api/famille/update', 'FamilleController@update')->name('familleUpdate');
