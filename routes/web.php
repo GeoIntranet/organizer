@@ -14,15 +14,21 @@
 Route::get('/', function () {
     return redirect('/calendar');
 });
+
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('loginForm');
 Route::post('/login', 'Auth\LoginController@login')->name('login');
+
 Auth::routes();
-
-
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/articles', 'CategorieController@index')->name('as400');
+Route::get('/setting/articles', 'CategorieController@index')->name('as400');
+Route::get('/setting/famille', 'FamilleController@index')->name('famille');
+
+
+Route::post('/api/famille/update', 'FamilleController@update')->name('familleUpdate');
+
+
 
 // TEAM WORKS ---------------------------------------------------------------------------------------------------------------------------
 Route::get('/team', ['as'=>'team','uses' => 'TeamController@index']);

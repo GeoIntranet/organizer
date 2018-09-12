@@ -2569,6 +2569,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Familles.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            pageActive: 0,
+            pageNumber: 0,
+            familleCopy: []
+        };
+    },
+    mounted: function mounted() {
+        this.familleCopy = window._.chunk(this.familles, 20);
+        this.pageNumber = this.familleCopy.length;
+    },
+
+    props: ['familles'],
+    methods: {
+        updateCol: function updateCol(famille, col, index) {
+            console.log(famille.famille);
+            console.log(col);
+            console.log(famille[col]);
+
+            var vue = this;
+
+            axios.post('/api/famille/update', {
+                'famille': famille.famille,
+                'column': col,
+                'value': !famille[col],
+                '_method': 'post',
+                '_token': window.Laravel.csrfToken
+            }).then(function (response) {
+                vue.familleCopy[vue.pageActive][index][col] = +!famille[col];
+                Flash(response.data);
+            }).catch(function (response) {});
+        },
+        isActive: function isActive(index) {
+            if (this.pageActive === index) return 'bgc';
+        },
+        choosePage: function choosePage(index) {
+            this.pageActive = index;
+        }
+    },
+    filters: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/FlashMessage.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -59693,6 +59779,171 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1a646a3c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Familles.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "row " },
+      _vm._l(_vm.familleCopy, function(page, index) {
+        return _c(
+          "span",
+          {
+            staticClass: "borderr p-2",
+            class: _vm.isActive(index),
+            on: {
+              click: function($event) {
+                _vm.choosePage(index)
+              }
+            }
+          },
+          [_vm._v(_vm._s(index + 1))]
+        )
+      })
+    ),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-sm table-spec table-hover" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.familleCopy[_vm.pageActive], function(famille, index) {
+          return _c("tr", [
+            _c("td", [_vm._v(" " + _vm._s(famille.famille) + " ")]),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "therm", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.therm) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "mic", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.mic) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "pisto", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.pisto) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "las", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.las) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "mat", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.mat) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "as", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.as) + " ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.updateCol(famille, "jet", index)
+                  }
+                }
+              },
+              [_vm._v(" " + _vm._s(famille.jet) + " ")]
+            )
+          ])
+        })
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Nom")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Thermique")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Micro")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("PDT")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Laser")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Matricielle")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("AS400")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Jet d'encre")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1a646a3c", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-231c256e\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/FlashMessage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -73250,6 +73501,7 @@ Vue.component('commande-specific', __webpack_require__("./resources/assets/js/co
 Vue.component('commande-calendar', __webpack_require__("./resources/assets/js/components/CommandeCalendar.vue"));
 Vue.component('all-fiche', __webpack_require__("./resources/assets/js/components/Allfiche.vue"));
 Vue.component('auth-user', __webpack_require__("./resources/assets/js/components/AuthUser.vue"));
+Vue.component('famille-liste', __webpack_require__("./resources/assets/js/components/Familles.vue"));
 Vue.component('user-setting', __webpack_require__("./resources/assets/js/components/UserSetting.vue"));
 Vue.component('user-content-setting', __webpack_require__("./resources/assets/js/components/UserContentSetting.vue"));
 
@@ -73701,6 +73953,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-0ca92eac", Component.options)
   } else {
     hotAPI.reload("data-v-0ca92eac", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Familles.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Familles.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1a646a3c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Familles.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Familles.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a646a3c", Component.options)
+  } else {
+    hotAPI.reload("data-v-1a646a3c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
