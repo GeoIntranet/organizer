@@ -221,7 +221,6 @@
     }
 
     .ghost {
-
         background-color: lightgrey;
         color: lightgrey;
         //background: #C8EBFB;

@@ -97,7 +97,7 @@ class Commande extends Model
             ;
     }
 
-    public function scopeCommandeEnCours($query , $option = null)
+    public function scopeEnCours($query , $option = null)
     {
 
          $query = $query
